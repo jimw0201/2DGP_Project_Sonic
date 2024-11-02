@@ -106,7 +106,6 @@ class Run:
             elif sonic.dir == -1:
                 sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
 
-
 class Jump:
     @staticmethod
     def enter(sonic, e):
@@ -126,6 +125,7 @@ class Jump:
 
     @staticmethod
     def do(sonic):
+        sonic.frame = (sonic.frame + 1) % 5
         # 점프 중 중력 효과 적용
         if sonic.is_jumping:
             sonic.y += sonic.jump_speed
@@ -145,9 +145,9 @@ class Jump:
     @staticmethod
     def draw(sonic, x, y):
         if sonic.face_dir == 1:
-            sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
+            sonic.image.clip_draw(500 + 35 * sonic.frame, 971, 34, 34, x, y)
         else:
-            sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
+            sonic.image.clip_composite_draw(500 + 35 * sonic.frame, 973, 34, 34, 0, 'h', x, y, 34, 34)
 
 class Sonic:
     def __init__(self):
