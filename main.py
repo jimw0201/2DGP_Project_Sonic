@@ -1,7 +1,7 @@
 from pico2d import *
 
 from sonic import Sonic
-from ground import Grass
+from ground import Ground
 
 def handle_events():
     global running
@@ -19,15 +19,14 @@ def handle_events():
 
 def reset_world():
     global running
-    global grass
-    global team
+    global ground
     global world
     global sonic
 
     running = True
     world = []
 
-    grass = Grass()
+    grass = Ground()
     world.append(grass)
 
     sonic = Sonic()

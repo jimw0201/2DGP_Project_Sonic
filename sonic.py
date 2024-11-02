@@ -51,6 +51,7 @@ class Run:
             sonic.action = 0
 
         sonic.frame = 0
+        sonic.speed = 0
 
     @staticmethod
     def exit(sonic, e):
@@ -58,9 +59,18 @@ class Run:
 
     @staticmethod
     def do(sonic):
-        sonic.x += sonic.dir * 30
-        sonic.frame = (sonic.frame + 1) % 8
-        pass
+        if sonic.dir != 0:
+            if sonic.speed < sonic.max_speed:
+                sonic.speed += sonic.acceleration
+        else:
+            if sonic.speed > 0:
+                sonic.speed -= sonic.deceleration
+                if sonic.speed < 0:
+                    sonic.speed = 0
+
+        sonic.x += sonic.dir * sonic.speed * 0.1
+
+        sonic.frame = (sonic.frame + 1) % 8 if sonic.speed > 0 else sonic.frame
 
     @staticmethod
     def draw(sonic):
@@ -76,6 +86,10 @@ class Sonic:
         self.frame = 0
         self.dir = 0
         self.action = 3
+        self.speed = 0
+        self.max_speed = 200
+        self.acceleration = 5
+        self.deceleration = 1
         self.image = load_image('sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle) # 초기 상태가 Idle
