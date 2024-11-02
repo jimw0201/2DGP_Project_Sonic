@@ -47,6 +47,8 @@ class Run:
             sonic.action = 0
 
         sonic.frame = 0
+        sonic.fast_frame = 0
+        sonic.super_fast_frame = 0
         sonic.speed = 0
 
     @staticmethod
@@ -66,15 +68,32 @@ class Run:
 
         sonic.x += sonic.dir * sonic.speed * 0.1
 
-        sonic.frame = (sonic.frame + 1) % 8 if sonic.speed > 0 else sonic.frame
+        if sonic.speed > 100:  # 속도 100 넘으면 달리는 모션
+            sonic.fast_frame = (sonic.fast_frame + 1) % 4
+        if sonic.speed > 180:  # 속도 180 넘으면 더 빨리 달리는 모션
+            sonic.super_fast_frame = (sonic.super_fast_frame + 1) % 4
+        else:
+            sonic.frame = (sonic.frame + 1) % 8
 
     @staticmethod
     def draw(sonic, x, y):
-        if sonic.dir == 1:
-            sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
-        elif sonic.dir == -1:
-            sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
-        pass
+        if sonic.speed > 180:
+            if sonic.dir == 1:
+                sonic.image.clip_draw(320 + 42 * sonic.super_fast_frame, 735, 41, 35, x, y)
+            elif sonic.dir == -1:
+                sonic.image.clip_composite_draw(320 + 42 * sonic.super_fast_frame, 735, 41, 35, 0, 'h', x, y, 41, 35)
+
+        elif sonic.speed > 100:
+            if sonic.dir == 1:
+                sonic.image.clip_draw(10 + 35 * sonic.fast_frame, 735, 35, 36, x, y)
+            elif sonic.dir == -1:
+                sonic.image.clip_composite_draw(10 + 35 * sonic.fast_frame, 735, 35, 36, 0, 'h', x, y, 35, 36)
+
+        else:
+            if sonic.dir == 1:
+                sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
+            elif sonic.dir == -1:
+                sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
 
 class Sonic:
     def __init__(self):
@@ -84,8 +103,8 @@ class Sonic:
         self.action = 3
         self.speed = 0
         self.max_speed = 200
-        self.acceleration = 5
-        self.deceleration = 1
+        self.acceleration = 10
+        self.deceleration = 5
         self.image = load_image('sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle) # 초기 상태가 Idle
