@@ -23,6 +23,7 @@ def reset_world():
     global world
     global sonic
     global camera_x
+    global bgm
 
     running = True
     world = []
@@ -33,6 +34,10 @@ def reset_world():
 
     sonic = Sonic()
     world.append(sonic)
+
+    bgm = load_music('green_hill_zone_bgm.mp3')
+    bgm.set_volume(64)
+    bgm.repeat_play()
 
 def update_world():
     global camera_x
