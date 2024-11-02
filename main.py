@@ -1,7 +1,7 @@
 from pico2d import *
 
 from sonic import Sonic
-from ground import Ground
+from ground import Ground, Background
 
 def handle_events():
     global running
@@ -19,6 +19,7 @@ def handle_events():
 
 def reset_world():
     global running
+    global background
     global ground
     global world
     global sonic
@@ -28,6 +29,9 @@ def reset_world():
     running = True
     world = []
     camera_x = 0
+
+    background = Background()
+    world.append(background)
 
     grass = Ground()
     world.append(grass)
@@ -49,6 +53,7 @@ def update_world():
 
 def render_world():
     clear_canvas()
+    background.draw(camera_x)
     for o in world:
         o.draw(camera_x)
     update_canvas()
