@@ -37,7 +37,10 @@ class Idle:
 
     @staticmethod
     def draw(sonic, x, y):
-        sonic.image.clip_draw(74 + 30 * sonic.frame, 1030, 29, 38, x, y)
+        if sonic.face_dir == 1:
+            sonic.image.clip_draw(74 + 30 * sonic.frame, 1030, 29, 38, x, y)
+        else:
+            sonic.image.clip_composite_draw(74 + 30 * sonic.frame, 1030, 29, 38, 0, 'h', x, y, 29, 38)
 
 class Run:
     @staticmethod
@@ -112,6 +115,8 @@ class Jump:
         sonic.jump_x_speed = abs(sonic.speed)  # 현재 달리는 속도를 점프할 때 나아가는 속도에 반영
         sonic.is_jumping = True  # 점프 상태
         sonic.jump_start_y = sonic.y  # 점프 시작 위치 저장
+        if sonic.dir != 0:
+            sonic.face_dir = sonic.dir
 
     @staticmethod
     def exit(sonic, e):
@@ -139,7 +144,10 @@ class Jump:
 
     @staticmethod
     def draw(sonic, x, y):
-        sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
+        if sonic.face_dir == 1:
+            sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
+        else:
+            sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
 
 class Sonic:
     def __init__(self):
