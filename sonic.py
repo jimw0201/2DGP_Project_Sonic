@@ -1,6 +1,6 @@
-from pico2d import load_image, get_time
+from pico2d import load_image
 
-from state_machine import StateMachine, time_out, space_down, right_down, left_up, left_down, right_up, start_event
+from state_machine import StateMachine, space_down, right_down, left_up, left_down, right_up, start_event
 
 class Idle:
     @staticmethod
@@ -15,8 +15,6 @@ class Idle:
         sonic.dir = 0 # 정지 상태이다.
         sonic.frame = 0
         sonic.frame_direction = 1
-        # 현재 시간을 저장
-        sonic.start_time = get_time()
         pass
 
     @staticmethod
@@ -31,13 +29,11 @@ class Idle:
             sonic.frame_direction = 1  # 프레임 증가로 방향 전환
 
         sonic.frame += sonic.frame_direction
-        if get_time() - sonic.start_time > 3:
-            sonic.state_machine.add_event(('TIME_OUT',0))
         pass
 
     @staticmethod
-    def draw(sonic):
-        sonic.image.clip_draw(74 + 30 * sonic.frame, 1030, 29, 38, sonic.x, sonic.y)
+    def draw(sonic, x, y):
+        sonic.image.clip_draw(74 + 30 * sonic.frame, 1030, 29, 38, x, y)
         pass
 
 class Run:
@@ -73,11 +69,11 @@ class Run:
         sonic.frame = (sonic.frame + 1) % 8 if sonic.speed > 0 else sonic.frame
 
     @staticmethod
-    def draw(sonic):
+    def draw(sonic, x, y):
         if sonic.dir == 1:
-            sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, sonic.x, sonic.y)
+            sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
         elif sonic.dir == -1:
-            sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', sonic.x, sonic.y, 30, 40)
+            sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
         pass
 
 class Sonic:
@@ -108,5 +104,5 @@ class Sonic:
             ('INPUT',event)
         )
 
-    def draw(self):
-        self.state_machine.draw()
+    def draw(self, camera_x):
+        self.state_machine.draw(self.x - camera_x, self.y)

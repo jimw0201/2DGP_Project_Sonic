@@ -22,9 +22,11 @@ def reset_world():
     global ground
     global world
     global sonic
+    global camera_x
 
     running = True
     world = []
+    camera_x = 0
 
     grass = Ground()
     world.append(grass)
@@ -33,6 +35,9 @@ def reset_world():
     world.append(sonic)
 
 def update_world():
+    global camera_x
+
+    camera_x = sonic.x - 400
     for o in world:
         o.update()
     pass
@@ -40,7 +45,7 @@ def update_world():
 def render_world():
     clear_canvas()
     for o in world:
-        o.draw()
+        o.draw(camera_x)
     update_canvas()
 
 open_canvas()

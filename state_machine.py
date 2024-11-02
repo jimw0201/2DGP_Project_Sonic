@@ -19,9 +19,6 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
-def time_out(e):
-    return e[0] == 'TIME_OUT'
-
 class StateMachine:
     def __init__(self, obj):
         self.obj = obj
@@ -49,8 +46,8 @@ class StateMachine:
             print(f'        WARNING: {e} not handled at state {self.cur_state}')
         pass
 
-    def draw(self):
-        self.cur_state.draw(self.obj)
+    def draw(self, x, y):
+        self.cur_state.draw(self.obj, x, y)
         pass
 
     def add_event(self, e):
