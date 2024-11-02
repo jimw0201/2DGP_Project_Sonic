@@ -95,6 +95,23 @@ class Run:
             elif sonic.dir == -1:
                 sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
 
+class Jump:
+    @staticmethod
+    def enter(sonic, e):
+        pass
+
+    @staticmethod
+    def exit(sonic, e):
+        pass
+
+    @staticmethod
+    def do(sonic):
+        pass
+
+    @staticmethod
+    def draw(sonic, x, y):
+        pass
+
 class Sonic:
     def __init__(self):
         self.x, self.y = 400, 90
