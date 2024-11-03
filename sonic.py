@@ -38,9 +38,9 @@ class Idle:
     @staticmethod
     def draw(sonic, x, y):
         if sonic.face_dir == 1:
-            sonic.image.clip_draw(74 + 30 * sonic.frame, 1030, 29, 38, x, y)
+            sonic.image.clip_draw(74 + 30 * sonic.frame, 1030, 29, 38, x, y, 58, 76)
         else:
-            sonic.image.clip_composite_draw(74 + 30 * sonic.frame, 1030, 29, 38, 0, 'h', x, y, 29, 38)
+            sonic.image.clip_composite_draw(74 + 30 * sonic.frame, 1030, 29, 38, 0, 'h', x, y, 58, 76)
 
 class Run:
     @staticmethod
@@ -90,21 +90,21 @@ class Run:
     def draw(sonic, x, y):
         if sonic.speed > 180:
             if sonic.dir == 1:
-                sonic.image.clip_draw(320 + 42 * sonic.super_fast_frame, 735, 41, 35, x, y)
+                sonic.image.clip_draw(320 + 42 * sonic.super_fast_frame, 735, 41, 35, x, y, 82, 70)
             elif sonic.dir == -1:
-                sonic.image.clip_composite_draw(320 + 42 * sonic.super_fast_frame, 735, 41, 35, 0, 'h', x, y, 41, 35)
+                sonic.image.clip_composite_draw(320 + 42 * sonic.super_fast_frame, 735, 41, 35, 0, 'h', x, y, 82, 70)
 
         elif sonic.speed > 100:
             if sonic.dir == 1:
-                sonic.image.clip_draw(10 + 35 * sonic.fast_frame, 735, 35, 36, x, y)
+                sonic.image.clip_draw(10 + 35 * sonic.fast_frame, 735, 35, 36, x, y, 70, 72)
             elif sonic.dir == -1:
-                sonic.image.clip_composite_draw(10 + 35 * sonic.fast_frame, 735, 35, 36, 0, 'h', x, y, 35, 36)
+                sonic.image.clip_composite_draw(10 + 35 * sonic.fast_frame, 735, 35, 36, 0, 'h', x, y, 70, 72)
 
         else:
             if sonic.dir == 1:
-                sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y)
+                sonic.image.clip_draw(203 + 35 * sonic.frame, 909, 30, 40, x, y, 60, 80)
             elif sonic.dir == -1:
-                sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 30, 40)
+                sonic.image.clip_composite_draw(203 + 35 * sonic.frame, 909, 30, 40, 0, 'h', x, y, 60, 80)
 
 class Jump:
     @staticmethod
@@ -132,8 +132,9 @@ class Jump:
             sonic.jump_speed -= 1
             sonic.x += sonic.jump_dir * sonic.jump_x_speed * 0.1
 
-            if sonic.y <= sonic.jump_start_y:
-                sonic.y = sonic.jump_start_y
+            ground_height = 30 + sonic.ground.get_height()  # 땅 높이 반영
+            if sonic.y <= ground_height:
+                sonic.y = ground_height
                 sonic.jump_speed = 0
                 sonic.is_jumping = False
 
@@ -145,20 +146,21 @@ class Jump:
     @staticmethod
     def draw(sonic, x, y):
         if sonic.face_dir == 1:
-            sonic.image.clip_draw(500 + 35 * sonic.frame, 971, 34, 34, x, y)
+            sonic.image.clip_draw(500 + 35 * sonic.frame, 971, 34, 34, x, y, 68, 68)
         else:
-            sonic.image.clip_composite_draw(500 + 35 * sonic.frame, 973, 34, 34, 0, 'h', x, y, 34, 34)
+            sonic.image.clip_composite_draw(500 + 35 * sonic.frame, 973, 34, 34, 0, 'h', x, y, 68, 68)
 
 class Sonic:
-    def __init__(self):
-        self.x, self.y = 400, 90
+    def __init__(self, ground):
+        self.x, self.y = 50, 120
+        self.ground = ground
         self.frame = 0
         self.dir = 0
         self.action = 3
         self.speed = 0
         self.max_speed = 200
-        self.acceleration = 10
-        self.deceleration = 5
+        self.acceleration = 3
+        self.deceleration = 3
         self.frame_counter = 0
 
         self.image = load_image('sonic_sprite_nbg.png')
