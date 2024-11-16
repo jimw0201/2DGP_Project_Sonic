@@ -8,6 +8,7 @@ from sonic import Sonic
 # 전역 변수
 camera_x = 0
 bgm = None
+jump_sound = None
 ground = None
 background = None
 sonic = None
@@ -24,7 +25,7 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, ground, background, sonic
+    global camera_x, bgm, jump_sound, ground, background, sonic
     camera_x = 0
 
     # 배경 및 지형 초기화
@@ -41,6 +42,9 @@ def init():
     bgm = load_music('green_hill_zone_bgm.mp3')
     bgm.set_volume(64)
     bgm.repeat_play()
+
+    jump_sound = load_wav('jump.mp3')
+    jump_sound.set_volume(64)
 
 def finish():
     game_world.clear()

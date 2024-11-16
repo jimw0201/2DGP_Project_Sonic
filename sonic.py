@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 
 import game_framework
@@ -128,6 +128,9 @@ class Jump:
         if sonic.dir != 0:
             sonic.face_dir = sonic.dir
 
+        if hasattr(sonic, 'jump_sound'):
+            sonic.jump_sound.play()
+
     @staticmethod
     def exit(sonic, e):
         sonic.is_jumping = False
@@ -173,6 +176,9 @@ class Sonic:
         self.acceleration = 3
         self.deceleration = 3
         self.frame_counter = 0
+
+        self.jump_sound = load_wav('jump.mp3')
+        self.jump_sound.set_volume(64)
 
         self.image = load_image('sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
