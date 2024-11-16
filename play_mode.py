@@ -3,6 +3,7 @@ import game_framework
 
 import game_world
 from ground import Ground, Background
+from ring import Ring
 from sonic import Sonic
 
 # 전역 변수
@@ -25,13 +26,17 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic
+    global camera_x, bgm, jump_sound, ground, background, sonic, rings
     camera_x = 0
 
     # 배경 및 지형 초기화
     background = Background()
     ground = Ground()
     sonic = Sonic(ground)
+
+    rings = [Ring(300 + i * 100, 150) for i in range(10)]
+    for ring in rings:
+        game_world.add_object(ring, 2)
 
     # game_world에 객체 추가
     game_world.add_object(background, 0)
