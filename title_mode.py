@@ -1,4 +1,4 @@
-from pico2d import load_image, get_events, clear_canvas, update_canvas
+from pico2d import load_image, get_events, clear_canvas, update_canvas, load_music
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 
 import game_framework
@@ -6,12 +6,19 @@ import play_mode
 
 
 def init():
-    global image
+    global image, bgm
     image = load_image('title.png')
 
+    bgm = load_music('title.mp3')
+    bgm.set_volume(64)
+    bgm.repeat_play()
+
 def finish():
-    global image
+    global image, bgm
     del image
+
+    bgm.stop()
+    del bgm
 
 def handle_events():
     events = get_events()
