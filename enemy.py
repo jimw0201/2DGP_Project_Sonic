@@ -36,7 +36,7 @@ class Crabmeat:
             self.dir *= -1
 
     def handle_collision(self, group, other):
-        if group == 'sonic:crabmeat' and self.sonic.is_jumping:
+        if group == 'sonic:crabmeat' and other.is_jumping:
             game_world.remove_object(self)
             play_mode.score += 100
 

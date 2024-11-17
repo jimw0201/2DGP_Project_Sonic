@@ -4,6 +4,9 @@ from sdl2 import SDL_KEYDOWN, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 import game_framework
 import game_world
 import play_mode
+import random
+import math
+from ring import Ring
 from state_machine import StateMachine, space_down, right_down, left_up, left_down, right_up, start_event
 
 TIME_PER_ACTION = 0.1
@@ -221,6 +224,28 @@ class Sonic:
 
     def handle_collision(self, group, other):
         if group == 'sonic:crabmeat':
-            self.jump_speed = 15
-            self.is_jumping = True
-            self.y += 10
+            if self.is_jumping:
+                self.jump_speed = 15
+                self.is_jumping = True
+                self.y += 10
+            else:
+                self.drop_rings()
+
+    def drop_rings(self):
+        drop_count = play_mode.rings_collected
+        play_mode.rings_collected = 0
+
+        distance = 200
+        for i in range(drop_count):
+            angle = i * (360 / drop_count)
+            offset_x = distance * math.cos(math.radians(angle))
+            offset_y = distance * math.sin(math.radians(angle)) + random.randint(-10, 10)  # 약간의 랜덤성 추가
+
+            speed = 7
+            vx = speed * math.cos(math.radians(angle))
+            vy = speed * math.sin(math.radians(angle))
+
+            new_ring = Ring(self.x + offset_x, self.y + offset_y, self, is_dropped=True)
+            new_ring.vx = vx
+            new_ring.vy = vy
+            game_world.add_object(new_ring, 3)
