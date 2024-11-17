@@ -17,7 +17,7 @@ class Crabmeat:
     images = None
 
     def __init__(self):
-        self.x, self.y = random.randint(100, 1600), 120
+        self.x, self.y = random.randint(500, 1600), 120
         self.image = load_image('enemies_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])

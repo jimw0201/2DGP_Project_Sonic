@@ -44,7 +44,7 @@ def init():
     enemies = [Crabmeat() for _ in range(5)]
 
     rings = [Ring(300 + i * 100, 150, sonic) for i in range(10)]
-    game_world.add_objects(rings, 2)
+    game_world.add_objects(rings, 3)
 
     # game_world에 객체 추가
     game_world.add_object(background, 0)

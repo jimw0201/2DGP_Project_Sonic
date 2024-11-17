@@ -2,6 +2,8 @@ from pico2d import load_image, load_wav, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 
 import game_framework
+import game_world
+import play_mode
 from state_machine import StateMachine, space_down, right_down, left_up, left_down, right_up, start_event
 
 TIME_PER_ACTION = 0.1
@@ -173,7 +175,7 @@ class Sonic:
         self.action = 3
         self.speed = 0
         self.max_speed = 200
-        self.acceleration = 3
+        self.acceleration = 1.5
         self.deceleration = 3
         self.frame_counter = 0
 

@@ -43,7 +43,7 @@ class StateMachine:
                     print(f'Enter into {next_state}')
                     self.cur_state.enter(self.obj, e)
                     return
-            print(f'        WARNING: {e} not handled at state {self.cur_state}')
+            # print(f'        WARNING: {e} not handled at state {self.cur_state}')
         pass
 
     def draw(self, x, y):
@@ -51,7 +51,7 @@ class StateMachine:
         pass
 
     def add_event(self, e):
-        print(f'    DEBUG: add event {e}')
+        # print(f'    DEBUG: add event {e}')
         self.event_q.append(e)
         pass
 
