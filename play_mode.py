@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+from enemy import Crabmeat
 from ground import Ground, Background
 from ring import Ring
 from sonic import Sonic
@@ -31,7 +32,7 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font
+    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies
     camera_x = 0
 
     font = load_font('NiseSegaSonic.TTF', 20)
@@ -40,15 +41,16 @@ def init():
     background = Background()
     ground = Ground()
     sonic = Sonic(ground)
+    enemies = [Crabmeat() for _ in range(5)]
 
     rings = [Ring(300 + i * 100, 150, sonic) for i in range(10)]
-    for ring in rings:
-        game_world.add_object(ring, 2)
+    game_world.add_objects(rings, 2)
 
     # game_world에 객체 추가
     game_world.add_object(background, 0)
     game_world.add_object(ground, 1)
     game_world.add_object(sonic, 2)
+    game_world.add_objects(enemies, 2)
 
     # 배경음악
     bgm = load_music('green_hill_zone_bgm.mp3')
