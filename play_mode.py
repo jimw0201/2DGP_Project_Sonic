@@ -13,7 +13,10 @@ jump_sound = None
 ground = None
 background = None
 sonic = None
+font = None
 
+score = 0
+time_elapsed = 0
 rings_collected = 0
 
 def handle_events():
@@ -28,8 +31,10 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic, rings
+    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font
     camera_x = 0
+
+    font = load_font('NiseSegaSonic.TTF', 20)
 
     # 배경 및 지형 초기화
     background = Background()
@@ -57,17 +62,34 @@ def finish():
     game_world.clear()
 
 def update():
-    global camera_x
+    global camera_x, time_elapsed
     camera_x = sonic.x - 400
     max_camera_x = background.map_width - 800
     camera_x = max(0, min(camera_x, max_camera_x))
+
+    time_elapsed += game_framework.frame_time
+
     game_world.update()
 
 def draw():
     clear_canvas()
     background.draw(camera_x)
     game_world.render(camera_x)
+
+    draw_ui()
+
     update_canvas()
+
+def draw_ui():
+    global font, score, time_elapsed, rings_collected
+
+    minutes = int(time_elapsed // 60)
+    seconds = int(time_elapsed % 60)
+    time_display = f"{minutes}:{seconds:02}"
+
+    font.draw(20, 570, f"SCORE: {score}", (255, 255, 0))            # 점수
+    font.draw(20, 540, f"TIME: {time_display}", (255, 255, 0))      # 경과 시간
+    font.draw(20, 510, f"RINGS: {rings_collected}", (255, 255, 0))  # 링 개수
 
 def pause():
     pass
