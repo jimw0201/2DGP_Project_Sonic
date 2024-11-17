@@ -1,4 +1,4 @@
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_wav
 import game_framework
 import game_world
 import play_mode
@@ -15,6 +15,9 @@ class Ring:
         self.frame = 0
         self.sonic = sonic
 
+        self.collect_sound = load_wav('ring_collect.mp3')
+        self.collect_sound.set_volume(64)
+
     def draw(self, camera_x):
         self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y, 50, 50)
         left, bottom, right, top = self.get_bb()
@@ -25,6 +28,7 @@ class Ring:
 
         if game_world.collide(self.sonic, self):
             play_mode.rings_collected += 1
+            self.collect_sound.play()
             game_world.remove_object(self)
 
     def get_bb(self):
