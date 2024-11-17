@@ -221,4 +221,6 @@ class Sonic:
 
     def handle_collision(self, group, other):
         if group == 'sonic:crabmeat':
-            pass
+            self.jump_speed = 15
+            self.is_jumping = True
+            self.y += 10
