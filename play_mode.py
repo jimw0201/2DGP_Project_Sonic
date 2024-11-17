@@ -14,6 +14,8 @@ ground = None
 background = None
 sonic = None
 
+rings_collected = 0
+
 def handle_events():
     events = get_events()
     for event in events:
@@ -34,7 +36,7 @@ def init():
     ground = Ground()
     sonic = Sonic(ground)
 
-    rings = [Ring(300 + i * 100, 150) for i in range(10)]
+    rings = [Ring(300 + i * 100, 150, sonic) for i in range(10)]
     for ring in rings:
         game_world.add_object(ring, 2)
 

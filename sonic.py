@@ -1,4 +1,4 @@
-from pico2d import load_image, load_wav
+from pico2d import load_image, load_wav, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 
 import game_framework
@@ -210,3 +210,8 @@ class Sonic:
 
     def draw(self, camera_x):
         self.state_machine.draw(self.x - camera_x, self.y)
+        left, bottom, right, top = self.get_bb()
+        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+
+    def get_bb(self):
+        return self.x - 30, self.y - 40, self.x + 30, self.y + 40
