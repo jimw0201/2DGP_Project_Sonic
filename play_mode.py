@@ -41,7 +41,7 @@ def init():
     background = Background()
     ground = Ground()
     sonic = Sonic(ground)
-    enemies = [Crabmeat() for _ in range(5)]
+    enemies = [Crabmeat(sonic) for _ in range(5)]
 
     rings = [Ring(300 + i * 100, 150, sonic) for i in range(10)]
     game_world.add_objects(rings, 3)
@@ -51,6 +51,10 @@ def init():
     game_world.add_object(ground, 1)
     game_world.add_object(sonic, 2)
     game_world.add_objects(enemies, 2)
+
+    # 충돌 체크 그룹
+    for enemy in enemies:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
 
     # 배경음악
     bgm = load_music('green_hill_zone_bgm.mp3')
@@ -70,6 +74,8 @@ def update():
     camera_x = max(0, min(camera_x, max_camera_x))
 
     time_elapsed += game_framework.frame_time
+
+    game_world.handle_collisions()
 
     game_world.update()
 

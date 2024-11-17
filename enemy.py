@@ -3,6 +3,9 @@ import game_framework
 
 from pico2d import *
 
+import game_world
+import play_mode
+
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 10.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -16,11 +19,12 @@ FRAMES_PER_ACTION_CRABMEAT = 3
 class Crabmeat:
     images = None
 
-    def __init__(self):
+    def __init__(self, sonic):
         self.x, self.y = random.randint(500, 1600), 120
         self.image = load_image('enemies_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])
+        self.sonic = sonic
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CRABMEAT
@@ -30,6 +34,11 @@ class Crabmeat:
 
         if random.random() < 0.01:
             self.dir *= -1
+
+    def handle_collision(self, group, other):
+        if group == 'sonic:crabmeat' and self.sonic.is_jumping:
+            game_world.remove_object(self)
+            play_mode.score += 100
 
     def draw(self, camera_x):
         if self.dir == 1:

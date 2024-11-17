@@ -41,13 +41,16 @@ def collide(a, b):
 
     return True
 
-def add_collision_pair(group, a, b):
+def add_collision_pair(a, b, group):
     if group not in collision_pairs:
-        print(f'Added new group {group}')
-    collision_pairs[group] = [[], []]
-    if a:
+        collision_pairs[group] = [[], []]
+    if isinstance(a, list):
+        collision_pairs[group][0].extend(a)
+    else:
         collision_pairs[group][0].append(a)
-    if b:
+    if isinstance(b, list):
+        collision_pairs[group][1].extend(b)
+    else:
         collision_pairs[group][1].append(b)
 
 def remove_collision_object(o):

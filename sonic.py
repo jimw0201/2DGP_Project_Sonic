@@ -178,6 +178,7 @@ class Sonic:
         self.acceleration = 1.5
         self.deceleration = 3
         self.frame_counter = 0
+        self.is_jumping = False
 
         self.jump_sound = load_wav('jump.mp3')
         self.jump_sound.set_volume(64)
@@ -217,3 +218,7 @@ class Sonic:
 
     def get_bb(self):
         return self.x - 30, self.y - 40, self.x + 30, self.y + 40
+
+    def handle_collision(self, group, other):
+        if group == 'sonic:crabmeat':
+            pass
