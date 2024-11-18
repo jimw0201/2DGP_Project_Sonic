@@ -20,6 +20,9 @@ score = 0
 time_elapsed = 0
 rings_collected = 0
 
+life_display = None
+lives = 3
+
 def handle_events():
     events = get_events()
     for event in events:
@@ -32,14 +35,17 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies
+    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies, life_display, lives
     camera_x = 0
 
     font = load_font('NiseSegaSonic.TTF', 20)
 
+
+
     background = Background()
     ground = Ground()
     sonic = Sonic(ground)
+    life_display = LifeDisplay(lives)
     enemies = [Crabmeat(sonic) for _ in range(5)]
 
     rings = [Ring(300 + i * 100, 300, sonic) for i in range(10)]
@@ -88,7 +94,9 @@ def draw():
     update_canvas()
 
 def draw_ui():
-    global font, score, time_elapsed, rings_collected
+    global font, score, time_elapsed, rings_collected, life_display
+
+    life_display.draw()
 
     minutes = int(time_elapsed // 60)
     seconds = int(time_elapsed % 60)
@@ -103,3 +111,18 @@ def pause():
 
 def resume():
     pass
+
+class LifeDisplay:
+    def __init__(self, lives):
+        self.lives = lives
+        self.image = load_image('life.png')
+        self.icon_width = 48
+        self.icon_height = 16
+        self.number_width = 7
+        self.number_height = 7
+        self.x = 75
+        self.y = 50
+
+    def draw(self):
+        self.image.clip_draw(0, 9, self.icon_width, self.icon_height, self.x, self.y, 96, 32)
+        self.image.clip_draw(0, 0, self.number_width, self.number_height, 100, 40, 14, 14)
