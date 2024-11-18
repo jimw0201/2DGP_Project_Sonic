@@ -43,7 +43,7 @@ def init():
     sonic = Sonic(ground)
     enemies = [Crabmeat(sonic) for _ in range(5)]
 
-    rings = [Ring(300 + i * 100, 150, sonic) for i in range(10)]
+    rings = [Ring(300 + i * 100, 300, sonic) for i in range(10)]
     game_world.add_objects(rings, 3)
 
     # game_world에 객체 추가

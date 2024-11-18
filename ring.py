@@ -19,6 +19,7 @@ class Ring:
         self.sonic = sonic
         self.gravity = -0.5
         self.ground_height = 30 + play_mode.ground.get_height()
+        self.exist_time = 0
 
         self.collect_sound = load_wav('ring_collect.mp3')
         self.collect_sound.set_volume(64)
@@ -32,6 +33,7 @@ class Ring:
         self.frame = (self.frame + FRAMES_PER_ROTATE * ROTATE_PER_TIME * game_framework.frame_time) % 4
 
         if self.is_dropped:
+            self.exist_time += game_framework.frame_time
             self.x += self.vx
             self.y += self.vy
             self.vy += self.gravity
@@ -40,6 +42,9 @@ class Ring:
                 self.y = self.ground_height
                 self.vx = 0
                 self.vy = 0
+
+            if self.exist_time >= 5.0:
+                game_world.remove_object(self)
 
         if game_world.collide(self.sonic, self):
             play_mode.rings_collected += 1
