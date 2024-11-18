@@ -1,11 +1,14 @@
-from pico2d import load_image, draw_rectangle, load_wav
+from pico2d import load_image, draw_rectangle
 import game_framework
 import game_world
 import play_mode
+import pygame
 
 TIME_PER_ROTATE = 0.5
 ROTATE_PER_TIME = 1.0 / TIME_PER_ROTATE
 FRAMES_PER_ROTATE = 4
+
+pygame.mixer.init()
 
 class Ring:
     def __init__(self, x, y, sonic, is_dropped=False):
@@ -21,8 +24,8 @@ class Ring:
         self.ground_height = 30 + play_mode.ground.get_height()
         self.exist_time = 0
 
-        self.collect_sound = load_wav('ring_collect.mp3')
-        self.collect_sound.set_volume(64)
+        self.collect_sound = pygame.mixer.Sound('ring_collect.mp3')
+        self.collect_sound.set_volume(0.5)
 
     def draw(self, camera_x):
         self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y, 50, 50)

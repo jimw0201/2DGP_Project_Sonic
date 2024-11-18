@@ -37,7 +37,6 @@ def init():
 
     font = load_font('NiseSegaSonic.TTF', 20)
 
-    # 배경 및 지형 초기화
     background = Background()
     ground = Ground()
     sonic = Sonic(ground)
