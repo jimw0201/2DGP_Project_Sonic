@@ -25,6 +25,8 @@ class Crabmeat:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
+        self.attack_sound = load_wav('attack.mp3')
+        self.attack_sound.set_volume(64)
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CRABMEAT
@@ -37,6 +39,7 @@ class Crabmeat:
 
     def handle_collision(self, group, other):
         if group == 'sonic:crabmeat' and other.is_jumping:
+            self.attack_sound.play()
             game_world.remove_object(self)
             play_mode.score += 100
 
