@@ -186,6 +186,9 @@ class Sonic:
         self.jump_sound = load_wav('jump.mp3')
         self.jump_sound.set_volume(64)
 
+        self.ring_loss_sound = load_wav('ring_loss.mp3')
+        self.ring_loss_sound.set_volume(64)
+
         self.image = load_image('sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle) # 초기 상태가 Idle
@@ -229,6 +232,7 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
+                self.ring_loss_sound.play()
                 self.drop_rings()
 
     def drop_rings(self):
