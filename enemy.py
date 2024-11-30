@@ -20,6 +20,7 @@ FRAMES_PER_ACTION_CATERKILLER = 7
 FRAMES_PER_ACTION_BURROBOT = 2
 FRAMES_PER_ACTION_BUZZBOMBER = 2
 FRAMES_PER_ACTION_NEWTRON = 2
+FRAMES_PER_ACTION_BATBRAIN = 3
 
 class Crabmeat:
     images = None
@@ -220,4 +221,44 @@ class Newtron:
     def get_bb(self):
         width = 78 // 2
         height = 78 // 2
+        return self.x - width, self.y - height, self.x + width, self.y + height
+
+class Batbrain:
+    images = None
+
+    def __init__(self, sonic):
+        self.x, self.y = random.randint(500, 1600), 250
+        self.image = load_image('enemies_sprite_nbg.png')
+        self.frame = 0
+        self.dir = random.choice([-1, 1])
+        self.sonic = sonic
+        self.attack_sound = pygame.mixer.Sound('attack.mp3')
+        self.attack_sound.set_volume(0.5)
+
+    def update(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BATBRAIN
+        self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
+        if self.x <= 50 or self.x >= 19150:
+            self.dir *= -1
+
+        if random.random() < 0.01:
+            self.dir *= -1
+
+    def handle_collision(self, group, other):
+        if group == 'sonic:batbrain' and other.is_jumping:
+            self.attack_sound.play()
+            game_world.remove_object(self)
+            play_mode.score += 100
+
+    def draw(self, camera_x):
+        if self.dir == 1:
+            self.image.clip_draw(int(self.frame) * 35, 30, 35, 38, self.x - camera_x, self.y, 70, 76)
+        else:
+            self.image.clip_composite_draw(int(self.frame) * 35, 30, 35, 38, 0, 'h', self.x - camera_x, self.y, 70, 76)
+        left, bottom, right, top = self.get_bb()
+        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+
+    def get_bb(self):
+        width = 70 // 2
+        height = 76 // 2
         return self.x - width, self.y - height, self.x + width, self.y + height
