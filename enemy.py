@@ -49,18 +49,18 @@ class Crabmeat:
 
     def draw(self, camera_x):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 55, 947, 50, 40, self.x - camera_x, self.y, 88, 80)
+            self.image.clip_draw(int(self.frame) * 44, 951, 44, 31, self.x - camera_x, self.y, 88, 62)
         else:
-            self.image.clip_composite_draw(int(self.frame) * 55, 947, 50, 40, 0, 'h', self.x - camera_x, self.y, 88, 80)
+            self.image.clip_composite_draw(int(self.frame) * 44, 951, 44, 31, 0, 'h', self.x - camera_x, self.y, 88, 62)
 
         left, bottom, right, top = self.get_bb()
         draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 88 // 2
-        height = 80 // 2
+        height = 62 // 2
         return self.x - width, self.y - height, self.x + width, self.y + height
-
+    
 class Caterkiller:
     images = None
 
