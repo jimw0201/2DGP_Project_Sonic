@@ -5,6 +5,7 @@ from pico2d import *
 
 import game_world
 import play_mode
+import pygame
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 10.0
@@ -15,6 +16,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION_CRABMEAT = 3
+FRAMES_PER_ACTION_CATERKILLER = 7
 
 class Crabmeat:
     images = None
@@ -25,8 +27,8 @@ class Crabmeat:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = load_wav('attack.mp3')
-        self.attack_sound.set_volume(64)
+        self.attack_sound = pygame.mixer.Sound('attack.mp3')
+        self.attack_sound.set_volume(0.5)
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CRABMEAT
@@ -55,4 +57,44 @@ class Crabmeat:
     def get_bb(self):
         width = 88 // 2
         height = 80 // 2
+        return self.x - width, self.y - height, self.x + width, self.y + height
+
+class Caterkiller:
+    images = None
+
+    def __init__(self, sonic):
+        self.x, self.y = random.randint(2700, 3800), 120
+        self.image = load_image('enemies_sprite_nbg.png')
+        self.frame = 0
+        self.dir = random.choice([-1, 1])
+        self.sonic = sonic
+        self.attack_sound = pygame.mixer.Sound('attack.mp3')
+        self.attack_sound.set_volume(0.5)
+
+    def update(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CATERKILLER
+        self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
+        if self.x <= 50 or self.x >= 19150:
+            self.dir *= -1
+
+        if random.random() < 0.01:
+            self.dir *= -1
+
+    def handle_collision(self, group, other):
+        if group == 'sonic:caterkiller' and other.is_jumping:
+            self.attack_sound.play()
+            game_world.remove_object(self)
+            play_mode.score += 100
+
+    def draw(self, camera_x):
+        if self.dir == 1:
+            self.image.clip_draw(int(self.frame) * 51, 1102, 51, 33, self.x - camera_x, self.y, 102, 66)
+        else:
+            self.image.clip_draw(int(self.frame) * 51, 1070, 51, 33, self.x - camera_x, self.y, 102, 66)
+        left, bottom, right, top = self.get_bb()
+        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+
+    def get_bb(self):
+        width = 102 // 2
+        height = 66 // 2
         return self.x - width, self.y - height, self.x + width, self.y + height
