@@ -253,6 +253,15 @@ class Sonic:
                 self.ring_loss_sound.play()
                 self.drop_rings()
 
+        if group == 'sonic:buzzbomber':
+            if self.is_jumping:
+                self.jump_speed = 15
+                self.is_jumping = True
+                self.y += 10
+            else:
+                self.ring_loss_sound.play()
+                self.drop_rings()
+
     def drop_rings(self):
         drop_count = play_mode.rings_collected
         play_mode.rings_collected = 0
