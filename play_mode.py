@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 
 import game_world
-from enemy import Crabmeat, Caterkiller
+from enemy import Crabmeat, Caterkiller, Burrobot
 from ground import Ground, Background
 from ring import Ring
 from sonic import Sonic
@@ -35,7 +35,7 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies, life_display, lives
+    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies, enemies2, enemies3, life_display, lives
     camera_x = 0
 
     font = load_font('NiseSegaSonic.TTF', 20)
@@ -48,6 +48,7 @@ def init():
     life_display = LifeDisplay(lives)
     enemies = [Crabmeat(sonic) for _ in range(5)]
     enemies2 = [Caterkiller(sonic) for _ in range(5)]
+    enemies3 = [Burrobot(sonic) for _ in range(3)]
 
     rings = [Ring(300 + i * 100, 300, sonic) for i in range(10)]
     game_world.add_objects(rings, 3)
@@ -58,6 +59,7 @@ def init():
     game_world.add_object(sonic, 2)
     game_world.add_objects(enemies, 2)
     game_world.add_objects(enemies2, 2)
+    game_world.add_objects(enemies3, 2)
 
     # 충돌 체크 그룹
     for enemy in enemies:
@@ -65,6 +67,9 @@ def init():
 
     for enemy in enemies2:
         game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
+
+    for enemy in enemies3:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
 
     # 배경음악
     bgm = load_music('green_hill_zone_bgm.mp3')
