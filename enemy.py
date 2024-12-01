@@ -76,7 +76,7 @@ class Caterkiller:
         self.attack_sound.set_volume(0.5)
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CATERKILLER
+        self.frame = (self.frame + FRAMES_PER_ACTION_CATERKILLER * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CATERKILLER
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
         if self.x <= 50 or self.x >= 19150:
             self.dir *= -1
@@ -116,7 +116,7 @@ class Burrobot:
         self.attack_sound.set_volume(0.5)
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BURROBOT
+        self.frame = (self.frame + FRAMES_PER_ACTION_BURROBOT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BURROBOT
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
         if self.x <= 50 or self.x >= 19150:
             self.dir *= -1
@@ -156,7 +156,7 @@ class BuzzBomber:
         self.attack_sound.set_volume(0.5)
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BUZZBOMBER
+        self.frame = (self.frame + FRAMES_PER_ACTION_BUZZBOMBER * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BUZZBOMBER
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
         if self.x <= 50 or self.x >= 19150:
             self.dir *= -1
@@ -196,7 +196,7 @@ class Newtron:
         self.attack_sound.set_volume(0.5)
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_NEWTRON
+        self.frame = (self.frame + FRAMES_PER_ACTION_NEWTRON * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_NEWTRON
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
         if self.x <= 50 or self.x >= 19150:
             self.dir *= -1
@@ -236,7 +236,7 @@ class Batbrain:
         self.attack_sound.set_volume(0.5)
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BATBRAIN
+        self.frame = (self.frame + FRAMES_PER_ACTION_BATBRAIN * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_BATBRAIN
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
         if self.x <= 50 or self.x >= 19150:
             self.dir *= -1
