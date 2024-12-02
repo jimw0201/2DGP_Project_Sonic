@@ -195,7 +195,7 @@ class Sonic:
         self.state_machine.set_transitions(
             {
                 Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-                Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
+                Idle: {right_down: Run, left_down: Run, left_up: Idle, right_up: Idle, space_down: Jump},
                 Jump: {
                     lambda e: e == ('END_JUMP', 0): Idle,
                     lambda e: e == ('RUN', 0): Run
@@ -272,6 +272,15 @@ class Sonic:
                 self.drop_rings()
 
         if group == 'sonic:batbrain':
+            if self.is_jumping:
+                self.jump_speed = 15
+                self.is_jumping = True
+                self.y += 10
+            else:
+                self.ring_loss_sound.play()
+                self.drop_rings()
+
+        if group == 'sonic:eggman':
             if self.is_jumping:
                 self.jump_speed = 15
                 self.is_jumping = True

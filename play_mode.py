@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+from boss import Eggman
 from enemy import Crabmeat, Caterkiller, Burrobot, BuzzBomber, Newtron, Batbrain
 from ground import Ground, Background
 from ring import Ring
@@ -35,7 +36,8 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies, enemies2, enemies3, enemies4, enemies5, enemies6, life_display, lives
+    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies, enemies2, enemies3, enemies4,\
+        enemies5, enemies6, boss, life_display, lives
     camera_x = 0
 
     font = load_font('NiseSegaSonic.TTF', 20)
@@ -52,6 +54,7 @@ def init():
     enemies4 = [BuzzBomber(sonic) for _ in range(3)]
     enemies5 = [Newtron(sonic) for _ in range(3)]
     enemies6 = [Batbrain(sonic) for _ in range(3)]
+    boss = Eggman(sonic)
 
     rings = [Ring(300 + i * 100, 300, sonic) for i in range(10)]
     game_world.add_objects(rings, 3)
@@ -66,6 +69,7 @@ def init():
     game_world.add_objects(enemies4, 2)
     game_world.add_objects(enemies5, 2)
     game_world.add_objects(enemies6, 2)
+    game_world.add_object(boss, 2)
 
     # 충돌 체크 그룹
     for enemy in enemies:
@@ -85,6 +89,8 @@ def init():
 
     for enemy in enemies6:
         game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
+
+    game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
 
     # 배경음악
     bgm = load_music('green_hill_zone_bgm.mp3')
