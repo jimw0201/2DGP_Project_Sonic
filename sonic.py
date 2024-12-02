@@ -82,11 +82,6 @@ class Run:
         if sonic.dir != 0:
             if sonic.speed < sonic.max_speed:
                 sonic.speed += sonic.acceleration
-        else:
-            if sonic.speed > 0:
-                sonic.speed -= sonic.deceleration
-                if sonic.speed < 0:
-                    sonic.speed = 0
 
         sonic.x += sonic.dir * sonic.speed * 0.1
 
@@ -179,7 +174,6 @@ class Sonic:
         self.speed = 0
         self.max_speed = 200
         self.acceleration = 1.5
-        self.deceleration = 3
         self.frame_counter = 0
         self.is_jumping = False
 
