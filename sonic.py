@@ -140,6 +140,11 @@ class Jump:
     @staticmethod
     def do(sonic):
         sonic.frame = (sonic.frame + FRAMES_PER_ACTION_JUMP * ACTION_PER_TIME * game_framework.frame_time) % 5
+
+        if sonic.dir != 0:
+            sonic.jump_dir = sonic.dir
+            sonic.face_dir = sonic.dir
+
         # 점프 중 중력 효과 적용
         if sonic.is_jumping:
             sonic.y += sonic.jump_speed
