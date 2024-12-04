@@ -29,6 +29,7 @@ class Ground:
         'plane5': 'tilemaps/34.png',
         'plane6': 'tilemaps/12.png',
         'plane7': 'tilemaps/13.png',
+        'plane8': 'tilemaps/21.png',
 
     }
 
@@ -56,6 +57,7 @@ class Ground:
         'plane5': 512,
         'plane6': 512,
         'plane7': 512,
+        'plane8': 512,
 
     }
 
@@ -82,6 +84,7 @@ class Ground:
         'plane5': 512,
         'plane6': 512,
         'plane7': 512,
+        'plane8': 512,
     }
     def __init__(self, terrain_type='tree'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
