@@ -27,7 +27,9 @@ class Ground:
         'plane4': 'tilemaps/17.png',
         'wall1': 'tilemaps/30.png',
         'plane5': 'tilemaps/34.png',
-        'plane6': 'tilemaps/12.png'
+        'plane6': 'tilemaps/12.png',
+        'plane7': 'tilemaps/13.png',
+
     }
 
     # 지형 너비
@@ -53,6 +55,8 @@ class Ground:
         'wall1': 512,
         'plane5': 512,
         'plane6': 512,
+        'plane7': 512,
+
     }
 
     # 지형 높이
@@ -77,6 +81,7 @@ class Ground:
         'wall1': 512,
         'plane5': 512,
         'plane6': 512,
+        'plane7': 512,
     }
     def __init__(self, terrain_type='tree'):
         if terrain_type not in Ground.TERRAIN_IMAGES:

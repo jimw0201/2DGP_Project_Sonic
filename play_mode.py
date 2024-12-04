@@ -89,6 +89,7 @@ def init():
         (13696, 200, 'curve1'),
         (14208, 200, 'plane5'),
         (14720, 200, 'plane6'),
+        (15232, 200, 'plane7'),
     ]
     for x, y, terrain_type in ground_positions:
         ground = Ground(terrain_type)
