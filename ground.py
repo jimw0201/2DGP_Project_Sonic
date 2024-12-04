@@ -11,8 +11,8 @@ class Ground:
         'platform': 'tilemaps/3.png',
         'plane1': 'tilemaps/45.png',
         'plane2': 'tilemaps/16.png',
-        'uphill': 'tilemaps/49.png',
-        'downhill': 'tilemaps/2.png',
+        'uphill1': 'tilemaps/49.png',
+        'downhill1': 'tilemaps/2.png',
         'bridge': 'tilemaps/51.png',
         'curve1': 'tilemaps/7.png',
         'stair1': 'tilemaps/4.png',
@@ -20,6 +20,12 @@ class Ground:
         'start_of_bridge': 'tilemaps/43.png',
         'plane3': 'tilemaps/14.png',
         'twin': 'tilemaps/20.png',
+        'downhill2': 'tilemaps/35.png',
+        'downhill3': 'tilemaps/37.png',
+        'loop': 'tilemaps/53.png',
+        'uphill2': 'tilemaps/38.png',
+        'plane4': 'tilemaps/17.png',
+
     }
 
     # 지형 너비
@@ -28,8 +34,8 @@ class Ground:
         'platform': 512,
         'plane1': 512,
         'plane2': 512,
-        'uphill': 512,
-        'downhill': 512,
+        'uphill1': 512,
+        'downhill1': 512,
         'bridge': 512,
         'curve1': 512,
         'stair1': 512,
@@ -37,7 +43,11 @@ class Ground:
         'start_of_bridge': 512,
         'plane3': 512,
         'twin': 512,
-
+        'downhill2': 512,
+        'downhill3': 512,
+        'loop': 512,
+        'uphill2': 512,
+        'plane4': 512,
     }
 
     # 지형 높이
@@ -47,13 +57,18 @@ class Ground:
         'stair': 512,
         'plane1': 512,
         'plane2': 512,
-        'uphill': 512,
-        'downhill': 512,
+        'uphill1': 512,
+        'downhill1': 512,
         'bridge': 512,
         'curve1': 512,
         'start_of_bridge': 512,
         'plane3': 512,
         'twin': 512,
+        'downhill2': 512,
+        'downhill3': 512,
+        'loop': 512,
+        'uphill2': 512,
+        'plane4': 512,
     }
     def __init__(self, terrain_type='tree'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
