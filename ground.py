@@ -143,6 +143,40 @@ class Ground:
             ))
 
         return bounding_boxes
+    def get_uphill2_bb(self, num_segments=20, height_reduction=50, y_offset=0):
+        bounding_boxes = []
+        segment_width = self.width / num_segments
+
+        left_bottom = (self.x - self.width / 2, self.y - self.height / 2 + y_offset)
+        left_top = (self.x - self.width / 2, self.y - 150 + height_reduction + y_offset)
+        right_top = (self.x + self.width / 2, self.y + y_offset)
+        right_bottom = (self.x + self.width / 2, self.y + self.height / 2 + y_offset)
+
+        for i in range(num_segments):
+            # 각 세그먼트의 x 좌표 범위
+            seg_left_x = left_bottom[0] + i * segment_width
+            seg_right_x = seg_left_x + segment_width
+
+            # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+
+            # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
+            y_low = (y_low_start + y_low_end) / 2
+            y_high = (y_high_start + y_high_end) / 2
+
+            # 바운딩 박스 추가
+            bounding_boxes.append((
+                seg_left_x,
+                y_low,
+                seg_right_x,
+                y_high
+            ))
+
+        return bounding_boxes
 
     def get_downhill1_bb(self, num_segments=20, height_reduction=50, y_offset=0):
         bounding_boxes = []
@@ -326,10 +360,13 @@ class Ground:
             return self.get_downhill3_bb(y_offset=y_offset - 250)
         # elif self.terrain_type == 'loop':
         #     pass
-        # elif self.terrain_type == 'uphill2':
-        #     pass
-        # elif self.terrain_type == 'plane4':
-        #     pass
+        elif self.terrain_type == 'uphill2':
+            return self.get_uphill2_bb(y_offset=y_offset - 200)
+        elif self.terrain_type == 'plane4':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y)]
         # elif self.terrain_type == 'wall1':
         #     pass
         # elif self.terrain_type == 'plane5':
