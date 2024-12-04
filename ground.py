@@ -225,12 +225,33 @@ class Ground:
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y + 130)]
-        # elif self.terrain_type == 'start_of_bridge':
-        #     pass
-        # elif self.terrain_type == 'plane3':
-        #     pass
-        # elif self.terrain_type == 'twin':
-        #     pass
+        elif self.terrain_type == 'start_of_bridge':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x - self.width // 4,
+                     self.y + 226)]
+        elif self.terrain_type == 'plane3':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y + 226)]
+        elif self.terrain_type == 'twin':
+            return [(self.x - self.width // 2,
+                     self.y + 196,
+                     self.x + self.width // 4,
+                     self.y + 226),
+                    (self.x - self.width // 4,
+                     self.y - self.height // 2,
+                     self.x,
+                     self.y - 42),
+                    (self.x,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y - 21),
+                    (self.x + self.width // 4,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y)]
         # elif self.terrain_type == 'downhill2':
         #     pass
         # elif self.terrain_type == 'downhill3':
