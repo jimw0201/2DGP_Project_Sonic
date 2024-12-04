@@ -59,20 +59,20 @@ class Ground:
         'plane7': 512,
         'plane8': 512,
         'stair3': 512,
-
     }
 
     # 지형 높이
     TERRAIN_HEIGHTS = {
         'tree': 512,
         'platform': 512,
-        'stair': 512,
         'plane1': 512,
         'plane2': 512,
         'uphill1': 512,
         'downhill1': 512,
         'bridge': 512,
         'curve1': 512,
+        'stair1': 512,
+        'stair2': 512,
         'start_of_bridge': 512,
         'plane3': 512,
         'twin': 512,
@@ -120,6 +120,52 @@ class Ground:
                     self.y - self.height // 2,
                     self.x + self.width // 2,
                     self.y + self.height // 2)
+        elif self.terrain_type == 'platform':
+            pass
+        elif self.terrain_type == 'plane1':
+            pass
+        elif self.terrain_type == 'plane2':
+            pass
+        elif self.terrain_type == 'uphill1':
+            pass
+        elif self.terrain_type == 'downhill1':
+            pass
+        elif self.terrain_type == 'bridge':
+            pass
+        elif self.terrain_type == 'curve1':
+            pass
+        elif self.terrain_type == 'stair1':
+            pass
+        elif self.terrain_type == 'stair2':
+            pass
+        elif self.terrain_type == 'start_of_bridge':
+            pass
+        elif self.terrain_type == 'plane3':
+            pass
+        elif self.terrain_type == 'twin':
+            pass
+        elif self.terrain_type == 'downhill2':
+            pass
+        elif self.terrain_type == 'downhill3':
+            pass
+        elif self.terrain_type == 'loop':
+            pass
+        elif self.terrain_type == 'uphill2':
+            pass
+        elif self.terrain_type == 'plane4':
+            pass
+        elif self.terrain_type == 'wall1':
+            pass
+        elif self.terrain_type == 'plane5':
+            pass
+        elif self.terrain_type == 'plane6':
+            pass
+        elif self.terrain_type == 'plane7':
+            pass
+        elif self.terrain_type == 'plane8':
+            pass
+        elif self.terrain_type == 'stair3':
+            pass
 
 # 뒷배경 클래스
 class Background:
