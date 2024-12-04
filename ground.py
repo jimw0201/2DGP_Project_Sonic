@@ -19,6 +19,7 @@ class Ground:
         'stair2': 'tilemaps/5.png',
         'start_of_bridge': 'tilemaps/43.png',
         'plane3': 'tilemaps/14.png',
+        'twin': 'tilemaps/20.png',
     }
 
     # 지형 너비
@@ -35,6 +36,8 @@ class Ground:
         'stair2': 512,
         'start_of_bridge': 512,
         'plane3': 512,
+        'twin': 512,
+
     }
 
     # 지형 높이
@@ -50,6 +53,7 @@ class Ground:
         'curve1': 512,
         'start_of_bridge': 512,
         'plane3': 512,
+        'twin': 512,
     }
     def __init__(self, terrain_type='tree'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
