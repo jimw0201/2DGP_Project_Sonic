@@ -369,18 +369,40 @@ class Ground:
                      self.y)]
         # elif self.terrain_type == 'wall1':
         #     pass
-        # elif self.terrain_type == 'plane5':
-        #     pass
-        # elif self.terrain_type == 'plane6':
-        #     pass
-        # elif self.terrain_type == 'plane7':
-        #     pass
-        # elif self.terrain_type == 'plane8':
-        #     pass
-        # elif self.terrain_type == 'stair3':
-        #     pass
+        elif self.terrain_type == 'plane5':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y)]
+        elif self.terrain_type == 'plane6':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y - self.height // 4)]
+        elif self.terrain_type == 'plane7':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y - self.height // 4)]
+        elif self.terrain_type == 'plane8':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y - self.height // 4)]
+        elif self.terrain_type == 'stair2':
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x - 66,
+                     self.y - 126),
+                    (self.x - 66,
+                     self.y - self.height // 2,
+                     self.x + 127,
+                     self.y - 62),
+                    (self.x + 127,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y)]
         else:
-            # 기본값: 반환값이 없던 경우 기본 바운딩 박스를 반환
             return [
                 (self.x - self.width // 2,
                  self.y - self.height // 2,
