@@ -10,6 +10,7 @@ from sonic import Sonic
 
 # 전역 변수
 camera_x = 0
+camera_y = 0
 bgm = None
 jump_sound = None
 ground = None
@@ -36,9 +37,10 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, bgm, jump_sound, ground, background, sonic, rings, font, enemies, enemies2, enemies3, enemies4,\
+    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, enemies, enemies2, enemies3, enemies4,\
         enemies5, enemies6, boss, life_display, lives
     camera_x = 0
+    camera_y = 0
 
     font = load_font('NiseSegaSonic.TTF', 20)
 
@@ -130,10 +132,15 @@ def finish():
     game_world.clear()
 
 def update():
-    global camera_x, time_elapsed
+    global camera_x, camera_y, time_elapsed
     camera_x = sonic.x - 400
+    camera_y = sonic.y - 300
+
     max_camera_x = background.map_width - 800
+    max_camera_y = background.map_height
+
     camera_x = max(0, min(camera_x, max_camera_x))
+    camera_y = max(0, min(camera_y, max_camera_y))
 
     time_elapsed += game_framework.frame_time
 
@@ -143,8 +150,8 @@ def update():
 
 def draw():
     clear_canvas()
-    background.draw(camera_x)
-    game_world.render(camera_x)
+    background.draw(camera_x, camera_y)
+    game_world.render(camera_x, camera_y)
 
     draw_ui()
 

@@ -216,10 +216,10 @@ class Sonic:
                 self.dir = 0
         self.state_machine.add_event(('INPUT', event))
 
-    def draw(self, camera_x):
-        self.state_machine.draw(self.x - camera_x, self.y)
+    def draw(self, camera_x, camera_y):
+        self.state_machine.draw(self.x - camera_x, self.y - camera_y)
         left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def get_bb(self):
         return self.x - 30, self.y - 40, self.x + 30, self.y + 40

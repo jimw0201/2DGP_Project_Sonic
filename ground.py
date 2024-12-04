@@ -65,9 +65,10 @@ class Ground:
     def get_height(self):
         return self.height
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         screen_x = self.x - camera_x
-        self.image.draw(screen_x, self.y, self.width, self.height)
+        screen_y = self.y - camera_y
+        self.image.draw(screen_x, screen_y, self.width, self.height)
 
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
@@ -88,13 +89,18 @@ class Background:
     def __init__(self):
         self.image = load_image('background.jpg')
         self.map_width = 19200  # 전체 맵 너비
+        self.map_height = 2000
         self.screen_width = 800  # 화면 너비
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         start_x = -camera_x % self.screen_width
-        tile_count = int(self.map_width / self.screen_width) + 2
-        for i in range(-1, tile_count):
-            self.image.draw(start_x + i * self.screen_width, 300, self.screen_width, 600)
+        start_y = -camera_y % 600
+        tile_count_x = int(self.map_width / self.screen_width) + 2
+        tile_count_y = 2 # 일단 임시로 뒷배경 설정
+
+        for i in range(-1, tile_count_x):
+            for j in range(-1, tile_count_y):
+                self.image.draw(start_x + i * self.screen_width, start_y + j * 600, self.screen_width, 600)
 
     def update(self):
         pass

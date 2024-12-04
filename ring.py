@@ -27,10 +27,10 @@ class Ring:
         self.collect_sound = pygame.mixer.Sound('ring_collect.mp3')
         self.collect_sound.set_volume(0.5)
 
-    def draw(self, camera_x):
-        self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y, 50, 50)
+    def draw(self, camera_x, camera_y):
+        self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y - camera_y, 50, 50)
         left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ROTATE * ROTATE_PER_TIME * game_framework.frame_time) % 4

@@ -12,10 +12,10 @@ def update():
         for o in layer:
             o.update()
 
-def render(camera_x=0):
+def render(camera_x=0, camera_y=0):
     for layer in objects:
         for o in layer:
-            o.draw(camera_x)
+            o.draw(camera_x, camera_y)
 
 def remove_object(o):
     for layer in objects:
