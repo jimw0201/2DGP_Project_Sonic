@@ -9,24 +9,32 @@ class Ground:
     TERRAIN_IMAGES = {
         'tree': 'tilemaps/1.png',
         'platform': 'tilemaps/3.png',
-        'stair': 'tilemaps/4.png',
         'plane1': 'tilemaps/45.png',
         'plane2': 'tilemaps/16.png',
         'uphill': 'tilemaps/49.png',
         'downhill': 'tilemaps/2.png',
         'bridge': 'tilemaps/51.png',
+        'curve1': 'tilemaps/7.png',
+        'stair1': 'tilemaps/4.png',
+        'stair2': 'tilemaps/5.png',
+        'start_of_bridge': 'tilemaps/43.png',
+        'plane3': 'tilemaps/14.png',
     }
 
     # 지형 너비
     TERRAIN_WIDTHS = {
         'tree': 512,
         'platform': 512,
-        'stair': 512,
         'plane1': 512,
         'plane2': 512,
         'uphill': 512,
         'downhill': 512,
         'bridge': 512,
+        'curve1': 512,
+        'stair1': 512,
+        'stair2': 512,
+        'start_of_bridge': 512,
+        'plane3': 512,
     }
 
     # 지형 높이
@@ -39,6 +47,9 @@ class Ground:
         'uphill': 512,
         'downhill': 512,
         'bridge': 512,
+        'curve1': 512,
+        'start_of_bridge': 512,
+        'plane3': 512,
     }
     def __init__(self, terrain_type='tree'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
@@ -46,8 +57,8 @@ class Ground:
         self.terrain_type = terrain_type  # 지형 타입 저장
         self.image = load_image(Ground.TERRAIN_IMAGES[terrain_type])
         # self.image = load_image('green_hill_ground.png')
-        self.width = Ground.TERRAIN_WIDTHS.get(terrain_type, 256)
-        self.height = Ground.TERRAIN_HEIGHTS.get(terrain_type, 256)
+        self.width = Ground.TERRAIN_WIDTHS.get(terrain_type, 512)
+        self.height = Ground.TERRAIN_HEIGHTS.get(terrain_type, 512)
         self.x = 0
         self.y = 0
 
