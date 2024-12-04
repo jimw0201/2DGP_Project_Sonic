@@ -46,51 +46,71 @@ def init():
 
     background = Background()
     ground = Ground()
-    sonic = Sonic(ground)
     life_display = LifeDisplay(lives)
-    enemies = [Crabmeat(sonic) for _ in range(5)]
-    enemies2 = [Caterkiller(sonic) for _ in range(5)]
-    enemies3 = [Burrobot(sonic) for _ in range(3)]
-    enemies4 = [BuzzBomber(sonic) for _ in range(3)]
-    enemies5 = [Newtron(sonic) for _ in range(3)]
-    enemies6 = [Batbrain(sonic) for _ in range(3)]
-    boss = Eggman(sonic)
+    # enemies = [Crabmeat(sonic) for _ in range(5)]
+    # enemies2 = [Caterkiller(sonic) for _ in range(5)]
+    # enemies3 = [Burrobot(sonic) for _ in range(3)]
+    # enemies4 = [BuzzBomber(sonic) for _ in range(3)]
+    # enemies5 = [Newtron(sonic) for _ in range(3)]
+    # enemies6 = [Batbrain(sonic) for _ in range(3)]
+    # boss = Eggman(sonic)
+
+    # 지형 초기화
+    ground_positions = [
+        # (x, y, 지형 타입)
+        (256, 200, 'plane1'),
+        (768, 200, 'plane1'),
+        (1280, 200, 'platform'),
+        (1792, 200, 'uphill'),
+        (2304, 200, 'bridge'),
+        (2816, 200, 'plane2'),
+        (3328, 200, 'downhill'),
+    ]
+    for x, y, terrain_type in ground_positions:
+        ground = Ground(terrain_type)
+        ground.x = x
+        ground.y = y
+        print(
+            f"Ground initialized at x={x}, y={y}, type={terrain_type}, width={ground.width}, height={ground.height}")  # 디버깅
+        game_world.add_object(ground, 1)
+    sonic = Sonic(None)
+    sonic.ground = ground
 
     rings = [Ring(300 + i * 100, 300, sonic) for i in range(10)]
     game_world.add_objects(rings, 3)
 
     # game_world에 객체 추가
     game_world.add_object(background, 0)
-    game_world.add_object(ground, 1)
+    # game_world.add_object(ground, 1)
     game_world.add_object(sonic, 2)
-    game_world.add_objects(enemies, 2)
-    game_world.add_objects(enemies2, 2)
-    game_world.add_objects(enemies3, 2)
-    game_world.add_objects(enemies4, 2)
-    game_world.add_objects(enemies5, 2)
-    game_world.add_objects(enemies6, 2)
-    game_world.add_object(boss, 2)
+    # game_world.add_objects(enemies, 2)
+    # game_world.add_objects(enemies2, 2)
+    # game_world.add_objects(enemies3, 2)
+    # game_world.add_objects(enemies4, 2)
+    # game_world.add_objects(enemies5, 2)
+    # game_world.add_objects(enemies6, 2)
+    # game_world.add_object(boss, 2)
 
     # 충돌 체크 그룹
-    for enemy in enemies:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
-
-    for enemy in enemies2:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
-
-    for enemy in enemies3:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
-
-    for enemy in enemies4:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
-
-    for enemy in enemies5:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
-
-    for enemy in enemies6:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
-
-    game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
+    # for enemy in enemies:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
+    #
+    # for enemy in enemies2:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
+    #
+    # for enemy in enemies3:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
+    #
+    # for enemy in enemies4:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
+    #
+    # for enemy in enemies5:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
+    #
+    # for enemy in enemies6:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
+    #
+    # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
 
     # 배경음악
     bgm = load_music('green_hill_zone_bgm.mp3')
