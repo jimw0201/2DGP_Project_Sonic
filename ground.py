@@ -25,6 +25,7 @@ class Ground:
         'loop': 'tilemaps/53.png',
         'uphill2': 'tilemaps/38.png',
         'plane4': 'tilemaps/17.png',
+        'wall1': 'tilemaps/30.png',
 
     }
 
@@ -48,6 +49,8 @@ class Ground:
         'loop': 512,
         'uphill2': 512,
         'plane4': 512,
+        'wall1': 512,
+
     }
 
     # 지형 높이
@@ -69,6 +72,7 @@ class Ground:
         'loop': 512,
         'uphill2': 512,
         'plane4': 512,
+        'wall1': 512,
     }
     def __init__(self, terrain_type='tree'):
         if terrain_type not in Ground.TERRAIN_IMAGES:

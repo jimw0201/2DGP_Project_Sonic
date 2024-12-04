@@ -82,6 +82,10 @@ def init():
         (10112, 686, 'loop'),
         (10624, 686, 'uphill2'),
         (11136, 686, 'plane4'),
+        (11648, 430, 'wall1'),
+        (12160, 430, 'plane4'),
+        (12672, 200, 'wall1'),
+        (13184, 200, 'downhill3')
     ]
     for x, y, terrain_type in ground_positions:
         ground = Ground(terrain_type)
