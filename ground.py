@@ -7,7 +7,6 @@ from pico2d import load_image, draw_rectangle
 class Ground:
     # 지형 이미지
     TERRAIN_IMAGES = {
-        'tree': 'tilemaps/1.png',
         'platform': 'tilemaps/3.png',
         'plane1': 'tilemaps/45.png',
         'plane2': 'tilemaps/16.png',
@@ -16,7 +15,6 @@ class Ground:
         'bridge': 'tilemaps/51.png',
         'curve1': 'tilemaps/7.png',
         'stair1': 'tilemaps/4.png',
-        'stair2': 'tilemaps/5.png',
         'start_of_bridge': 'tilemaps/43.png',
         'plane3': 'tilemaps/14.png',
         'twin': 'tilemaps/20.png',
@@ -30,12 +28,11 @@ class Ground:
         'plane6': 'tilemaps/12.png',
         'plane7': 'tilemaps/13.png',
         'plane8': 'tilemaps/21.png',
-        'stair3': 'tilemaps/25.png',
+        'stair2': 'tilemaps/25.png',
     }
 
     # 지형 너비
     TERRAIN_WIDTHS = {
-        'tree': 512,
         'platform': 512,
         'plane1': 512,
         'plane2': 512,
@@ -44,7 +41,6 @@ class Ground:
         'bridge': 512,
         'curve1': 512,
         'stair1': 512,
-        'stair2': 512,
         'start_of_bridge': 512,
         'plane3': 512,
         'twin': 512,
@@ -58,12 +54,11 @@ class Ground:
         'plane6': 512,
         'plane7': 512,
         'plane8': 512,
-        'stair3': 512,
+        'stair2': 512,
     }
 
     # 지형 높이
     TERRAIN_HEIGHTS = {
-        'tree': 512,
         'platform': 512,
         'plane1': 512,
         'plane2': 512,
@@ -72,7 +67,6 @@ class Ground:
         'bridge': 512,
         'curve1': 512,
         'stair1': 512,
-        'stair2': 512,
         'start_of_bridge': 512,
         'plane3': 512,
         'twin': 512,
@@ -86,9 +80,9 @@ class Ground:
         'plane6': 512,
         'plane7': 512,
         'plane8': 512,
-        'stair3': 512,
+        'stair2': 512,
     }
-    def __init__(self, terrain_type='tree'):
+    def __init__(self, terrain_type='platform'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
             raise ValueError(f"Unsupported terrain type: {terrain_type}")
         self.terrain_type = terrain_type  # 지형 타입 저장
@@ -107,65 +101,167 @@ class Ground:
         screen_y = self.y - camera_y
         self.image.draw(screen_x, screen_y, self.width, self.height)
 
-        # left, bottom, right, top = self.get_bb()
-        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        # 바운딩 박스를 화면에 그리기
+        for bb in self.get_bb():
+            left, bottom, right, top = bb
+            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def update(self):
         pass
 
-    def get_bb(self):
+    def get_uphill1_bb(self, num_segments=20, height_reduction=50, y_offset=0):
+        bounding_boxes = []
+        segment_width = self.width / num_segments
+
+        left_bottom = (self.x - self.width / 2, self.y - self.height / 2 + y_offset)
+        left_top = (self.x - self.width / 2, self.y - 128 + height_reduction + y_offset)
+        right_top = (self.x + self.width / 2, self.y + y_offset)
+        right_bottom = (self.x + self.width / 2, self.y + self.height / 2 + y_offset)
+
+        for i in range(num_segments):
+            # 각 세그먼트의 x 좌표 범위
+            seg_left_x = left_bottom[0] + i * segment_width
+            seg_right_x = seg_left_x + segment_width
+
+            # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+
+            # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
+            y_low = (y_low_start + y_low_end) / 2
+            y_high = (y_high_start + y_high_end) / 2
+
+            # 바운딩 박스 추가
+            bounding_boxes.append((
+                seg_left_x,
+                y_low,
+                seg_right_x,
+                y_high
+            ))
+
+        return bounding_boxes
+
+    def get_downhill1_bb(self, num_segments=20, height_reduction=50, y_offset=0):
+        bounding_boxes = []
+        segment_width = self.width / num_segments
+
+        left_bottom = (self.x - self.width / 2, self.y + self.height / 2 + y_offset)
+        left_top = (self.x - self.width / 2, self.y + 130 - height_reduction + y_offset)
+        right_top = (self.x + self.width / 2, self.y + y_offset)
+        right_bottom = (self.x + self.width / 2, self.y - self.height / 2 + y_offset)
+
+        for i in range(num_segments):
+            # 각 세그먼트의 x 좌표 범위
+            seg_left_x = left_bottom[0] + i * segment_width
+            seg_right_x = seg_left_x + segment_width
+
+            # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+
+            # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
+            y_low = (y_low_start + y_low_end) / 2
+            y_high = (y_high_start + y_high_end) / 2
+
+            # 바운딩 박스 추가
+            bounding_boxes.append((
+                seg_left_x,
+                y_high,
+                seg_right_x,
+                y_low
+            ))
+
+        return bounding_boxes
+
+    def get_bb(self, y_offset=0):
         # 지형 타입에 따라 충돌 박스 설정
-        if self.terrain_type == 'tree':
-            return (self.x - self.width // 2,
-                    self.y - self.height // 2,
-                    self.x + self.width // 2,
-                    self.y + self.height // 2)
-        elif self.terrain_type == 'platform':
-            pass
+        if self.terrain_type == 'platform':
+            return [(self.x - self.width // 2,    # 좌측 하단 x
+                    self.y - self.height // 2,    # 좌측 하단 y
+                    self.x + self.width // 2,     # 우측 상단 x
+                    self.y - 128),                # 우측 상단 y
+                    (self.x - 196,
+                     self.y + 41,
+                     self.x + 189,
+                     self.y + 68)
+            ]
         elif self.terrain_type == 'plane1':
-            pass
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y - 128)]
         elif self.terrain_type == 'plane2':
-            pass
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y)]
         elif self.terrain_type == 'uphill1':
-            pass
+            return self.get_uphill1_bb(y_offset=y_offset - 225)
         elif self.terrain_type == 'downhill1':
-            pass
+            return self.get_downhill1_bb(y_offset=y_offset - 235)
         elif self.terrain_type == 'bridge':
-            pass
-        elif self.terrain_type == 'curve1':
-            pass
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y)]
+        # elif self.terrain_type == 'curve1':
+        #     pass
         elif self.terrain_type == 'stair1':
-            pass
-        elif self.terrain_type == 'stair2':
-            pass
-        elif self.terrain_type == 'start_of_bridge':
-            pass
-        elif self.terrain_type == 'plane3':
-            pass
-        elif self.terrain_type == 'twin':
-            pass
-        elif self.terrain_type == 'downhill2':
-            pass
-        elif self.terrain_type == 'downhill3':
-            pass
-        elif self.terrain_type == 'loop':
-            pass
-        elif self.terrain_type == 'uphill2':
-            pass
-        elif self.terrain_type == 'plane4':
-            pass
-        elif self.terrain_type == 'wall1':
-            pass
-        elif self.terrain_type == 'plane5':
-            pass
-        elif self.terrain_type == 'plane6':
-            pass
-        elif self.terrain_type == 'plane7':
-            pass
-        elif self.terrain_type == 'plane8':
-            pass
-        elif self.terrain_type == 'stair3':
-            pass
+            return [(self.x - self.width // 2,
+                     self.y - self.height // 2,
+                     self.x,
+                     self.y),
+                    (self.x,
+                     self.y - self.height // 2,
+                     self.x + 124,
+                     self.y + 65),
+                    (self.x + 124,
+                     self.y - self.height // 2,
+                     self.x + self.width // 2,
+                     self.y + 130)]
+        # elif self.terrain_type == 'start_of_bridge':
+        #     pass
+        # elif self.terrain_type == 'plane3':
+        #     pass
+        # elif self.terrain_type == 'twin':
+        #     pass
+        # elif self.terrain_type == 'downhill2':
+        #     pass
+        # elif self.terrain_type == 'downhill3':
+        #     pass
+        # elif self.terrain_type == 'loop':
+        #     pass
+        # elif self.terrain_type == 'uphill2':
+        #     pass
+        # elif self.terrain_type == 'plane4':
+        #     pass
+        # elif self.terrain_type == 'wall1':
+        #     pass
+        # elif self.terrain_type == 'plane5':
+        #     pass
+        # elif self.terrain_type == 'plane6':
+        #     pass
+        # elif self.terrain_type == 'plane7':
+        #     pass
+        # elif self.terrain_type == 'plane8':
+        #     pass
+        # elif self.terrain_type == 'stair3':
+        #     pass
+        else:
+            # 기본값: 반환값이 없던 경우 기본 바운딩 박스를 반환
+            return [
+                (self.x - self.width // 2,
+                 self.y - self.height // 2,
+                 self.x + self.width // 2,
+                 self.y + self.height // 2)
+            ]
+
 
 # 뒷배경 클래스
 class Background:
