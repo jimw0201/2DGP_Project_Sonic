@@ -125,7 +125,7 @@ class Ground:
 class Background:
     def __init__(self):
         self.image = load_image('background.jpg')
-        self.map_width = 19200  # 전체 맵 너비
+        self.map_width = 19328 # 전체 맵 너비
         self.map_height = 2000
         self.screen_width = 800  # 화면 너비
 

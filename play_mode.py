@@ -94,6 +94,10 @@ def init():
         (16256, 200, 'stair3'),
         (16768, 200, 'plane4'),
         (17280, 200, 'downhill3'),
+        (17792, 200, 'plane1'),
+        (18304, 200, 'plane1'),
+        (18816, 200, 'plane1'),
+        (19328, 200, 'plane1')
     ]
     for x, y, terrain_type in ground_positions:
         ground = Ground(terrain_type)
