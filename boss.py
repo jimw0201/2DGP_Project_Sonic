@@ -76,8 +76,9 @@ class Eggman:
         else:
             self.image.clip_draw(int(self.frame) * 77, 374, 77, 53, self.x - camera_x, self.y - camera_y, 154, 108)
 
-        # left, bottom, right, top = self.get_bb()
-        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        for bb in self.get_ball_bb():
+            left, bottom, right, top = bb
+            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
         # 쇠구슬
         ball_sprite_x, ball_sprite_y, ball_sprite_width, ball_sprite_height = 0, 0, 48, 232
