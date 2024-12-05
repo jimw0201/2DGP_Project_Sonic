@@ -52,6 +52,21 @@ class Idle:
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
+            # 중력 적용
+            ground_height = None
+            for ground in game_world.objects[1]:
+                height = ground.get_height_at_position(sonic.x)
+                if height is not None:
+                    ground_height = height
+                    break
+
+            if ground_height is not None and sonic.y - 40 <= ground_height:
+                sonic.y = ground_height + 40
+            else:
+                sonic.y -= 5
+                if sonic.y < 0:
+                    sonic.y = 0
+
     @staticmethod
     def draw(sonic, x, y):
         if sonic.face_dir == 1:
@@ -79,11 +94,28 @@ class Run:
 
     @staticmethod
     def do(sonic):
-        if sonic.dir != 0:
+        # 중력 적용
+        ground_height = None
+        for ground in game_world.objects[1]:
+            height = ground.get_height_at_position(sonic.x)
+            if height is not None:
+                ground_height = height
+                break
+
+        if ground_height is not None and sonic.y - 40 <= ground_height:
+            sonic.y = ground_height + 40
+        else:
+            sonic.y -= 5
+            if sonic.y < 0:
+                sonic.y = 0
+
+
+        if sonic.dir != 0 and ground_height is not None and sonic.y - 40 <= ground_height:
             if sonic.speed < sonic.max_speed:
                 sonic.speed += sonic.acceleration
-
-        sonic.x += sonic.dir * sonic.speed * 0.1
+            sonic.x += sonic.dir * sonic.speed * 0.1
+        else:
+            sonic.speed = 0
 
         sonic.frame_counter += 1
         max_frame_count = 10 - int(sonic.speed / 20)  # 속도에 따른 프레임 전환 간격 조절
@@ -229,6 +261,21 @@ class Sonic:
 
     def get_bb(self):
         return self.x - 30, self.y - 40, self.x + 30, self.y + 40
+
+    # def is_on_ground(self):
+    #     ground_height = None
+    #     for ground in game_world.objects[1]:
+    #         height = ground.get_height_at_position(self.x)
+    #         if height is not None:
+    #             ground_height = height
+    #             break
+    #     return ground_height is not None and self.y - 40 <= ground_height 
+    def is_on_ground(self):
+        for ground in game_world.objects[1]:  # 지형 레이어 탐색
+            height = ground.get_height_at_position(self.x)
+            if height is not None and self.y - 40 <= height:
+                return True
+        return False
 
     def handle_collision(self, group, other):
         if group == 'sonic:crabmeat':
