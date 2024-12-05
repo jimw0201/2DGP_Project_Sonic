@@ -49,19 +49,19 @@ class Crabmeat:
             game_world.remove_object(self)
             play_mode.score += 100
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 44, 951, 44, 31, self.x - camera_x, self.y, 88, 62)
+            self.image.clip_draw(int(self.frame) * 44, 951, 44, 31, self.x - camera_x, self.y - camera_y, 88, 62)
         else:
-            self.image.clip_composite_draw(int(self.frame) * 44, 951, 44, 31, 0, 'h', self.x - camera_x, self.y, 88, 62)
+            self.image.clip_composite_draw(int(self.frame) * 44, 951, 44, 31, 0, 'h', self.x - camera_x, self.y - camera_y, 88, 62)
 
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 88 // 2
         height = 62 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
 class Caterkiller:
     images = None
@@ -90,18 +90,18 @@ class Caterkiller:
             game_world.remove_object(self)
             play_mode.score += 100
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 51, 1102, 51, 33, self.x - camera_x, self.y, 102, 66)
+            self.image.clip_draw(int(self.frame) * 51, 1102, 51, 33, self.x - camera_x, self.y - camera_y, 102, 66)
         else:
-            self.image.clip_draw(int(self.frame) * 51, 1070, 51, 33, self.x - camera_x, self.y, 102, 66)
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+            self.image.clip_draw(int(self.frame) * 51, 1070, 51, 33, self.x - camera_x, self.y - camera_y, 102, 66)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 102 // 2
         height = 66 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
 class Burrobot:
     images = None
@@ -130,18 +130,18 @@ class Burrobot:
             game_world.remove_object(self)
             play_mode.score += 100
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 28, 1329, 28, 35, self.x - camera_x, self.y, 56, 70)
+            self.image.clip_draw(int(self.frame) * 28, 1329, 28, 35, self.x - camera_x, self.y - camera_y, 56, 70)
         else:
-            self.image.clip_draw(int(self.frame) * 28, 1288, 28, 35, self.x - camera_x, self.y, 56, 70)
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+            self.image.clip_draw(int(self.frame) * 28, 1288, 28, 35, self.x - camera_x, self.y - camera_y, 56, 70)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 56 // 2
         height = 70 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
 class BuzzBomber:
     images = None
@@ -170,18 +170,18 @@ class BuzzBomber:
             game_world.remove_object(self)
             play_mode.score += 100
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 37, 1172, 37, 35, self.x - camera_x, self.y, 74, 70)
+            self.image.clip_draw(int(self.frame) * 37, 1172, 37, 35, self.x - camera_x, self.y - camera_y, 74, 70)
         else:
-            self.image.clip_draw(int(self.frame) * 37, 1135, 37, 35, self.x - camera_x, self.y, 74, 70)
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+            self.image.clip_draw(int(self.frame) * 37, 1135, 37, 35, self.x - camera_x, self.y - camera_y, 74, 70)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 74 // 2
         height = 70 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
 class Newtron:
     images = None
@@ -210,18 +210,18 @@ class Newtron:
             game_world.remove_object(self)
             play_mode.score += 100
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 39, 683, 39, 39, self.x - camera_x, self.y, 78, 78)
+            self.image.clip_draw(int(self.frame) * 39, 683, 39, 39, self.x - camera_x, self.y - camera_y, 78, 78)
         else:
-            self.image.clip_draw(int(self.frame) * 39, 638, 39, 39, self.x - camera_x, self.y, 78, 78)
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+            self.image.clip_draw(int(self.frame) * 39, 638, 39, 39, self.x - camera_x, self.y - camera_y, 78, 78)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 78 // 2
         height = 78 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
 class Batbrain:
     images = None
@@ -250,15 +250,15 @@ class Batbrain:
             game_world.remove_object(self)
             play_mode.score += 100
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_draw(int(self.frame) * 35, 30, 35, 38, self.x - camera_x, self.y, 70, 76)
+            self.image.clip_draw(int(self.frame) * 35, 30, 35, 38, self.x - camera_x, self.y - camera_y, 70, 76)
         else:
-            self.image.clip_composite_draw(int(self.frame) * 35, 30, 35, 38, 0, 'h', self.x - camera_x, self.y, 70, 76)
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+            self.image.clip_composite_draw(int(self.frame) * 35, 30, 35, 38, 0, 'h', self.x - camera_x, self.y - camera_y, 70, 76)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 70 // 2
         height = 76 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]

@@ -66,29 +66,29 @@ class Eggman:
         elif group == 'sonic:eggman_ball':
             self.attack_sound.play()
 
-    def draw(self, camera_x):
+    def draw(self, camera_x, camera_y):
         if self.dir == 1:
-            self.image.clip_composite_draw(int(self.frame) * 77, 374, 77, 53, 0, 'h', self.x - camera_x, self.y, 154, 108)
+            self.image.clip_composite_draw(int(self.frame) * 77, 374, 77, 53, 0, 'h', self.x - camera_x, self.y - camera_y, 154, 108)
         else:
-            self.image.clip_draw(int(self.frame) * 77, 374, 77, 53, self.x - camera_x, self.y, 154, 108)
+            self.image.clip_draw(int(self.frame) * 77, 374, 77, 53, self.x - camera_x, self.y - camera_y, 154, 108)
 
-        left, bottom, right, top = self.get_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        # left, bottom, right, top = self.get_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
         # 쇠구슬
         ball_sprite_x, ball_sprite_y, ball_sprite_width, ball_sprite_height = 0, 0, 48, 232
         self.image.clip_composite_draw(
             ball_sprite_x, ball_sprite_y, ball_sprite_width, ball_sprite_height, math.radians(self.swing_angle), '',
-            self.ball_x - camera_x, self.ball_y + 116,
+            self.ball_x - camera_x, self.ball_y - camera_y + 116,
             ball_sprite_width * 2, ball_sprite_height * 2
         )
-        left, bottom, right, top = self.get_ball_bb()
-        draw_rectangle(left - camera_x, bottom, right - camera_x, top)
+        # left, bottom, right, top = self.get_ball_bb()
+        # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
     def get_bb(self):
         width = 154 // 2
         height = 108 // 2
-        return self.x - width, self.y - height, self.x + width, self.y + height
+        return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
     def get_ball_bb(self):
         angle_rad = math.radians(self.swing_angle)
@@ -101,4 +101,4 @@ class Eggman:
         new_ball_x = self.x + rotated_x
         new_ball_y = self.y + rotated_y - 68
 
-        return new_ball_x - 48, new_ball_y - 48, new_ball_x + 48, new_ball_y + 48
+        return [(new_ball_x - 48, new_ball_y - 48, new_ball_x + 48, new_ball_y + 48)]
