@@ -52,7 +52,6 @@ class Idle:
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-        # 중력 효과
         ground_height = None
         for ground in game_world.objects[1]:
             height = ground.get_height_at_position(sonic.x)
@@ -82,7 +81,7 @@ class Run:
     @staticmethod
     def enter(sonic, e):
         if right_down(e) or left_up(e):
-            sonic.dir = 1 # 오른쪽 방향
+            sonic.dir = 1  # 오른쪽 방향
             sonic.action = 1
         elif left_down(e) or right_up(e):
             sonic.dir = -1
@@ -98,7 +97,6 @@ class Run:
 
     @staticmethod
     def do(sonic):
-        # 중력 적용
         ground_height = None
         for ground in game_world.objects[1]:
             height = ground.get_height_at_position(sonic.x)
@@ -117,12 +115,17 @@ class Run:
                 sonic.y = 0
                 sonic.fall_speed = 0
 
-        if sonic.dir != 0 and ground_height is not None and sonic.y - 40 <= ground_height:  # 지형 위에서만 이동
-            if sonic.speed < sonic.max_speed:
-                sonic.speed += sonic.acceleration
+        if sonic.dir != 0:
+            if ground_height is not None and sonic.y - 40 <= ground_height:
+                if sonic.speed < sonic.max_speed:
+                    sonic.speed += sonic.acceleration
+            else:
+                if sonic.speed > 0:
+                    sonic.speed -= sonic.acceleration * game_framework.frame_time
+                    if sonic.speed < 0:
+                        sonic.speed = 0
+
             sonic.x += sonic.dir * sonic.speed * 0.1
-        else:
-            sonic.speed = 0
 
         sonic.frame_counter += 1
         max_frame_count = 10 - int(sonic.speed / 20)  # 속도에 따른 프레임 전환 간격 조절
@@ -155,6 +158,7 @@ class Run:
                 sonic.image.clip_draw(203 + 35 * int(sonic.frame), 909, 30, 40, x, y, 60, 80)
             elif sonic.dir == -1:
                 sonic.image.clip_composite_draw(203 + 35 * int(sonic.frame), 909, 30, 40, 0, 'h', x, y, 60, 80)
+
 
 class Jump:
     @staticmethod
