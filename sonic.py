@@ -52,24 +52,23 @@ class Idle:
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-        ground_height = None
-        for ground in game_world.objects[1]:
-            height = ground.get_height_at_position(sonic.x)
-            for h in height:
-                if h is not None:
-                    ground_height = h
-                    break
+            # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+            ground_heights = []
+            for ground in game_world.objects[1]:
+                heights = ground.get_height_at_position(sonic.x)
+                ground_heights.extend(heights)
 
-        if ground_height is not None and sonic.y - 40 <= ground_height:
-            sonic.y = ground_height + 40
-            sonic.fall_speed = 0
-        else:
-            sonic.fall_speed += sonic.gravity
-            sonic.y -= sonic.fall_speed
-
-            if sonic.y < 0:
-                sonic.y = 0
+            closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+            if closest_height is not None and sonic.y - 40 <= closest_height:
+                sonic.y = closest_height + 40
                 sonic.fall_speed = 0
+            else:
+                sonic.fall_speed += sonic.gravity
+                sonic.y -= sonic.fall_speed
+
+                if sonic.y < 0:
+                    sonic.y = 0
+                    sonic.fall_speed = 0
 
     @staticmethod
     def draw(sonic, x, y):
@@ -98,16 +97,15 @@ class Run:
 
     @staticmethod
     def do(sonic):
-        ground_height = None
+        # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+        ground_heights = []
         for ground in game_world.objects[1]:
-            height = ground.get_height_at_position(sonic.x)
-            for h in height:
-                if h is not None:
-                    ground_height = h
-                    break
+            heights = ground.get_height_at_position(sonic.x)
+            ground_heights.extend(heights)
 
-        if ground_height is not None and sonic.y - 40 <= ground_height:
-            sonic.y = ground_height + 40
+        closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+        if closest_height is not None and sonic.y - 40 <= closest_height:
+            sonic.y = closest_height + 40
             sonic.fall_speed = 0
         else:
             sonic.fall_speed += sonic.gravity
@@ -117,8 +115,9 @@ class Run:
                 sonic.y = 0
                 sonic.fall_speed = 0
 
+        # x 좌표 이동은 y 좌표와 상관없이 처리
         if sonic.dir != 0:
-            if ground_height is not None and sonic.y - 40 <= ground_height:
+            if closest_height is not None and sonic.y - 40 <= closest_height:
                 if sonic.speed < sonic.max_speed:
                     sonic.speed += sonic.acceleration
             else:
@@ -196,16 +195,17 @@ class Jump:
             sonic.jump_speed -= 1
             sonic.x += sonic.jump_dir * sonic.jump_x_speed * 0.1
 
-            ground_height = None
+            # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+            ground_heights = []
             for ground in game_world.objects[1]:
-                height = ground.get_height_at_position(sonic.x)
-                for h in height:
-                    if h is not None:
-                        ground_height = h
-                        break
+                heights = ground.get_height_at_position(sonic.x)
+                ground_heights.extend(heights)
 
-            if ground_height is not None and sonic.y <= ground_height:
-                sonic.y = ground_height + 40
+            closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+
+            # 가장 가까운 땅에 착지
+            if closest_height is not None and sonic.y <= closest_height:
+                sonic.y = closest_height + 40
                 sonic.jump_speed = 0
                 sonic.is_jumping = False
 
@@ -248,7 +248,7 @@ class Sonic:
         self.state_machine.set_transitions(
             {
                 Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-                Idle: {right_down: Run, left_down: Run, left_up: Idle, right_up: Idle, space_down: Jump},
+                Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
                 Jump: {
                     lambda e: e == ('END_JUMP', 0): Idle,
                     lambda e: e == ('RUN', 0): Run
@@ -290,10 +290,16 @@ class Sonic:
     #             break
     #     return ground_height is not None and self.y - 40 <= ground_height
     def is_on_ground(self):
+        ground_heights = []
         for ground in game_world.objects[1]:  # 지형 레이어 탐색
-            height = ground.get_height_at_position(self.x)
-            if height is not None and self.y - 40 <= height:
-                return True
+            heights = ground.get_height_at_position(self.x)
+            ground_heights.extend(heights)  # 모든 높이를 리스트에 추가
+
+        # 소닉의 높이와 가장 가까운 높이를 선택
+        closest_height = min(ground_heights, key=lambda h: abs(h - self.y), default=None)
+
+        if closest_height is not None and self.y - 40 <= closest_height:
+            return True
         return False
 
     def handle_collision(self, group, other):
