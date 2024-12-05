@@ -21,8 +21,18 @@ class Ring:
         self.frame = 0
         self.sonic = sonic
         self.gravity = -0.5
-        self.ground_height = 30 + play_mode.ground.get_height()
+
         self.exist_time = 0
+
+        ground_heights = []
+        for ground in game_world.objects[1]:
+            heights = ground.get_height_at_position(self.x)
+            ground_heights.extend(heights)
+
+        if ground_heights:
+            self.ground_height = min(ground_heights, key=lambda h: abs(h - self.y)) + 30
+        else:
+            self.ground_height = 0 + 30
 
         self.collect_sound = pygame.mixer.Sound('sound/ring_collect.mp3')
         self.collect_sound.set_volume(0.5)
