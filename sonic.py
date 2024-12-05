@@ -223,7 +223,7 @@ class Jump:
 
 class Sonic:
     def __init__(self, ground):
-        self.x, self.y = 50, 120
+        self.x, self.y = 50, 110
         self.ground = ground
         self.frame = 0
         self.dir = 0
@@ -233,8 +233,10 @@ class Sonic:
         self.acceleration = 1.5
         self.frame_counter = 0
         self.is_jumping = False
-        self.gravity = 0.5 
+        self.gravity = 0.5
         self.fall_speed = 0
+
+        self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
         self.jump_sound = load_wav('jump.mp3')
         self.jump_sound.set_volume(64)
@@ -261,14 +263,27 @@ class Sonic:
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_LEFT:
-                self.dir = -1
-            elif event.key == SDLK_RIGHT:
-                self.dir = 1
+            if event.key in self.keys:
+                self.keys[event.key] = True
+                self.update_dir()
+
         elif event.type == SDL_KEYUP:
-            if event.key == SDLK_LEFT or event.key == SDLK_RIGHT:
-                self.dir = 0
+            if event.key in self.keys:
+                self.keys[event.key] = False
+                self.update_dir()
+
         self.state_machine.add_event(('INPUT', event))
+
+    def update_dir(self):
+        # 눌린 방향키 상태에 따라 방향 결정
+        if self.keys[SDLK_LEFT] and self.keys[SDLK_RIGHT]:
+            self.dir = 0
+        elif self.keys[SDLK_LEFT]:
+            self.dir = -1
+        elif self.keys[SDLK_RIGHT]:
+            self.dir = 1
+        else:
+            self.dir = 0
 
     def draw(self, camera_x, camera_y):
         self.state_machine.draw(self.x - camera_x, self.y - camera_y)
@@ -281,14 +296,6 @@ class Sonic:
     def get_bb(self):
         return [(self.x - 30, self.y - 40, self.x + 30, self.y + 40)]
 
-    # def is_on_ground(self):
-    #     ground_height = None
-    #     for ground in game_world.objects[1]:
-    #         height = ground.get_height_at_position(self.x)
-    #         if height is not None:
-    #             ground_height = height
-    #             break
-    #     return ground_height is not None and self.y - 40 <= ground_height
     def is_on_ground(self):
         ground_heights = []
         for ground in game_world.objects[1]:  # 지형 레이어 탐색
