@@ -30,16 +30,27 @@ def clear():
     global objects
     objects = [[] for _ in range(4)]
 
+def check_collision(A, B):
+    print(f"Checking collision: A={A}, B={B}")  # 디버깅용 출력
+    Ax1, Ay1, Ax2, Ay2 = A
+    Bx1, By1, Bx2, By2 = B
+
+    if not (Ax2 < Bx1 or Ax1 > Bx2 or Ay1 > By2 or Ay2 < By1):
+        return True  # 충돌함
+    return False  # 충돌하지 않음
+
 def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_bb()
-    left_b, bottom_b, right_b, top_b = b.get_bb()
+    a_bb_list = a.get_bb()
+    b_bb_list = b.get_bb()
 
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
+    print(f"a_bb_list: {a_bb_list}, b_bb_list: {b_bb_list}")  # 디버깅용 출력
 
-    return True
+    for a in a_bb_list:
+        for b in b_bb_list:
+            if check_collision(a, b):
+                return True
+    return False
+
 
 def add_collision_pair(a, b, group):
     if group not in collision_pairs:
