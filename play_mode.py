@@ -144,6 +144,8 @@ def init():
     #     game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
     #
     # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
+    for obj in game_world.objects[1]:  # 지형 레이어
+        game_world.add_collision_pair(sonic, obj, 'sonic:ground')
 
     # 배경음악
     bgm = load_music('sound/green_hill_zone_bgm.mp3')

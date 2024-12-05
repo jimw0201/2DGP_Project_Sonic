@@ -209,7 +209,7 @@ class Jump:
             closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
             # 가장 가까운 땅에 착지
-            if closest_height is not None and sonic.y <= closest_height:
+            if closest_height is not None and sonic.y - 40 <= closest_height:
                 sonic.y = closest_height + 40
                 sonic.jump_speed = 0
                 sonic.is_jumping = False
@@ -315,6 +315,28 @@ class Sonic:
         return False
 
     def handle_collision(self, group, other):
+        if group == 'sonic:ground':
+            # 소닉의 바운딩 박스와 지형의 바운딩 박스를 가져옴
+            sonic_bb = self.get_bb()[0]
+            ground_bb_list = other.get_bb()
+
+            for ground_bb in ground_bb_list:
+                if game_world.check_collision(sonic_bb, ground_bb):
+                    # 소닉이 지형의 상단에 서 있는 경우
+                    if sonic_bb[1] <= ground_bb[3] and sonic_bb[3] > ground_bb[3]:
+                        self.y = ground_bb[3] + 40  # 지형 상단에서 위치를 고정
+                        self.fall_speed = 0  # 낙하 속도 초기화
+                        break
+
+                    # 소닉이 지형의 왼쪽 또는 오른쪽 벽에 부딪힌 경우
+                    if sonic_bb[2] > ground_bb[0] and sonic_bb[0] < ground_bb[0] and self.dir > 0:  # 오른쪽 이동 중
+                        self.x = ground_bb[0] - 30  # 오른쪽 벽 위치로 고정
+                        self.dir = 0
+                    elif sonic_bb[0] < ground_bb[2] and sonic_bb[2] > ground_bb[2] and self.dir < 0:  # 왼쪽 이동 중
+                        self.x = ground_bb[2] + 30  # 왼쪽 벽 위치로 고정
+                        self.dir = 0
+                    break
+
         if group == 'sonic:crabmeat':
             if self.is_jumping:
                 self.jump_speed = 15

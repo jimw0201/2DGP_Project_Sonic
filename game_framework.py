@@ -55,7 +55,7 @@ def run(start_mode):
         frame_rate = 1.0 / frame_time
         current_time += frame_time
 
-        time.sleep(0.01)
+        time.sleep(0.001)
         # print(f'Frame Time: {frame_time}, Frame Rate: {frame_rate}')
 
     # repeatedly delete the top of the stack

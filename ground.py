@@ -121,6 +121,9 @@ class Ground:
     def update(self):
         pass
 
+    def handle_collision(self, group, other):
+        pass
+
     def get_uphill1_bb(self, num_segments=20, height_reduction=50, y_offset=0):
         bounding_boxes = []
         segment_width = self.width / num_segments
@@ -376,7 +379,7 @@ class Ground:
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
-                     self.y)]
+                     self.y - 5)]
         elif self.terrain_type == 'curve1':
             # 기존 박스
             existing_bb = [

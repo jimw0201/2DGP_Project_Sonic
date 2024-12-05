@@ -31,7 +31,7 @@ def clear():
     objects = [[] for _ in range(4)]
 
 def check_collision(A, B):
-    print(f"Checking collision: A={A}, B={B}")  # 디버깅용 출력
+    # print(f"Checking collision: A={A}, B={B}")  # 디버깅용 출력
     Ax1, Ay1, Ax2, Ay2 = A
     Bx1, By1, Bx2, By2 = B
 
@@ -43,7 +43,7 @@ def collide(a, b):
     a_bb_list = a.get_bb()
     b_bb_list = b.get_bb()
 
-    print(f"a_bb_list: {a_bb_list}, b_bb_list: {b_bb_list}")  # 디버깅용 출력
+    # print(f"a_bb_list: {a_bb_list}, b_bb_list: {b_bb_list}")  # 디버깅용 출력
 
     for a in a_bb_list:
         for b in b_bb_list:
