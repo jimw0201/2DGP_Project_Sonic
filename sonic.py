@@ -52,23 +52,28 @@ class Idle:
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-            # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
-            ground_heights = []
-            for ground in game_world.objects[1]:
-                heights = ground.get_height_at_position(sonic.x)
-                ground_heights.extend(heights)
+        # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+        ground_heights = []
+        for ground in game_world.objects[1]:
+            heights = ground.get_height_at_position(sonic.x)
+            ground_heights.extend(heights)
 
-            closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
-            if closest_height is not None and sonic.y - 40 <= closest_height:
+        closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+
+        if closest_height is not None:
+            if sonic.y - 40 <= closest_height:
                 sonic.y = closest_height + 40
                 sonic.fall_speed = 0
             else:
                 sonic.fall_speed += sonic.gravity
                 sonic.y -= sonic.fall_speed
+        else:
+            sonic.fall_speed += sonic.gravity
+            sonic.y -= sonic.fall_speed
 
-                if sonic.y < 0:
-                    sonic.y = 0
-                    sonic.fall_speed = 0
+        if sonic.y < 0:
+            sonic.y = 0
+            sonic.fall_speed = 0
 
     @staticmethod
     def draw(sonic, x, y):
