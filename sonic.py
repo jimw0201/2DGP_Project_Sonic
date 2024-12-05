@@ -10,6 +10,7 @@ import random
 import math
 
 import title_mode
+
 from ring import Ring
 from state_machine import StateMachine, space_down, right_down, left_up, left_down, right_up, start_event
 
@@ -342,6 +343,9 @@ class Sonic:
                 self.is_invincible = False
                 self.invincible_time = 0
 
+        if self.y < 0:
+            game_framework.change_mode(play_mode)
+
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
             if event.key in self.keys:
@@ -391,6 +395,7 @@ class Sonic:
         return False
 
     def handle_collision(self, group, other):
+        global is_game_over
         if self.is_invincible:  # 무적 상태에서는 충돌 무시
             return
 
@@ -427,8 +432,9 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
+
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()
@@ -445,8 +451,8 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()
@@ -463,8 +469,8 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()
@@ -481,8 +487,8 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()
@@ -499,8 +505,8 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()
@@ -517,8 +523,8 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()
@@ -535,8 +541,8 @@ class Sonic:
                     self.is_invincible = True
                     if play_mode.lives > 0:
                         game_framework.change_mode(play_mode)
-                    else:
-                        game_framework.change_mode(title_mode)
+                    if play_mode.lives == 0:
+                        play_mode.is_game_over = True
                 else:
                     self.ring_loss_sound.play()
                     self.drop_rings()

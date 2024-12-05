@@ -1,3 +1,5 @@
+# game_world.py
+
 objects = [[] for _ in range(4)]
 collision_pairs = {}
 

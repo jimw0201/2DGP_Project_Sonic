@@ -1,5 +1,4 @@
 # ground.py
-import math
 
 from pico2d import load_image, draw_rectangle
 

@@ -1,3 +1,5 @@
+# play_mode.py
+
 from pico2d import *
 import game_framework
 
@@ -21,6 +23,8 @@ font = None
 score = 0
 time_elapsed = 0
 rings_collected = 0
+
+is_game_over = False
 
 life_display = None
 lives = 3
@@ -49,7 +53,7 @@ def init():
     background = Background()
     ground = Ground()
     life_display = LifeDisplay(lives)
-    crabmeat = [Crabmeat(sonic) for _ in range(5)]
+    crabmeat = [Crabmeat(sonic) for _ in range(5)] # Crabmeat(sonic, 100)
     caterkiller = [Caterkiller(sonic) for _ in range(5)]
     burrobot = [Burrobot(sonic) for _ in range(3)]
     buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
@@ -164,7 +168,11 @@ def finish():
     score = temp_score
 
 def update():
-    global camera_x, camera_y, time_elapsed
+    global camera_x, camera_y, time_elapsed, is_game_over
+
+    if is_game_over:
+        return
+
     camera_x = sonic.x - 400
     camera_y = sonic.y - 300
 
@@ -185,9 +193,17 @@ def draw():
     background.draw(camera_x, camera_y)
     game_world.render(camera_x, camera_y)
 
+    if is_game_over:
+        draw_game_over()
+
     draw_ui()
 
     update_canvas()
+
+def draw_game_over():
+    global font
+    font = load_font('NiseSegaSonic.TTF', 50)
+    font.draw(200, 300, "GAME OVER", (255, 0, 0))
 
 def draw_ui():
     global font, score, time_elapsed, rings_collected, life_display
@@ -198,6 +214,7 @@ def draw_ui():
     seconds = int(time_elapsed % 60)
     time_display = f"{minutes}:{seconds:02}"
 
+    font = load_font('NiseSegaSonic.TTF', 20)
     font.draw(20, 570, f"SCORE: {score}", (255, 255, 0))            # 점수
     font.draw(20, 540, f"TIME: {time_display}", (255, 255, 0))      # 경과 시간
     font.draw(20, 510, f"RINGS: {rings_collected}", (255, 255, 0))  # 링 개수

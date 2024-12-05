@@ -1,3 +1,5 @@
+# enemy.py
+
 import random
 import game_framework
 
@@ -25,8 +27,8 @@ FRAMES_PER_ACTION_BATBRAIN = 3
 class Crabmeat:
     images = None
 
-    def __init__(self, sonic):
-        self.x, self.y = random.randint(500, 1600), 120
+    def __init__(self, sonic): # (self, sonic, firstX)
+        self.x, self.y = random.randint(500, 1600), 120 # firstX, 120
         self.image = load_image('sprites/enemies_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])
@@ -37,7 +39,7 @@ class Crabmeat:
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CRABMEAT
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
-        if self.x <= 50 or self.x >= 19150:
+        if self.x <= 50 or self.x >= 19150: #self.x <= firstX - range or self.x >= firstX + range
             self.dir *= -1
 
         if random.random() < 0.01:

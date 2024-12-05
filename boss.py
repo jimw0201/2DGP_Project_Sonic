@@ -1,3 +1,5 @@
+# boss.py
+
 import math
 import random
 
@@ -29,6 +31,8 @@ class Eggman:
         self.sonic = sonic
         self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')
         self.attack_sound.set_volume(0.5)
+        self.ball_x = 0
+        self.ball_y = 0
 
         self.swing_angle = 0
         self.swing_direction = 1

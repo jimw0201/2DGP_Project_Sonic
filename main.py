@@ -1,3 +1,5 @@
+# main.py
+
 from pico2d import open_canvas, close_canvas
 import game_framework
 
