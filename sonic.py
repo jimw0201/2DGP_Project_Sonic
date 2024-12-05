@@ -43,29 +43,31 @@ class Idle:
             sonic.frame_counter = 0
 
             if sonic.frame == 4:
-                # sonic.frame == 4
-                sonic.frame_direction = -1  # 프레임 감소로 방향 전환
+                sonic.frame_direction = -1
             elif sonic.frame == 0:
-                # sonic.frame = 0
-                sonic.frame_direction = 1  # 프레임 증가로 방향 전환
+                sonic.frame_direction = 1
 
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-            # 중력 적용
-            ground_height = None
-            for ground in game_world.objects[1]:
-                height = ground.get_height_at_position(sonic.x)
-                if height is not None:
-                    ground_height = height
-                    break
+        # 중력 효과
+        ground_height = None
+        for ground in game_world.objects[1]:
+            height = ground.get_height_at_position(sonic.x)
+            if height is not None:
+                ground_height = height
+                break
 
-            if ground_height is not None and sonic.y - 40 <= ground_height:
-                sonic.y = ground_height + 40
-            else:
-                sonic.y -= 5
-                if sonic.y < 0:
-                    sonic.y = 0
+        if ground_height is not None and sonic.y - 40 <= ground_height:
+            sonic.y = ground_height + 40
+            sonic.fall_speed = 0
+        else:
+            sonic.fall_speed += sonic.gravity
+            sonic.y -= sonic.fall_speed
+
+            if sonic.y < 0:
+                sonic.y = 0
+                sonic.fall_speed = 0
 
     @staticmethod
     def draw(sonic, x, y):
@@ -104,13 +106,16 @@ class Run:
 
         if ground_height is not None and sonic.y - 40 <= ground_height:
             sonic.y = ground_height + 40
+            sonic.fall_speed = 0
         else:
-            sonic.y -= 5
+            sonic.fall_speed += sonic.gravity
+            sonic.y -= sonic.fall_speed
+
             if sonic.y < 0:
                 sonic.y = 0
+                sonic.fall_speed = 0
 
-
-        if sonic.dir != 0 and ground_height is not None and sonic.y - 40 <= ground_height:
+        if sonic.dir != 0 and ground_height is not None and sonic.y - 40 <= ground_height:  # 지형 위에서만 이동
             if sonic.speed < sonic.max_speed:
                 sonic.speed += sonic.acceleration
             sonic.x += sonic.dir * sonic.speed * 0.1
@@ -219,6 +224,8 @@ class Sonic:
         self.acceleration = 1.5
         self.frame_counter = 0
         self.is_jumping = False
+        self.gravity = 0.5 
+        self.fall_speed = 0
 
         self.jump_sound = load_wav('jump.mp3')
         self.jump_sound.set_volume(64)
@@ -269,7 +276,7 @@ class Sonic:
     #         if height is not None:
     #             ground_height = height
     #             break
-    #     return ground_height is not None and self.y - 40 <= ground_height 
+    #     return ground_height is not None and self.y - 40 <= ground_height
     def is_on_ground(self):
         for ground in game_world.objects[1]:  # 지형 레이어 탐색
             height = ground.get_height_at_position(self.x)
