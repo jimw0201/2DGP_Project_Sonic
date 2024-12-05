@@ -9,8 +9,6 @@ import play_mode
 import random
 import math
 
-import title_mode
-
 from ring import Ring
 from state_machine import StateMachine, space_down, right_down, left_up, left_down, right_up, start_event
 
@@ -343,8 +341,13 @@ class Sonic:
                 self.is_invincible = False
                 self.invincible_time = 0
 
-        if self.y < 0:
-            game_framework.change_mode(play_mode)
+        if self.y < 10:
+            if play_mode.lives > 0:
+                self.is_invincible = True
+                play_mode.lives -= 1
+                game_framework.change_mode(play_mode)
+            if play_mode.lives == 0:
+                play_mode.is_game_over = True
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:

@@ -41,13 +41,15 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, crabmeat, caterkiller, burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives
+    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, crabmeat, caterkiller, burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected
     camera_x = 0
     camera_y = 0
+    time_elapsed = 0
+    rings_collected = 0
     if lives == 0:
         lives = 3
     font = load_font('NiseSegaSonic.TTF', 20)
-
+    font2 = load_font('NiseSegaSonic.TTF', 50)
 
 
     background = Background()
@@ -201,9 +203,8 @@ def draw():
     update_canvas()
 
 def draw_game_over():
-    global font
-    font = load_font('NiseSegaSonic.TTF', 50)
-    font.draw(200, 300, "GAME OVER", (255, 0, 0))
+    global font2
+    font2.draw(200, 300, "GAME OVER", (255, 0, 0))
 
 def draw_ui():
     global font, score, time_elapsed, rings_collected, life_display
@@ -214,7 +215,6 @@ def draw_ui():
     seconds = int(time_elapsed % 60)
     time_display = f"{minutes}:{seconds:02}"
 
-    font = load_font('NiseSegaSonic.TTF', 20)
     font.draw(20, 570, f"SCORE: {score}", (255, 255, 0))            # 점수
     font.draw(20, 540, f"TIME: {time_display}", (255, 255, 0))      # 경과 시간
     font.draw(20, 510, f"RINGS: {rings_collected}", (255, 255, 0))  # 링 개수
