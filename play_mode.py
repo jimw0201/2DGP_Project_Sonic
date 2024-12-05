@@ -214,5 +214,14 @@ class LifeDisplay:
         self.y = 50
 
     def draw(self):
+        num = 0
+        if self.lives == 3:
+            num = 24
+        elif self.lives == 2:
+            num = 15
+        elif self.lives == 1:
+            num = 8
+        elif self.lives == 0:
+            num = 0
         self.image.clip_draw(0, 9, self.icon_width, self.icon_height, self.x, self.y, 96, 32)
-        self.image.clip_draw(0, 0, self.number_width, self.number_height, 100, 40, 14, 14)
+        self.image.clip_draw(num, 0, self.number_width, self.number_height, 100, 40, 14, 14)
