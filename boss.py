@@ -23,11 +23,11 @@ class Eggman:
     def __init__(self, sonic):
         # 잡몹은 랜덤 위치 생성인데 에그맨은 보스라 스테이지 끝 도달 시 생성되게 해야함. 일단 임시로 랜덤 생성
         self.x, self.y = random.randint(200, 1000), 400
-        self.image = load_image('eggman_sprite_nbg.png')
+        self.image = load_image('sprites/eggman_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('attack_eggman.wav')
+        self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')
         self.attack_sound.set_volume(0.5)
 
         self.swing_angle = 0

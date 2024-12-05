@@ -7,9 +7,9 @@ import play_mode
 
 def init():
     global image, bgm
-    image = load_image('title.png')
+    image = load_image('sprites/title.png')
 
-    bgm = load_music('title.mp3')
+    bgm = load_music('sound/title.mp3')
     bgm.set_volume(64)
     bgm.repeat_play()
 

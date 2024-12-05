@@ -17,14 +17,14 @@ class Ring:
         self.vx = 0
         self.vy = 0
         self.is_dropped = is_dropped
-        self.image = load_image('ring.png')
+        self.image = load_image('sprites/ring.png')
         self.frame = 0
         self.sonic = sonic
         self.gravity = -0.5
         self.ground_height = 30 + play_mode.ground.get_height()
         self.exist_time = 0
 
-        self.collect_sound = pygame.mixer.Sound('ring_collect.mp3')
+        self.collect_sound = pygame.mixer.Sound('sound/ring_collect.mp3')
         self.collect_sound.set_volume(0.5)
 
     def draw(self, camera_x, camera_y):

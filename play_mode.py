@@ -146,11 +146,11 @@ def init():
     # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
 
     # 배경음악
-    bgm = load_music('green_hill_zone_bgm.mp3')
+    bgm = load_music('sound/green_hill_zone_bgm.mp3')
     bgm.set_volume(64)
     bgm.repeat_play()
 
-    jump_sound = load_wav('jump.mp3')
+    jump_sound = load_wav('sound/jump.mp3')
     jump_sound.set_volume(64)
 
 def finish():
@@ -204,7 +204,7 @@ def resume():
 class LifeDisplay:
     def __init__(self, lives):
         self.lives = lives
-        self.image = load_image('life.png')
+        self.image = load_image('sprites/life.png')
         self.icon_width = 48
         self.icon_height = 16
         self.number_width = 7

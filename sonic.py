@@ -228,7 +228,7 @@ class Jump:
 
 class Sonic:
     def __init__(self, ground):
-        self.x, self.y = 9600, 110
+        self.x, self.y = 50, 110
         self.ground = ground
         self.frame = 0
         self.dir = 0
@@ -243,13 +243,13 @@ class Sonic:
 
         self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
-        self.jump_sound = load_wav('jump.mp3')
+        self.jump_sound = load_wav('sound/jump.mp3')
         self.jump_sound.set_volume(64)
 
-        self.ring_loss_sound = load_wav('ring_loss.mp3')
+        self.ring_loss_sound = load_wav('sound/ring_loss.mp3')
         self.ring_loss_sound.set_volume(64)
 
-        self.image = load_image('sonic_sprite_nbg.png')
+        self.image = load_image('sprites/sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle) # 초기 상태가 Idle
         self.state_machine.set_transitions(
