@@ -40,7 +40,8 @@ def init():
     global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, crabmeat, caterkiller, burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives
     camera_x = 0
     camera_y = 0
-
+    if lives == 0:
+        lives = 3
     font = load_font('NiseSegaSonic.TTF', 20)
 
 
@@ -155,7 +156,12 @@ def init():
     jump_sound.set_volume(64)
 
 def finish():
+    global lives, score
+    temp_lives = lives
+    temp_score = score
     game_world.clear()
+    lives = temp_lives
+    score = temp_score
 
 def update():
     global camera_x, camera_y, time_elapsed

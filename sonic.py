@@ -8,6 +8,8 @@ import game_world
 import play_mode
 import random
 import math
+
+import title_mode
 from ring import Ring
 from state_machine import StateMachine, space_down, right_down, left_up, left_down, right_up, start_event
 
@@ -240,6 +242,9 @@ class Sonic:
         self.is_jumping = False
         self.gravity = 0.5
         self.fall_speed = 0
+        self.is_invincible = False  # 무적 상태 플래그
+        self.invincible_time = 0  # 무적 상태 유지 시간
+        self.max_invincible_duration = 2.0  # 무적 시간 (초)
 
         self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
@@ -254,6 +259,7 @@ class Sonic:
         self.state_machine.start(Idle) # 초기 상태가 Idle
         self.state_machine.set_transitions(
             {
+
                 Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
                 Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
                 Jump: {
@@ -265,6 +271,12 @@ class Sonic:
 
     def update(self):
         self.state_machine.update()
+        # 무적 상태 업데이트
+        if self.is_invincible:
+            self.invincible_time += game_framework.frame_time
+            if self.invincible_time >= self.max_invincible_duration:
+                self.is_invincible = False
+                self.invincible_time = 0
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
@@ -315,6 +327,9 @@ class Sonic:
         return False
 
     def handle_collision(self, group, other):
+        if self.is_invincible:  # 무적 상태에서는 충돌 무시
+            return
+
         if group == 'sonic:ground':
             # 소닉의 바운딩 박스와 지형의 바운딩 박스를 가져옴
             sonic_bb = self.get_bb()[0]
@@ -343,8 +358,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
         if group == 'sonic:caterkiller':
             if self.is_jumping:
@@ -352,8 +376,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
         if group == 'sonic:burrobot':
             if self.is_jumping:
@@ -361,8 +394,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
         if group == 'sonic:buzzbomber':
             if self.is_jumping:
@@ -370,8 +412,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
         if group == 'sonic:newtron':
             if self.is_jumping:
@@ -379,8 +430,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
         if group == 'sonic:batbrain':
             if self.is_jumping:
@@ -388,8 +448,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
         if group == 'sonic:eggman':
             if self.is_jumping:
@@ -397,8 +466,17 @@ class Sonic:
                 self.is_jumping = True
                 self.y += 10
             else:
-                self.ring_loss_sound.play()
-                self.drop_rings()
+                if play_mode.rings_collected == 0:
+                    play_mode.lives -= 1
+                    self.is_invincible = True
+                    if play_mode.lives > 0:
+                        game_framework.change_mode(play_mode)
+                    else:
+                        game_framework.change_mode(title_mode)
+                else:
+                    self.ring_loss_sound.play()
+                    self.drop_rings()
+                    self.is_invincible = True
 
     def drop_rings(self):
         drop_count = play_mode.rings_collected

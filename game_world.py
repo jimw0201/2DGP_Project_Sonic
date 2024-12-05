@@ -29,6 +29,7 @@ def remove_object(o):
 def clear():
     global objects
     objects = [[] for _ in range(4)]
+    collision_pairs.clear()
 
 def check_collision(A, B):
     # print(f"Checking collision: A={A}, B={B}")  # 디버깅용 출력
@@ -36,8 +37,8 @@ def check_collision(A, B):
     Bx1, By1, Bx2, By2 = B
 
     if not (Ax2 < Bx1 or Ax1 > Bx2 or Ay1 > By2 or Ay2 < By1):
-        return True  # 충돌함
-    return False  # 충돌하지 않음
+        return True
+    return False
 
 def collide(a, b):
     a_bb_list = a.get_bb()
@@ -72,7 +73,7 @@ def remove_collision_object(o):
             pairs[1].remove(o)
 
 def handle_collisions():
-    for group, pairs in collision_pairs.items():
+    for group, pairs in list(collision_pairs.items()):
         for a in pairs[0]:
             for b in pairs[1]:
                 if collide(a, b):
