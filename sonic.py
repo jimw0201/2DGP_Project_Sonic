@@ -55,9 +55,10 @@ class Idle:
         ground_height = None
         for ground in game_world.objects[1]:
             height = ground.get_height_at_position(sonic.x)
-            if height is not None:
-                ground_height = height
-                break
+            for h in height:
+                if h is not None:
+                    ground_height = h
+                    break
 
         if ground_height is not None and sonic.y - 40 <= ground_height:
             sonic.y = ground_height + 40
@@ -100,9 +101,10 @@ class Run:
         ground_height = None
         for ground in game_world.objects[1]:
             height = ground.get_height_at_position(sonic.x)
-            if height is not None:
-                ground_height = height
-                break
+            for h in height:
+                if h is not None:
+                    ground_height = h
+                    break
 
         if ground_height is not None and sonic.y - 40 <= ground_height:
             sonic.y = ground_height + 40
@@ -197,9 +199,10 @@ class Jump:
             ground_height = None
             for ground in game_world.objects[1]:
                 height = ground.get_height_at_position(sonic.x)
-                if height is not None:
-                    ground_height = height
-                    break
+                for h in height:
+                    if h is not None:
+                        ground_height = h
+                        break
 
             if ground_height is not None and sonic.y <= ground_height:
                 sonic.y = ground_height + 40
