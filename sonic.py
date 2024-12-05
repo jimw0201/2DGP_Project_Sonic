@@ -151,9 +151,15 @@ class Jump:
             sonic.jump_speed -= 1
             sonic.x += sonic.jump_dir * sonic.jump_x_speed * 0.1
 
-            ground_height = 30 + sonic.ground.get_height()  # 땅 높이 반영
-            if sonic.y <= ground_height:
-                sonic.y = ground_height
+            ground_height = None
+            for ground in game_world.objects[1]:
+                height = ground.get_height_at_position(sonic.x)
+                if height is not None:
+                    ground_height = height
+                    break
+
+            if ground_height is not None and sonic.y <= ground_height:
+                sonic.y = ground_height + 40
                 sonic.jump_speed = 0
                 sonic.is_jumping = False
 

@@ -96,6 +96,14 @@ class Ground:
     def get_height(self):
         return self.height
 
+    def get_height_at_position(self, x):
+        bb = self.get_bb()
+        for box in bb:
+            left, bottom, right, top = box
+            if left <= x <= right:
+                return top
+        return None
+
     def draw(self, camera_x, camera_y):
         screen_x = self.x - camera_x
         screen_y = self.y - camera_y
