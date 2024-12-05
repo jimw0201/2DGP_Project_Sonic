@@ -132,11 +132,11 @@ class Ground:
             seg_right_x = seg_left_x + segment_width
 
             # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
-            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
-            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments) * 0.8
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments) * 0.8
 
-            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
-            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments) * 0.8
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments) * 0.8
 
             # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
             y_low = (y_low_start + y_low_end) / 2
@@ -166,11 +166,11 @@ class Ground:
             seg_right_x = seg_left_x + segment_width
 
             # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
-            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
-            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments) * 0.8
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments) * 0.8
 
-            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
-            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments) * 0.8
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments) * 0.8
 
             # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
             y_low = (y_low_start + y_low_end) / 2
@@ -201,11 +201,11 @@ class Ground:
             seg_right_x = seg_left_x + segment_width
 
             # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
-            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
-            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments) * 0.8
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments) * 0.8
 
-            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
-            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments) * 0.8
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments) * 0.8
 
             # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
             y_low = (y_low_start + y_low_end) / 2
@@ -235,11 +235,11 @@ class Ground:
             seg_right_x = seg_left_x + segment_width
 
             # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
-            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
-            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments) * 0.8
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments) * 0.8
 
-            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
-            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments) * 0.8
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments) * 0.8
 
             # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
             y_low = (y_low_start + y_low_end) / 2
@@ -269,11 +269,11 @@ class Ground:
             seg_right_x = seg_left_x + segment_width
 
             # 선형 보간을 통해 각 세그먼트의 y 좌표 계산
-            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments)
-            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments)
+            y_low_start = left_bottom[1] + (left_top[1] - left_bottom[1]) * (i / num_segments) * 0.8
+            y_low_end = left_bottom[1] + (left_top[1] - left_bottom[1]) * ((i + 1) / num_segments) * 0.8
 
-            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments)
-            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments)
+            y_high_start = right_top[1] + (right_bottom[1] - right_top[1]) * (i / num_segments) * 0.8
+            y_high_end = right_top[1] + (right_bottom[1] - right_top[1]) * ((i + 1) / num_segments) * 0.8
 
             # 각 세그먼트의 하단과 상단 y 좌표를 평균하여 사용
             y_low = (y_low_start + y_low_end) / 2
@@ -312,7 +312,7 @@ class Ground:
                      self.x + self.width // 2,
                      self.y)]
         elif self.terrain_type == 'uphill1':
-            return self.get_uphill1_bb(y_offset=y_offset - 225)
+            return self.get_uphill1_bb(y_offset=y_offset - 200)
         elif self.terrain_type == 'downhill1':
             return self.get_downhill1_bb(y_offset=y_offset - 235)
         elif self.terrain_type == 'bridge':

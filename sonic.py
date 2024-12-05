@@ -1,3 +1,5 @@
+# sonic.py
+
 from pico2d import load_image, load_wav, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 
