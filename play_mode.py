@@ -37,8 +37,7 @@ def handle_events():
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, enemies, enemies2, enemies3, enemies4,\
-        enemies5, enemies6, boss, life_display, lives
+    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, crabmeat, caterkiller, burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives
     camera_x = 0
     camera_y = 0
 
@@ -49,12 +48,12 @@ def init():
     background = Background()
     ground = Ground()
     life_display = LifeDisplay(lives)
-    enemies = [Crabmeat(sonic) for _ in range(5)]
-    enemies2 = [Caterkiller(sonic) for _ in range(5)]
-    enemies3 = [Burrobot(sonic) for _ in range(3)]
-    enemies4 = [BuzzBomber(sonic) for _ in range(3)]
-    enemies5 = [Newtron(sonic) for _ in range(3)]
-    enemies6 = [Batbrain(sonic) for _ in range(3)]
+    crabmeat = [Crabmeat(sonic) for _ in range(5)]
+    caterkiller = [Caterkiller(sonic) for _ in range(5)]
+    burrobot = [Burrobot(sonic) for _ in range(3)]
+    buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
+    newtron = [Newtron(sonic) for _ in range(3)]
+    batbrain = [Batbrain(sonic) for _ in range(3)]
     boss = Eggman(sonic)
 
     # 지형 초기화
@@ -116,31 +115,31 @@ def init():
     game_world.add_object(background, 0)
     # game_world.add_object(ground, 1)
     game_world.add_object(sonic, 2)
-    game_world.add_objects(enemies, 2)
-    game_world.add_objects(enemies2, 2)
-    game_world.add_objects(enemies3, 2)
-    game_world.add_objects(enemies4, 2)
-    game_world.add_objects(enemies5, 2)
-    game_world.add_objects(enemies6, 2)
+    game_world.add_objects(crabmeat, 2)
+    game_world.add_objects(caterkiller, 2)
+    game_world.add_objects(burrobot, 2)
+    game_world.add_objects(buzzbomber, 2)
+    game_world.add_objects(newtron, 2)
+    game_world.add_objects(batbrain, 2)
     game_world.add_object(boss, 2)
 
     # 충돌 체크 그룹
-    for enemy in enemies:
+    for enemy in crabmeat:
         game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
 
-    for enemy in enemies2:
+    for enemy in caterkiller:
         game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
 
-    for enemy in enemies3:
+    for enemy in burrobot:
         game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
 
-    for enemy in enemies4:
+    for enemy in buzzbomber:
         game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
 
-    for enemy in enemies5:
+    for enemy in newtron:
         game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
 
-    for enemy in enemies6:
+    for enemy in batbrain:
         game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
 
     game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
