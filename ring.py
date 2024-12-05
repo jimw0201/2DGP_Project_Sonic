@@ -31,9 +31,9 @@ class Ring:
         self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y - camera_y, 50, 50)
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
-        for bb in self.get_bb():
-            left, bottom, right, top = bb
-            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+        # for bb in self.get_bb():
+        #     left, bottom, right, top = bb
+        #     draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ROTATE * ROTATE_PER_TIME * game_framework.frame_time) % 4
