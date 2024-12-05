@@ -291,6 +291,43 @@ class Ground:
 
         return bounding_boxes
 
+    def get_curve1_bb(self, num_segments=20, y_offset=0, curve_depth=0.5, dip_amount=75):
+        bounding_boxes = []
+        segment_width = (self.width // 2) / num_segments  # x축 세그먼트 간 거리
+
+        # 좌측 하단과 우측 상단 좌표
+        left_bottom = (self.x - self.width // 2, self.y - self.height // 4 + y_offset)
+        right_top = (self.x, self.y + y_offset)
+
+        for i in range(num_segments):
+            # 세그먼트의 x 좌표 계산
+            seg_left_x = left_bottom[0] + i * segment_width
+            seg_right_x = seg_left_x + segment_width
+
+            # t 값 계산 (0 ~ 1)
+            t_start = i / num_segments
+            t_end = (i + 1) / num_segments
+
+            # 중간에 움푹 파이는 형태 구현 (파라볼라 또는 제곱 함수 적용)
+            dip_factor_start = 1 - ((t_start - 0.5) ** 2) * 4  # 중간에서 가장 낮아지도록 조정
+            dip_factor_end = 1 - ((t_end - 0.5) ** 2) * 4
+
+            # y 좌표 계산
+            y_low_start = left_bottom[1] + (right_top[1] - left_bottom[1]) * (
+                        t_start ** curve_depth) - dip_amount * dip_factor_start
+            y_low_end = left_bottom[1] + (right_top[1] - left_bottom[1]) * (
+                        t_end ** curve_depth) - dip_amount * dip_factor_end
+
+            # 바운딩 박스 추가
+            bounding_boxes.append((
+                seg_left_x,  # 좌측 x
+                y_low_start,  # 하단 y
+                seg_right_x,  # 우측 x
+                y_low_end  # 상단 y
+            ))
+
+        return bounding_boxes
+
     def get_bb(self, y_offset=0):
         # 지형 타입에 따라 충돌 박스 설정
         if self.terrain_type == 'platform':
@@ -322,8 +359,18 @@ class Ground:
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
-        # elif self.terrain_type == 'curve1':
-        #     pass
+        elif self.terrain_type == 'curve1':
+            # 기존 박스
+            existing_bb = [
+                (self.x,
+                 self.y - self.height // 2,
+                 self.x + self.width // 2,
+                 self.y)
+            ]
+            # 점진적으로 올라가는 바운딩 박스 추가
+            new_bb = self.get_curve1_bb(y_offset=y_offset)
+            # 기존 박스와 새로운 박스를 합쳐서 반환
+            return existing_bb + new_bb
         elif self.terrain_type == 'stair1':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
@@ -377,8 +424,8 @@ class Ground:
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
-        # elif self.terrain_type == 'wall1':
-        #     pass
+        elif self.terrain_type == 'wall1':
+            return []
         elif self.terrain_type == 'plane5':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
