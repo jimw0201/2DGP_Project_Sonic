@@ -84,6 +84,70 @@ class Idle:
         else:
             sonic.image.clip_composite_draw(74 + 30 * int(sonic.frame), 1030, 29, 38, 0, 'h', x, y, 58, 76)
 
+class Respawn:
+    @staticmethod
+    def enter(sonic, e):
+        if left_up(e) or right_down(e):
+            sonic.action = 2
+            sonic.face_dir = -1
+        elif right_up(e) or left_down(e) or start_event(e):
+            sonic.action = 3
+            sonic.face_dir = 1
+
+        sonic.dir = 0
+        sonic.frame = 0
+        sonic.frame_direction = 1
+        sonic.frame_counter = 0
+        sonic.speed = 0
+
+    @staticmethod
+    def exit(sonic, e):
+        pass
+
+    @staticmethod
+    def do(sonic):
+        sonic.frame_counter += 1
+        if sonic.frame_counter >= 10:
+            sonic.frame_counter = 0
+
+            if sonic.frame == 4:
+                sonic.frame_direction = -1
+            elif sonic.frame == 0:
+                sonic.frame_direction = 1
+
+            sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
+            sonic.frame = int(sonic.frame)
+
+        # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+        ground_heights = []
+        for ground in game_world.objects[1]:
+            heights = ground.get_height_at_position(sonic.x)
+            ground_heights.extend(heights)
+
+        closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+
+        if closest_height is not None:
+            if sonic.y - 40 <= closest_height:
+                sonic.y = closest_height + 40
+                sonic.fall_speed = 0
+            else:
+                sonic.fall_speed += sonic.gravity
+                sonic.y -= sonic.fall_speed
+        else:
+            sonic.fall_speed += sonic.gravity
+            sonic.y -= sonic.fall_speed
+
+        if sonic.y < 0:
+            sonic.y = 0
+            sonic.fall_speed = 0
+
+    @staticmethod
+    def draw(sonic, x, y):
+        if sonic.face_dir == 1:
+            sonic.image.clip_draw(74 + 30 * int(sonic.frame), 1030, 29, 38, x, y, 58, 76)
+        else:
+            sonic.image.clip_composite_draw(74 + 30 * int(sonic.frame), 1030, 29, 38, 0, 'h', x, y, 58, 76)
+
 class Run:
     @staticmethod
     def enter(sonic, e):
@@ -256,10 +320,10 @@ class Sonic:
 
         self.image = load_image('sprites/sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
-        self.state_machine.start(Idle) # 초기 상태가 Idle
+        self.state_machine.start(Respawn) # 초기 상태가 Idle
         self.state_machine.set_transitions(
             {
-
+                Respawn: {right_down : Run, left_down : Run, space_down: Jump},
                 Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
                 Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
                 Jump: {
