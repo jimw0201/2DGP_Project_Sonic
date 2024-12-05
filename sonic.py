@@ -228,7 +228,7 @@ class Jump:
 
 class Sonic:
     def __init__(self, ground):
-        self.x, self.y = 50, 110
+        self.x, self.y = 9600, 110
         self.ground = ground
         self.frame = 0
         self.dir = 0
