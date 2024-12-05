@@ -334,20 +334,20 @@ class Ground:
 
         return bounding_boxes
 
-    def get_loop_bb(self, num_segments=20, radius=200, y_offset=0):
-        bounding_boxes = []
-        cx, cy = self.x, self.y + radius + y_offset  # 루프 중심 좌표
-
-        for i in range(num_segments):
-            theta_start = 2 * math.pi * (i / num_segments)
-            theta_end = 2 * math.pi * ((i + 1) / num_segments)
-
-            x1, y1 = cx + radius * math.cos(theta_start), cy + radius * math.sin(theta_start)
-            x2, y2 = cx + radius * math.cos(theta_end), cy + radius * math.sin(theta_end)
-
-            bounding_boxes.append((x1, y1, x2, y2))
-
-        return bounding_boxes
+    # def get_loop_bb(self, num_segments=20, radius=200, y_offset=0):
+    #     bounding_boxes = []
+    #     cx, cy = self.x, self.y + radius + y_offset  # 루프 중심 좌표
+    #
+    #     for i in range(num_segments):
+    #         theta_start = 2 * math.pi * (i / num_segments)
+    #         theta_end = 2 * math.pi * ((i + 1) / num_segments)
+    #
+    #         x1, y1 = cx + radius * math.cos(theta_start), cy + radius * math.sin(theta_start)
+    #         x2, y2 = cx + radius * math.cos(theta_end), cy + radius * math.sin(theta_end)
+    #
+    #         bounding_boxes.append((x1, y1, x2, y2))
+    #
+    #     return bounding_boxes
 
     def get_bb(self, y_offset=0):
         # 지형 타입에 따라 충돌 박스 설정
@@ -437,14 +437,12 @@ class Ground:
         elif self.terrain_type == 'downhill3':
             return self.get_downhill3_bb(y_offset=y_offset - 250)
         elif self.terrain_type == 'loop':
-            existing_bb = [
+            return [
                 (self.x - self.width // 2,
                  self.y - self.height // 2,
                  self.x + self.width // 2,
                  self.y - self.height // 4)
             ]
-            new_bb = self.get_loop_bb(y_offset=y_offset - 150)
-            return existing_bb + new_bb
         elif self.terrain_type == 'uphill2':
             return self.get_uphill2_bb(y_offset=y_offset - 200)
         elif self.terrain_type == 'plane4':

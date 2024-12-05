@@ -406,7 +406,7 @@ class Sonic:
 
         distance = 200
         for i in range(drop_count):
-            angle = i * (360 / drop_count)
+            angle = i * (180 / drop_count)
             offset_x = distance * math.cos(math.radians(angle))
             offset_y = distance * math.sin(math.radians(angle)) + random.randint(-10, 10)  # 약간의 랜덤성 추가
 
