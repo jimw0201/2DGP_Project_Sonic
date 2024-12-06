@@ -36,7 +36,7 @@ class Ring:
         else:
             self.ground_height = 0 + 30
 
-        self.collect_sound = pygame.mixer.Sound('sound/ring_collect.mp3')
+        self.collect_sound = pygame.mixer.Sound('sound/ring_collect.wav')
         self.collect_sound.set_volume(0.5)
 
     def draw(self, camera_x, camera_y):

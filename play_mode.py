@@ -281,7 +281,7 @@ def init():
     clear_bgm = load_music('sound/clear_theme.mp3')
     clear_bgm.set_volume(64)
 
-    jump_sound = load_wav('sound/jump.mp3')
+    jump_sound = load_wav('sound/jump.wav')
     jump_sound.set_volume(64)
 
 def finish():

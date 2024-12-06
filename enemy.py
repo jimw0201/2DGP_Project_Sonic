@@ -35,7 +35,7 @@ class Crabmeat:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack.mp3')
+        self.attack_sound = pygame.mixer.Sound('sound/attack.wav')
         self.attack_sound.set_volume(0.5)
 
     def update(self):
@@ -75,7 +75,7 @@ class Caterkiller:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack.mp3')
+        self.attack_sound = pygame.mixer.Sound('sound/attack.wav')
         self.attack_sound.set_volume(0.5)
 
     def update(self):
@@ -114,7 +114,7 @@ class Burrobot:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack.mp3')
+        self.attack_sound = pygame.mixer.Sound('sound/attack.wav')
         self.attack_sound.set_volume(0.5)
 
     def update(self):
@@ -153,7 +153,7 @@ class BuzzBomber:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack.mp3')
+        self.attack_sound = pygame.mixer.Sound('sound/attack.wav')
         self.attack_sound.set_volume(0.5)
 
     def update(self):
@@ -192,7 +192,7 @@ class Newtron:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack.mp3')
+        self.attack_sound = pygame.mixer.Sound('sound/attack.wav')
         self.attack_sound.set_volume(0.5)
 
     def update(self):
@@ -231,7 +231,7 @@ class Batbrain:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack.mp3')
+        self.attack_sound = pygame.mixer.Sound('sound/attack.wav')
         self.attack_sound.set_volume(0.5)
 
     def update(self):
