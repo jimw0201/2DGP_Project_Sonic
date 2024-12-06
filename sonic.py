@@ -374,6 +374,12 @@ class Sonic:
             self.x = map_max_x - 30
             self.speed = 0
 
+        boss_zone_start = 18525
+        if boss_zone_start <= self.x:
+            if self.x - 30 < boss_zone_start:
+                self.x = boss_zone_start + 30
+                self.speed = 0
+
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
             if event.key in self.keys:
