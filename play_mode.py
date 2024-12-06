@@ -28,7 +28,7 @@ rings_collected = 0
 is_game_over = False
 
 life_display = None
-lives = 1
+lives = 3
 
 def handle_events():
     events = get_events()

@@ -359,6 +359,17 @@ class Sonic:
             if play_mode.lives == 0:
                 play_mode.is_game_over = True
 
+        map_min_x = 0
+        map_max_x = play_mode.background.map_width
+
+        # 소닉의 X 좌표가 맵 경계를 벗어나지 않도록 제한
+        if self.x - 30 < map_min_x:
+            self.x = map_min_x + 30
+            self.speed = 0
+        elif self.x + 30 > map_max_x:
+            self.x = map_max_x - 30
+            self.speed = 0
+
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
             if event.key in self.keys:
