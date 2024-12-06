@@ -308,6 +308,9 @@ class Sonic:
         self.is_invincible = False  # 무적 상태 플래그
         self.invincible_time = 0  # 무적 상태 유지 시간
         self.max_invincible_duration = 2.0  # 무적 시간 (초)
+        self.invincible_blink_time = 0.0  # 깜빡임 주기 관리
+        self.invincible_blink_interval = 0.1  # 0.1초마다 깜빡임
+        self.is_visible = True
 
         self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
@@ -337,9 +340,16 @@ class Sonic:
         # 무적 상태 업데이트
         if self.is_invincible:
             self.invincible_time += game_framework.frame_time
+            self.invincible_blink_time += game_framework.frame_time
+
+            if self.invincible_blink_time >= self.invincible_blink_interval:
+                self.invincible_blink_time = 0.0
+                self.is_visible = not self.is_visible
+
             if self.invincible_time >= self.max_invincible_duration:
                 self.is_invincible = False
                 self.invincible_time = 0
+                self.is_visible = True
 
         if self.y < 10:
             if play_mode.lives > 0:
@@ -374,12 +384,13 @@ class Sonic:
             self.dir = 0
 
     def draw(self, camera_x, camera_y):
-        self.state_machine.draw(self.x - camera_x, self.y - camera_y)
-        # left, bottom, right, top = self.get_bb()
-        # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
-        for bb in self.get_bb():
-            left, bottom, right, top = bb
-            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+        if self.is_visible:
+            self.state_machine.draw(self.x - camera_x, self.y - camera_y)
+            # left, bottom, right, top = self.get_bb()
+            # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+            for bb in self.get_bb():
+                left, bottom, right, top = bb
+                draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def get_bb(self):
         return [(self.x - 30, self.y - 40, self.x + 30, self.y + 40)]
