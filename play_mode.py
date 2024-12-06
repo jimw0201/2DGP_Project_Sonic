@@ -62,14 +62,14 @@ def init():
     background = Background()
     ground = Ground()
     life_display = LifeDisplay(lives)
-    crabmeat = [Crabmeat(sonic, x, y, move_range) for x, y, move_range in crabmeat_positions]
-    caterkiller = [Caterkiller(sonic) for _ in range(5)]
-    burrobot = [Burrobot(sonic) for _ in range(3)]
-    buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
-    newtron = [Newtron(sonic) for _ in range(3)]
-    batbrain = [Batbrain(sonic) for _ in range(3)]
-    boss = Eggman(sonic)
-    metal_ball = MetalBall(sonic, boss)
+    # crabmeat = [Crabmeat(sonic, x, y, move_range) for x, y, move_range in crabmeat_positions]
+    # caterkiller = [Caterkiller(sonic) for _ in range(5)]
+    # burrobot = [Burrobot(sonic) for _ in range(3)]
+    # buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
+    # newtron = [Newtron(sonic) for _ in range(3)]
+    # batbrain = [Batbrain(sonic) for _ in range(3)]
+    # boss = Eggman(sonic)
+    # metal_ball = MetalBall(sonic, boss)
 
     # 지형 초기화
     ground_positions = [
@@ -117,50 +117,73 @@ def init():
         ground = Ground(terrain_type)
         ground.x = x
         ground.y = y
-        print(
-            f"Ground initialized at x={x}, y={y}, type={terrain_type}, width={ground.width}, height={ground.height}")  # 디버깅
         game_world.add_object(ground, 1)
     sonic = Sonic(None)
     sonic.ground = ground
 
-    rings = [Ring(300 + i * 100, 300, sonic) for i in range(10)]
+    ring_positions = [
+        (640, 250),
+        (695, 250),
+        (750, 250),
+        (1155, 500),
+        (1210, 500),
+        (1265, 500),
+        (1320, 500),
+        (1375, 500),
+        (1638, 500),
+        (2210, 420),
+        (2265, 420),
+        (2320, 420),
+        (2375, 420),
+        (2430, 420),
+        (3330, 180),
+        (3385, 160),
+        (3440, 140),
+        (3495, 120),
+        (3560, 110),
+        (3630, 105),
+        (3700, 125),
+        (3755, 165)
+    ]
+
+    rings = [Ring(x, y, sonic) for x, y in ring_positions]
     game_world.add_objects(rings, 3)
 
     # game_world에 객체 추가
     game_world.add_object(background, 0)
     # game_world.add_object(ground, 1)
     game_world.add_object(sonic, 2)
-    game_world.add_objects(crabmeat, 2)
-    game_world.add_objects(caterkiller, 2)
-    game_world.add_objects(burrobot, 2)
-    game_world.add_objects(buzzbomber, 2)
-    game_world.add_objects(newtron, 2)
-    game_world.add_objects(batbrain, 2)
-    game_world.add_object(boss, 2)
-    game_world.add_object(metal_ball, 2)
+    # game_world.add_objects(crabmeat, 2)
+    # game_world.add_objects(caterkiller, 2)
+    # game_world.add_objects(burrobot, 2)
+    # game_world.add_objects(buzzbomber, 2)
+    # game_world.add_objects(newtron, 2)
+    # game_world.add_objects(batbrain, 2)
+    # game_world.add_object(boss, 2)
+    # game_world.add_object(metal_ball, 2)
 
     # 충돌 체크 그룹
-    for enemy in crabmeat:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
-
-    for enemy in caterkiller:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
-
-    for enemy in burrobot:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
-
-    for enemy in buzzbomber:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
-
-    for enemy in newtron:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
-
-    for enemy in batbrain:
-        game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
-
-    game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
-
-    game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
+    # for enemy in crabmeat:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
+    #
+    # for enemy in caterkiller:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
+    #
+    # for enemy in burrobot:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
+    #
+    # for enemy in buzzbomber:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
+    #
+    # for enemy in newtron:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
+    #
+    # for enemy in batbrain:
+    #     game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
+    #
+    # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
+    #
+    # game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
     for obj in game_world.objects[1]:  # 지형 레이어
         game_world.add_collision_pair(sonic, obj, 'sonic:ground')
 

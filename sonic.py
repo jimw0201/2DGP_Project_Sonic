@@ -1,6 +1,6 @@
 # sonic.py
 
-from pico2d import load_image, load_wav, draw_rectangle
+from pico2d import load_image, load_wav, draw_rectangle, load_font
 from sdl2 import SDL_KEYDOWN, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 
 import game_framework
@@ -299,7 +299,7 @@ class Sonic:
         self.dir = 0
         self.action = 3
         self.speed = 0
-        self.max_speed = 200
+        self.max_speed = 100
         self.acceleration = 1.5
         self.frame_counter = 0
         self.is_jumping = False
@@ -311,6 +311,10 @@ class Sonic:
         self.invincible_blink_time = 0.0  # 깜빡임 주기 관리
         self.invincible_blink_interval = 0.1  # 0.1초마다 깜빡임
         self.is_visible = True
+
+        # 소닉 좌표값 확인 위해 임시로 작성
+        global font
+        font = load_font('NiseSegaSonic.TTF', 20)
 
         self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
@@ -402,22 +406,24 @@ class Sonic:
             for bb in self.get_bb():
                 left, bottom, right, top = bb
                 draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+        global font
+        font.draw(self.x - camera_x - 20, self.y - camera_y + 50, f'({int(self.x)}, {int(self.y)})', (255, 255, 255))
 
     def get_bb(self):
         return [(self.x - 30, self.y - 40, self.x + 30, self.y + 40)]
 
-    def is_on_ground(self):
-        ground_heights = []
-        for ground in game_world.objects[1]:  # 지형 레이어 탐색
-            heights = ground.get_height_at_position(self.x)
-            ground_heights.extend(heights)  # 모든 높이를 리스트에 추가
-
-        # 소닉의 높이와 가장 가까운 높이를 선택
-        closest_height = min(ground_heights, key=lambda h: abs(h - self.y), default=None)
-
-        if closest_height is not None and self.y - 40 <= closest_height:
-            return True
-        return False
+    # def is_on_ground(self):
+    #     ground_heights = []
+    #     for ground in game_world.objects[1]:  # 지형 레이어 탐색
+    #         heights = ground.get_height_at_position(self.x)
+    #         ground_heights.extend(heights)  # 모든 높이를 리스트에 추가
+    #
+    #     # 소닉의 높이와 가장 가까운 높이를 선택
+    #     closest_height = min(ground_heights, key=lambda h: abs(h - self.y), default=None)
+    #
+    #     if closest_height is not None and self.y - 40 <= closest_height:
+    #         return True
+    #     return False
 
     def handle_collision(self, group, other):
         global is_game_over

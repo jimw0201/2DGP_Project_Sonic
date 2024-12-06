@@ -40,7 +40,7 @@ class Ring:
         self.collect_sound.set_volume(0.5)
 
     def draw(self, camera_x, camera_y):
-        self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y - camera_y, 50, 50)
+        self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y - camera_y, 40, 40)
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
         # for bb in self.get_bb():
@@ -70,4 +70,4 @@ class Ring:
             game_world.remove_object(self)
 
     def get_bb(self):
-        return [(self.x - 25, self.y - 25, self.x + 25, self.y + 25)]
+        return [(self.x - 20, self.y - 20, self.x + 20, self.y + 20)]
