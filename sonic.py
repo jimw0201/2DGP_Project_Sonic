@@ -409,9 +409,9 @@ class Sonic:
             self.state_machine.draw(self.x - camera_x, self.y - camera_y)
             # left, bottom, right, top = self.get_bb()
             # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
-            for bb in self.get_bb():
-                left, bottom, right, top = bb
-                draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+            # for bb in self.get_bb():
+            #     left, bottom, right, top = bb
+            #     draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
         # global font
         # font.draw(self.x - camera_x - 20, self.y - camera_y + 50, f'({int(self.x)}, {int(self.y)})', (255, 255, 255))
 

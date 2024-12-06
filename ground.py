@@ -119,9 +119,9 @@ class Ground:
         self.image.draw(screen_x, screen_y, self.width, self.height)
 
         # 바운딩 박스를 화면에 그리기
-        for bb in self.get_bb():
-            left, bottom, right, top = bb
-            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+        # for bb in self.get_bb():
+        #     left, bottom, right, top = bb
+        #     draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def update(self):
         pass
