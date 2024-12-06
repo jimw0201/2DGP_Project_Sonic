@@ -4,7 +4,7 @@ import math
 import random
 
 import pygame
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_wav
 
 import game_framework
 import game_world
@@ -34,6 +34,8 @@ class Eggman:
         self.sonic = sonic
         self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')
         self.attack_sound.set_volume(0.5)
+        self.dying_sound = load_wav('sound/eggman_die.wav')
+        self.dying_sound.set_volume(64)
         self.is_invincible = False
         self.invincible_time = 0
         self.max_invincible_duration = 2.0
@@ -60,6 +62,7 @@ class Eggman:
             self.is_invincible = True
 
             if self.hp <= 0:
+                self.dying_sound.play()
                 game_world.remove_object(self.metal_ball)
                 game_world.remove_object(self)
                 play_mode.is_game_clear = True
