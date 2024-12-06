@@ -27,6 +27,8 @@ rings_collected = 0
 
 is_game_over = False
 is_game_clear = False
+
+boss_spawned = False
 is_camera_locked = False
 
 life_display = None
@@ -48,8 +50,10 @@ def handle_events():
 def init():
     global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, font2, crabmeat, caterkiller,\
         burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over,\
-        score, is_camera_locked
+        score, is_camera_locked, is_game_clear, boss_spawned
     is_game_over = False
+    is_game_clear = False
+    boss_spawned = False
     is_camera_locked = False
     camera_x = 0
     camera_y = 0
@@ -72,9 +76,9 @@ def init():
     # buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
     # newtron = [Newtron(sonic) for _ in range(3)]
     # batbrain = [Batbrain(sonic) for _ in range(3)]
-    boss = Eggman(sonic, 18900, 400, 250)
-    metal_ball = MetalBall(sonic, boss)
-    boss.metal_ball = metal_ball
+    # boss = Eggman(sonic, 18900, 400, 250)
+    # metal_ball = MetalBall(sonic, boss)
+    # boss.metal_ball = metal_ball
 
     # 지형 초기화
     ground_positions = [
@@ -208,8 +212,8 @@ def init():
     # game_world.add_objects(buzzbomber, 2)
     # game_world.add_objects(newtron, 2)
     # game_world.add_objects(batbrain, 2)
-    game_world.add_object(boss, 2)
-    game_world.add_object(metal_ball, 2)
+    # game_world.add_object(boss, 2)
+    # game_world.add_object(metal_ball, 2)
 
     # 충돌 체크 그룹
     # for enemy in crabmeat:
@@ -230,9 +234,9 @@ def init():
     # for enemy in batbrain:
     #     game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
     #
-    game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
-
-    game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
+    # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
+    #
+    # game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
     for obj in game_world.objects[1]:  # 지형 레이어
         game_world.add_collision_pair(sonic, obj, 'sonic:ground')
 
@@ -245,7 +249,7 @@ def init():
     jump_sound.set_volume(64)
 
 def finish():
-    global lives, score, is_game_over, is_game_clear
+    global lives, score, is_game_over, is_game_clear, boss_spawned
     temp_lives = lives
     temp_score = score
     game_world.clear()
@@ -253,9 +257,10 @@ def finish():
     score = temp_score
     is_game_over = False
     is_game_clear = False
+    boss_spawned = False
 
 def update():
-    global camera_x, camera_y, time_elapsed, is_game_over, is_camera_locked
+    global camera_x, camera_y, time_elapsed, is_game_over, is_camera_locked, boss_spawned
 
     if is_game_over:
         return
@@ -263,6 +268,18 @@ def update():
     time_elapsed += game_framework.frame_time
 
     boss_zone_start = 18925
+
+    if not boss_spawned and sonic.x >= boss_zone_start:
+        boss = Eggman(sonic, 18900, 400, 250)
+        metal_ball = MetalBall(sonic, boss)
+        boss.metal_ball = metal_ball
+
+        game_world.add_object(boss, 2)
+        game_world.add_object(metal_ball, 2)
+        game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
+        game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
+
+        boss_spawned = True
 
     if sonic.x >= boss_zone_start:
         is_camera_locked = True
