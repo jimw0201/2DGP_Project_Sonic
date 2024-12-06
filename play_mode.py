@@ -4,6 +4,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+import title_mode
 from boss import Eggman
 from enemy import Crabmeat, Caterkiller, Burrobot, BuzzBomber, Newtron, Batbrain
 from ground import Ground, Background
@@ -27,7 +28,7 @@ rings_collected = 0
 is_game_over = False
 
 life_display = None
-lives = 3
+lives = 1
 
 def handle_events():
     events = get_events()
@@ -36,17 +37,22 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_r and is_game_over == True:
+            game_framework.change_mode(title_mode)
         else:
             if event.type in (SDL_KEYDOWN, SDL_KEYUP):
                 sonic.handle_event(event)
 
 def init():
-    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, crabmeat, caterkiller, burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected
+    global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, font2, crabmeat, caterkiller,\
+        burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over, score
+    is_game_over = False
     camera_x = 0
     camera_y = 0
     time_elapsed = 0
     rings_collected = 0
     if lives == 0:
+        score = 0
         lives = 3
     font = load_font('NiseSegaSonic.TTF', 20)
     font2 = load_font('NiseSegaSonic.TTF', 50)
@@ -162,12 +168,13 @@ def init():
     jump_sound.set_volume(64)
 
 def finish():
-    global lives, score
+    global lives, score, is_game_over
     temp_lives = lives
     temp_score = score
     game_world.clear()
     lives = temp_lives
     score = temp_score
+    is_game_over = False
 
 def update():
     global camera_x, camera_y, time_elapsed, is_game_over
@@ -203,8 +210,9 @@ def draw():
     update_canvas()
 
 def draw_game_over():
-    global font2
+    global font, font2
     font2.draw(200, 300, "GAME OVER", (255, 0, 0))
+    font.draw(200, 250, "PRESS R TO RETURN TO TITLE", (255, 255, 0))
 
 def draw_ui():
     global font, score, time_elapsed, rings_collected, life_display
