@@ -44,35 +44,25 @@ class Idle:
         sonic.frame_counter += 1
         if sonic.frame_counter >= 10:
             sonic.frame_counter = 0
-
             if sonic.frame == 4:
                 sonic.frame_direction = -1
             elif sonic.frame == 0:
                 sonic.frame_direction = 1
-
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-            left_edge = sonic.x - 30
-            right_edge = sonic.x + 30
-            ground_heights = []
-            for ground in game_world.objects[1]:
-                heights = ground.get_height_at_position(left_edge)
-                heights += ground.get_height_at_position(right_edge)
-                ground_heights.extend(heights)
+        sonic.fall_speed = min(sonic.fall_speed + sonic.gravity, 10)
+        sonic.y -= sonic.fall_speed
 
-            closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+        ground_heights = []
+        for ground in game_world.objects[1]:
+            heights = ground.get_height_at_position(sonic.x)
+            ground_heights.extend(heights)
 
-            if closest_height is not None:
-                if sonic.y - 40 <= closest_height:
-                    sonic.y = closest_height + 40
-                    sonic.fall_speed = 0
-                else:
-                    sonic.fall_speed += sonic.gravity
-                    sonic.y -= sonic.fall_speed
-            else:
-                sonic.fall_speed += sonic.gravity
-                sonic.y -= sonic.fall_speed
+        closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+        if closest_height is not None and sonic.y - 40 <= closest_height:
+            sonic.y = closest_height + 40
+            sonic.fall_speed = 0
 
             if sonic.y < 0:
                 sonic.y = 0
