@@ -26,6 +26,7 @@ rings_collected = 0
 
 is_game_over = False
 is_game_clear = False
+is_clear_bgm_played = False
 
 boss_spawned = False
 is_camera_locked = False
@@ -49,7 +50,7 @@ def handle_events():
 def init():
     global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, font2, crabmeat, caterkiller,\
         burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over,\
-        score, is_camera_locked, is_game_clear, boss_spawned, boss_bgm
+        score, is_camera_locked, is_game_clear, boss_spawned, boss_bgm, clear_bgm
     is_game_over = False
     is_game_clear = False
     boss_spawned = False
@@ -150,8 +151,8 @@ def init():
         (18304, 200, 'plane1'),
         (18816, 200, 'plane1'),
         (19328, 200, 'plane1'),
-        (18600, 200, 'boss_platform'),
-        (19250, 200, 'boss_platform')
+        (18600, 220, 'boss_platform'),
+        (19250, 220, 'boss_platform')
     ]
     for x, y, terrain_type in ground_positions:
         ground = Ground(terrain_type)
@@ -277,11 +278,14 @@ def init():
     boss_bgm = load_music('sound/boss_theme.mp3')
     boss_bgm.set_volume(64)
 
+    clear_bgm = load_music('sound/clear_theme.mp3')
+    clear_bgm.set_volume(64)
+
     jump_sound = load_wav('sound/jump.mp3')
     jump_sound.set_volume(64)
 
 def finish():
-    global lives, score, is_game_over, is_game_clear, boss_spawned
+    global lives, score, is_game_over, is_game_clear, boss_spawned, is_clear_bgm_played
     temp_lives = lives
     temp_score = score
     game_world.clear()
@@ -290,11 +294,19 @@ def finish():
     is_game_over = False
     is_game_clear = False
     boss_spawned = False
+    is_clear_bgm_played = False
 
 def update():
-    global camera_x, camera_y, time_elapsed, is_game_over, is_game_clear, is_camera_locked, boss_spawned, bgm, boss_bgm
+    global camera_x, camera_y, time_elapsed, is_game_over, is_game_clear, is_camera_locked, boss_spawned, bgm, boss_bgm, clear_bgm, is_clear_bgm_played
 
-    if is_game_over or is_game_clear:
+    if is_game_over:
+        return
+
+    if is_game_clear:
+        if not is_clear_bgm_played:
+            boss_bgm.stop()
+            clear_bgm.play()
+            is_clear_bgm_played = True
         return
 
     time_elapsed += game_framework.frame_time

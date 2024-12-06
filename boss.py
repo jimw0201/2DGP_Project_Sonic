@@ -39,7 +39,7 @@ class Eggman:
         self.is_invincible = False
         self.invincible_time = 0
         self.max_invincible_duration = 2.0
-        self.hp = 8
+        self.hp = 1
         self.metal_ball = None
 
     def update(self):
