@@ -32,6 +32,9 @@ class Eggman:
         self.sonic = sonic
         self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')
         self.attack_sound.set_volume(0.5)
+        self.is_invincible = False
+        self.invincible_time = 0
+        self.max_invincible_duration = 2.0
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_EGGMAN * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_EGGMAN
@@ -40,15 +43,24 @@ class Eggman:
         if abs(self.x - self.initial_x) > self.move_range:
             self.dir *= -1
 
+        if self.is_invincible:
+            self.invincible_time += game_framework.frame_time
+            if self.invincible_time >= self.max_invincible_duration:
+                self.is_invincible = False
+                self.invincible_time = 0
+
     def handle_collision(self, group, other):
-        if group == 'sonic:eggman' and other.is_jumping:
+        if group == 'sonic:eggman' and other.is_jumping and not self.is_invincible:
             self.attack_sound.play()
+            self.is_invincible = True
 
     def draw(self, camera_x, camera_y):
-        if self.dir == 1:
-            self.image.clip_composite_draw(int(self.frame) * 77, 374, 77, 53, 0, 'h', self.x - camera_x, self.y - camera_y, 154, 108)
-        else:
-            self.image.clip_draw(int(self.frame) * 77, 374, 77, 53, self.x - camera_x, self.y - camera_y, 154, 108)
+        if not self.is_invincible or int(self.invincible_time * 10) % 2 == 0:  # 깜빡임 효과
+            if self.dir == 1:
+                self.image.clip_composite_draw(int(self.frame) * 77, 374, 77, 53, 0, 'h', self.x - camera_x,
+                                               self.y - camera_y, 154, 108)
+            else:
+                self.image.clip_draw(int(self.frame) * 77, 374, 77, 53, self.x - camera_x, self.y - camera_y, 154, 108)
 
     def get_bb(self):
         width = 154 // 2
