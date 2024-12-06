@@ -568,6 +568,9 @@ class Sonic:
                     self.is_invincible = True
 
         if group == 'sonic:eggman':
+            if other.is_invincible:
+                return
+            
             if self.is_jumping:
                 self.jump_speed = 15
                 self.is_jumping = True
