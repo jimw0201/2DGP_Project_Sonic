@@ -318,10 +318,10 @@ class Sonic:
 
         self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
-        self.jump_sound = load_wav('sound/jump.mp3')
+        self.jump_sound = load_wav('sound/jump.wav')
         self.jump_sound.set_volume(64)
 
-        self.ring_loss_sound = load_wav('sound/ring_loss.mp3')
+        self.ring_loss_sound = load_wav('sound/ring_loss.wav')
         self.ring_loss_sound.set_volume(64)
 
         self.image = load_image('sprites/sonic_sprite_nbg.png')
