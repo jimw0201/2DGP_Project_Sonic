@@ -49,7 +49,7 @@ def handle_events():
 def init():
     global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, font2, crabmeat, caterkiller,\
         burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over,\
-        score, is_camera_locked, is_game_clear, boss_spawned
+        score, is_camera_locked, is_game_clear, boss_spawned, boss_bgm
     is_game_over = False
     is_game_clear = False
     boss_spawned = False
@@ -274,6 +274,9 @@ def init():
     bgm.set_volume(64)
     bgm.repeat_play()
 
+    boss_bgm = load_music('sound/boss_theme.mp3')
+    boss_bgm.set_volume(64)
+
     jump_sound = load_wav('sound/jump.mp3')
     jump_sound.set_volume(64)
 
@@ -289,7 +292,7 @@ def finish():
     boss_spawned = False
 
 def update():
-    global camera_x, camera_y, time_elapsed, is_game_over, is_game_clear, is_camera_locked, boss_spawned
+    global camera_x, camera_y, time_elapsed, is_game_over, is_game_clear, is_camera_locked, boss_spawned, bgm, boss_bgm
 
     if is_game_over or is_game_clear:
         return
@@ -312,6 +315,10 @@ def update():
         boss_spawned = True
 
     if sonic.x >= boss_zone_start:
+        if bgm is not None:
+            bgm.stop()
+            bgm = None
+            boss_bgm.repeat_play()
         is_camera_locked = True
 
     if is_camera_locked:
