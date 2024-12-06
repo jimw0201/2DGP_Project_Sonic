@@ -26,6 +26,7 @@ time_elapsed = 0
 rings_collected = 0
 
 is_game_over = False
+is_camera_locked = False
 
 life_display = None
 lives = 3
@@ -45,8 +46,10 @@ def handle_events():
 
 def init():
     global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, font2, crabmeat, caterkiller,\
-        burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over, score
+        burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over,\
+        score, is_camera_locked
     is_game_over = False
+    is_camera_locked = False
     camera_x = 0
     camera_y = 0
     time_elapsed = 0
@@ -250,21 +253,29 @@ def finish():
     is_game_over = False
 
 def update():
-    global camera_x, camera_y, time_elapsed, is_game_over
+    global camera_x, camera_y, time_elapsed, is_game_over, is_camera_locked
 
     if is_game_over:
         return
 
-    camera_x = sonic.x - 400
-    camera_y = sonic.y - 300
-
-    max_camera_x = background.map_width - 800
-    max_camera_y = background.map_height
-
-    camera_x = max(0, min(camera_x, max_camera_x))
-    camera_y = max(0, min(camera_y, max_camera_y))
-
     time_elapsed += game_framework.frame_time
+
+    boss_zone_start = 18925
+
+    if sonic.x >= boss_zone_start:
+        is_camera_locked = True
+
+    if is_camera_locked:
+        camera_x = boss_zone_start - 400
+        camera_y = max(0, min(camera_y, background.map_height))
+    else:
+        camera_x = sonic.x - 400
+        camera_y = sonic.y - 300
+
+        max_camera_x = background.map_width - 800
+        max_camera_y = background.map_height
+        camera_x = max(0, min(camera_x, max_camera_x))
+        camera_y = max(0, min(camera_y, max_camera_y))
 
     game_world.handle_collisions()
 
