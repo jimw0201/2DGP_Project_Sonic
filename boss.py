@@ -8,6 +8,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_framework
 import game_world
+import play_mode
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 10.0
@@ -61,6 +62,7 @@ class Eggman:
             if self.hp <= 0:
                 game_world.remove_object(self.metal_ball)
                 game_world.remove_object(self)
+                play_mode.is_game_clear = True
 
     def draw(self, camera_x, camera_y):
         if not self.is_invincible or int(self.invincible_time * 10) % 2 == 0:  # 깜빡임 효과

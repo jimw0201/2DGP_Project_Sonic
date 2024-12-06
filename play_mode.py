@@ -26,6 +26,7 @@ time_elapsed = 0
 rings_collected = 0
 
 is_game_over = False
+is_game_clear = False
 is_camera_locked = False
 
 life_display = None
@@ -244,13 +245,14 @@ def init():
     jump_sound.set_volume(64)
 
 def finish():
-    global lives, score, is_game_over
+    global lives, score, is_game_over, is_game_clear
     temp_lives = lives
     temp_score = score
     game_world.clear()
     lives = temp_lives
     score = temp_score
     is_game_over = False
+    is_game_clear = False
 
 def update():
     global camera_x, camera_y, time_elapsed, is_game_over, is_camera_locked
@@ -289,6 +291,9 @@ def draw():
     if is_game_over:
         draw_game_over()
 
+    if is_game_clear:
+        draw_game_clear()
+
     draw_ui()
 
     update_canvas()
@@ -297,6 +302,10 @@ def draw_game_over():
     global font, font2
     font2.draw(200, 300, "GAME OVER", (255, 0, 0))
     font.draw(200, 250, "PRESS R TO RETURN TO TITLE", (255, 255, 0))
+
+def draw_game_clear():
+    global font, font2
+    font2.draw(200, 300, 'GAME CLEAR!', (255, 255, 0))  # 화면 중앙에 출력
 
 def draw_ui():
     global font, score, time_elapsed, rings_collected, life_display
