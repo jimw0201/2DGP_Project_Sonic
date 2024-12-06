@@ -7,6 +7,7 @@ import pygame
 from pico2d import load_image, draw_rectangle
 
 import game_framework
+import game_world
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 10.0
@@ -35,6 +36,8 @@ class Eggman:
         self.is_invincible = False
         self.invincible_time = 0
         self.max_invincible_duration = 2.0
+        self.hp = 8
+        self.metal_ball = None
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_EGGMAN * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_EGGMAN
@@ -52,7 +55,12 @@ class Eggman:
     def handle_collision(self, group, other):
         if group == 'sonic:eggman' and other.is_jumping and not self.is_invincible:
             self.attack_sound.play()
+            self.hp -= 1
             self.is_invincible = True
+
+            if self.hp <= 0:
+                game_world.remove_object(self.metal_ball)
+                game_world.remove_object(self)
 
     def draw(self, camera_x, camera_y):
         if not self.is_invincible or int(self.invincible_time * 10) % 2 == 0:  # 깜빡임 효과

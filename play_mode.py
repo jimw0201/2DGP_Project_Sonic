@@ -70,6 +70,7 @@ def init():
     # batbrain = [Batbrain(sonic) for _ in range(3)]
     boss = Eggman(sonic, 18900, 400, 250)
     metal_ball = MetalBall(sonic, boss)
+    boss.metal_ball = metal_ball
 
     # 지형 초기화
     ground_positions = [
