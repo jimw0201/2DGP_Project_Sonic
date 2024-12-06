@@ -60,7 +60,7 @@ class Idle:
             ground_heights.extend(heights)
 
         closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
-        if closest_height is not None and sonic.y - 40 <= closest_height:
+        if closest_height is not None and sonic.y - 40 <= closest_height <= sonic.y + 40:
             sonic.y = closest_height + 40
             sonic.fall_speed = 0
 
@@ -118,7 +118,7 @@ class Respawn:
         closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
         if closest_height is not None:
-            if sonic.y - 40 <= closest_height:
+            if sonic.y - 40 <= closest_height <= sonic.y + 40:
                 sonic.y = closest_height + 40
                 sonic.fall_speed = 0
             else:
@@ -169,7 +169,7 @@ class Run:
 
         closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
-        if closest_height is not None and sonic.y - 40 <= closest_height:
+        if closest_height is not None and sonic.y - 40 <= closest_height <= sonic.y + 40:
             sonic.y = closest_height + 40
             sonic.fall_speed = 0
         else:
@@ -182,7 +182,7 @@ class Run:
 
         # x 좌표 이동
         if sonic.dir != 0:
-            if closest_height is not None and sonic.y - 40 <= closest_height:
+            if closest_height is not None and sonic.y - 40 <= closest_height <= sonic.y + 40:
                 if sonic.speed < sonic.max_speed:
                     sonic.speed += sonic.acceleration
             else:
@@ -274,7 +274,7 @@ class Jump:
             closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
             # 착지 처리
-            if closest_height is not None and sonic.y - 40 <= closest_height:
+            if closest_height is not None and sonic.y - 40 <= closest_height <= sonic.y + 40:
                 sonic.y = closest_height + 40
                 sonic.jump_speed = 0
                 sonic.is_jumping = False
