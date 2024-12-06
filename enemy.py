@@ -27,8 +27,10 @@ FRAMES_PER_ACTION_BATBRAIN = 3
 class Crabmeat:
     images = None
 
-    def __init__(self, sonic): # (self, sonic, firstX)
-        self.x, self.y = random.randint(500, 1600), 120 # firstX, 120
+    def __init__(self, sonic, x, y, move_range=100): # (self, sonic, firstX)
+        self.x, self.y = x, y
+        self.move_range = move_range
+        self.initial_x = x  # 시작 위치 저장
         self.image = load_image('sprites/enemies_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])
@@ -39,10 +41,7 @@ class Crabmeat:
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_CRABMEAT * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_CRABMEAT
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
-        if self.x <= 50 or self.x >= 19150: #self.x <= firstX - range or self.x >= firstX + range
-            self.dir *= -1
-
-        if random.random() < 0.01:
+        if abs(self.x - self.initial_x) > self.move_range:
             self.dir *= -1
 
     def handle_collision(self, group, other):

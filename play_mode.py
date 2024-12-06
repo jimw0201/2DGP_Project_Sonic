@@ -57,11 +57,12 @@ def init():
     font = load_font('NiseSegaSonic.TTF', 20)
     font2 = load_font('NiseSegaSonic.TTF', 50)
 
+    crabmeat_positions = [(300, 120, 50), (600, 120, 100), (900, 120, 150)]
 
     background = Background()
     ground = Ground()
     life_display = LifeDisplay(lives)
-    crabmeat = [Crabmeat(sonic) for _ in range(5)] # Crabmeat(sonic, 100)
+    crabmeat = [Crabmeat(sonic, x, y, move_range) for x, y, move_range in crabmeat_positions]
     caterkiller = [Caterkiller(sonic) for _ in range(5)]
     burrobot = [Burrobot(sonic) for _ in range(3)]
     buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
