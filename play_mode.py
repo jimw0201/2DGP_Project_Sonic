@@ -260,16 +260,17 @@ def finish():
     boss_spawned = False
 
 def update():
-    global camera_x, camera_y, time_elapsed, is_game_over, is_camera_locked, boss_spawned
+    global camera_x, camera_y, time_elapsed, is_game_over, is_game_clear, is_camera_locked, boss_spawned
 
-    if is_game_over:
+    if is_game_over or is_game_clear:
         return
 
     time_elapsed += game_framework.frame_time
 
     boss_zone_start = 18925
+    boss_spawn_x = 19000
 
-    if not boss_spawned and sonic.x >= boss_zone_start:
+    if not boss_spawned and sonic.x >= boss_spawn_x:
         boss = Eggman(sonic, 18900, 400, 250)
         metal_ball = MetalBall(sonic, boss)
         boss.metal_ball = metal_ball
@@ -321,8 +322,16 @@ def draw_game_over():
     font.draw(200, 250, "PRESS R TO RETURN TO TITLE", (255, 255, 0))
 
 def draw_game_clear():
-    global font, font2
-    font2.draw(200, 300, 'GAME CLEAR!', (255, 255, 0))  # 화면 중앙에 출력
+    global font, font2, score, rings_collected
+
+    time_bonus, ring_bonus = calculate_score()
+
+    final_score = score + time_bonus + ring_bonus
+
+    font2.draw(200, 300, 'GAME CLEAR!', (255, 255, 0))
+    font.draw(200, 250, f'Final Score: {final_score}', (255, 255, 255))
+    font.draw(200, 200, f'Time Bonus: {time_bonus}', (255, 255, 255))
+    font.draw(200, 150, f'Ring Bonus: {ring_bonus}', (255, 255, 255))
 
 def draw_ui():
     global font, score, time_elapsed, rings_collected, life_display
@@ -336,6 +345,14 @@ def draw_ui():
     font.draw(20, 570, f"SCORE: {score}", (255, 255, 0))            # 점수
     font.draw(20, 540, f"TIME: {time_display}", (255, 255, 0))      # 경과 시간
     font.draw(20, 510, f"RINGS: {rings_collected}", (255, 255, 0))  # 링 개수
+
+def calculate_score():
+    global rings_collected, time_elapsed
+
+    time_bonus = max(0, (600 - int(time_elapsed)) * 10)
+    ring_bonus = rings_collected * 10
+
+    return time_bonus, ring_bonus
 
 def pause():
     pass
