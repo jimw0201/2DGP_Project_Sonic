@@ -551,6 +551,19 @@ class Sonic:
                     self.drop_rings()
                     self.is_invincible = True
 
+        if group == 'sonic:metal_ball':
+            if play_mode.rings_collected == 0:
+                play_mode.lives -= 1
+                self.is_invincible = True
+                if play_mode.lives > 0:
+                    game_framework.change_mode(play_mode)
+                if play_mode.lives == 0:
+                    play_mode.is_game_over = True
+            else:
+                self.ring_loss_sound.play()
+                self.drop_rings()
+                self.is_invincible = True
+
     def drop_rings(self):
         drop_count = play_mode.rings_collected
         play_mode.rings_collected = 0
