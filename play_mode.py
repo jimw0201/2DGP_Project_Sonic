@@ -68,8 +68,8 @@ def init():
     # buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
     # newtron = [Newtron(sonic) for _ in range(3)]
     # batbrain = [Batbrain(sonic) for _ in range(3)]
-    # boss = Eggman(sonic)
-    # metal_ball = MetalBall(sonic, boss)
+    boss = Eggman(sonic, 18900, 400, 250)
+    metal_ball = MetalBall(sonic, boss)
 
     # 지형 초기화
     ground_positions = [
@@ -201,8 +201,8 @@ def init():
     # game_world.add_objects(buzzbomber, 2)
     # game_world.add_objects(newtron, 2)
     # game_world.add_objects(batbrain, 2)
-    # game_world.add_object(boss, 2)
-    # game_world.add_object(metal_ball, 2)
+    game_world.add_object(boss, 2)
+    game_world.add_object(metal_ball, 2)
 
     # 충돌 체크 그룹
     # for enemy in crabmeat:
@@ -223,9 +223,9 @@ def init():
     # for enemy in batbrain:
     #     game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
     #
-    # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
-    #
-    # game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
+    game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
+
+    game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
     for obj in game_world.objects[1]:  # 지형 레이어
         game_world.add_collision_pair(sonic, obj, 'sonic:ground')
 

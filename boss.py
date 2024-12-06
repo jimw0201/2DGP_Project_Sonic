@@ -22,9 +22,10 @@ FRAMES_PER_ACTION_EGGMAN = 8
 class Eggman:
     images = None
 
-    def __init__(self, sonic):
-        # 잡몹은 랜덤 위치 생성인데 에그맨은 보스라 스테이지 끝 도달 시 생성되게 해야함. 일단 임시로 랜덤 생성
-        self.x, self.y = random.randint(200, 1000), 400
+    def __init__(self, sonic, x, y, move_range=100):
+        self.x, self.y = x, y
+        self.move_range = move_range
+        self.initial_x = x
         self.image = load_image('sprites/eggman_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])
@@ -36,9 +37,7 @@ class Eggman:
         self.frame = (self.frame + FRAMES_PER_ACTION_EGGMAN * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_EGGMAN
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
 
-        if random.random() < 0.01:
-            self.dir *= -1
-        if self.x <= 50 or self.x >= 19150:
+        if abs(self.x - self.initial_x) > self.move_range:
             self.dir *= -1
 
     def handle_collision(self, group, other):
