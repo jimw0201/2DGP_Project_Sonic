@@ -293,7 +293,7 @@ class Jump:
 
 class Sonic:
     def __init__(self, ground):
-        self.x, self.y = 17000, 726
+        self.x, self.y = 500, 110
         self.ground = ground
         self.frame = 0
         self.dir = 0
@@ -313,8 +313,8 @@ class Sonic:
         self.is_visible = True
 
         # 소닉 좌표값 확인 위해 임시로 작성
-        global font
-        font = load_font('NiseSegaSonic.TTF', 20)
+        # global font
+        # font = load_font('NiseSegaSonic.TTF', 20)
 
         self.keys = {SDLK_LEFT: False, SDLK_RIGHT: False}
 
@@ -412,8 +412,8 @@ class Sonic:
             for bb in self.get_bb():
                 left, bottom, right, top = bb
                 draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
-        global font
-        font.draw(self.x - camera_x - 20, self.y - camera_y + 50, f'({int(self.x)}, {int(self.y)})', (255, 255, 255))
+        # global font
+        # font.draw(self.x - camera_x - 20, self.y - camera_y + 50, f'({int(self.x)}, {int(self.y)})', (255, 255, 255))
 
     def get_bb(self):
         return [(self.x - 30, self.y - 40, self.x + 30, self.y + 40)]
