@@ -30,7 +30,8 @@ class Ground:
         'plane7': 'tilemaps/13.png',
         'plane8': 'tilemaps/21.png',
         'stair2': 'tilemaps/25.png',
-        'boss_platform': 'tilemaps/boss_platform.png'
+        'boss_platform': 'tilemaps/boss_platform.png',
+        'clean_wall' : 'tilemaps/clean_wall.png'
     }
 
     # 지형 너비
@@ -57,7 +58,8 @@ class Ground:
         'plane7': 512,
         'plane8': 512,
         'stair2': 512,
-        'boss_platform': 150
+        'boss_platform': 150,
+        'clean_wall' : 512
     }
 
     # 지형 높이
@@ -84,7 +86,8 @@ class Ground:
         'plane7': 512,
         'plane8': 512,
         'stair2': 512,
-        'boss_platform': 60
+        'boss_platform': 60,
+        'clean_wall': 512
     }
     def __init__(self, terrain_type='platform'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
@@ -453,6 +456,8 @@ class Ground:
                      self.x + self.width // 2,
                      self.y)]
         elif self.terrain_type == 'wall1':
+            return []
+        elif self.terrain_type == 'clean_wall':
             return []
         elif self.terrain_type == 'plane5':
             return [(self.x - self.width // 2,
