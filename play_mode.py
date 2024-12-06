@@ -1,5 +1,4 @@
 # play_mode.py
-
 from pico2d import *
 import game_framework
 
@@ -65,17 +64,22 @@ def init():
     font = load_font('NiseSegaSonic.TTF', 20)
     font2 = load_font('NiseSegaSonic.TTF', 50)
 
-    crabmeat_positions = [(300, 120, 50), (600, 120, 100), (900, 120, 150)]
+    crabmeat_positions = [(1000, 100, 400), (4415, 305, 20), (16290, 178, 30)]
+    caterkiller_positions = [(2800, 230, 200), (9610, 590, 250), (14100, 230, 200)]
+    burrobot_positions = [(5200, 465, 500), (6000, 588, 200), (15300, 102, 500)]
+    buzzbomber_positions = [(2000, 300, 1000), (6200, 720, 500), (6500, 700, 500), (7700, 1000, 1000)]
+    newtron_positions = [(8830, 800, 200), (11000, 900, 200), (11100, 800, 100), (11200, 900, 200)]
+    batbrain_positions = [(14200, 270, 300), (14645, 300, 200), (16600, 350, 300), (16900, 300, 200)]
 
     background = Background()
     ground = Ground()
     life_display = LifeDisplay(lives)
-    # crabmeat = [Crabmeat(sonic, x, y, move_range) for x, y, move_range in crabmeat_positions]
-    # caterkiller = [Caterkiller(sonic) for _ in range(5)]
-    # burrobot = [Burrobot(sonic) for _ in range(3)]
-    # buzzbomber = [BuzzBomber(sonic) for _ in range(3)]
-    # newtron = [Newtron(sonic) for _ in range(3)]
-    # batbrain = [Batbrain(sonic) for _ in range(3)]
+    crabmeat = [Crabmeat(sonic, x, y, move_range) for x, y, move_range in crabmeat_positions]
+    caterkiller = [Caterkiller(sonic, x, y, move_range) for x, y, move_range in caterkiller_positions]
+    burrobot = [Burrobot(sonic, x, y, move_range) for x, y, move_range in burrobot_positions]
+    buzzbomber = [BuzzBomber(sonic, x, y, move_range) for x, y, move_range in buzzbomber_positions]
+    newtron = [Newtron(sonic, x, y, move_range) for x, y, move_range in newtron_positions]
+    batbrain = [Batbrain(sonic, x, y, move_range) for x, y, move_range in batbrain_positions]
     # boss = Eggman(sonic, 18900, 400, 250)
     # metal_ball = MetalBall(sonic, boss)
     # boss.metal_ball = metal_ball
@@ -206,34 +210,34 @@ def init():
     game_world.add_object(background, 0)
     # game_world.add_object(ground, 1)
     game_world.add_object(sonic, 2)
-    # game_world.add_objects(crabmeat, 2)
-    # game_world.add_objects(caterkiller, 2)
-    # game_world.add_objects(burrobot, 2)
-    # game_world.add_objects(buzzbomber, 2)
-    # game_world.add_objects(newtron, 2)
-    # game_world.add_objects(batbrain, 2)
+    game_world.add_objects(crabmeat, 2)
+    game_world.add_objects(caterkiller, 2)
+    game_world.add_objects(burrobot, 2)
+    game_world.add_objects(buzzbomber, 2)
+    game_world.add_objects(newtron, 2)
+    game_world.add_objects(batbrain, 2)
     # game_world.add_object(boss, 2)
     # game_world.add_object(metal_ball, 2)
 
     # 충돌 체크 그룹
-    # for enemy in crabmeat:
-    #     game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
-    #
-    # for enemy in caterkiller:
-    #     game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
-    #
-    # for enemy in burrobot:
-    #     game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
-    #
-    # for enemy in buzzbomber:
-    #     game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
-    #
-    # for enemy in newtron:
-    #     game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
-    #
-    # for enemy in batbrain:
-    #     game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
-    #
+    for enemy in crabmeat:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:crabmeat')
+
+    for enemy in caterkiller:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:caterkiller')
+
+    for enemy in burrobot:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:burrobot')
+
+    for enemy in buzzbomber:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:buzzbomber')
+
+    for enemy in newtron:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:newtron')
+
+    for enemy in batbrain:
+        game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
+
     # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
     #
     # game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
