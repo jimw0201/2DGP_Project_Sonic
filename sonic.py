@@ -53,28 +53,30 @@ class Idle:
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-        # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
-        ground_heights = []
-        for ground in game_world.objects[1]:
-            heights = ground.get_height_at_position(sonic.x)
-            ground_heights.extend(heights)
+            left_edge = sonic.x - 30
+            right_edge = sonic.x + 30
+            ground_heights = []
+            for ground in game_world.objects[1]:
+                heights = ground.get_height_at_position(left_edge)
+                heights += ground.get_height_at_position(right_edge)
+                ground_heights.extend(heights)
 
-        closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+            closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
-        if closest_height is not None:
-            if sonic.y - 40 <= closest_height:
-                sonic.y = closest_height + 40
-                sonic.fall_speed = 0
+            if closest_height is not None:
+                if sonic.y - 40 <= closest_height:
+                    sonic.y = closest_height + 40
+                    sonic.fall_speed = 0
+                else:
+                    sonic.fall_speed += sonic.gravity
+                    sonic.y -= sonic.fall_speed
             else:
                 sonic.fall_speed += sonic.gravity
                 sonic.y -= sonic.fall_speed
-        else:
-            sonic.fall_speed += sonic.gravity
-            sonic.y -= sonic.fall_speed
 
-        if sonic.y < 0:
-            sonic.y = 0
-            sonic.fall_speed = 0
+            if sonic.y < 0:
+                sonic.y = 0
+                sonic.fall_speed = 0
 
     @staticmethod
     def draw(sonic, x, y):
@@ -167,13 +169,16 @@ class Run:
 
     @staticmethod
     def do(sonic):
-        # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+        left_edge = sonic.x - 30
+        right_edge = sonic.x + 30
         ground_heights = []
         for ground in game_world.objects[1]:
-            heights = ground.get_height_at_position(sonic.x)
+            heights = ground.get_height_at_position(left_edge)
+            heights += ground.get_height_at_position(right_edge)
             ground_heights.extend(heights)
 
         closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
+
         if closest_height is not None and sonic.y - 40 <= closest_height:
             sonic.y = closest_height + 40
             sonic.fall_speed = 0
@@ -185,7 +190,7 @@ class Run:
                 sonic.y = 0
                 sonic.fall_speed = 0
 
-        # x 좌표 이동은 y 좌표와 상관없이 처리
+        # x 좌표 이동
         if sonic.dir != 0:
             if closest_height is not None and sonic.y - 40 <= closest_height:
                 if sonic.speed < sonic.max_speed:
@@ -198,15 +203,18 @@ class Run:
 
             sonic.x += sonic.dir * sonic.speed * 0.1
 
+        # 프레임 업데이트
         sonic.frame_counter += 1
-        max_frame_count = 10 - int(sonic.speed / 20)  # 속도에 따른 프레임 전환 간격 조절
+        max_frame_count = 10 - int(sonic.speed / 20)
 
         if sonic.frame_counter >= max_frame_count:
             sonic.frame_counter = 0
             if sonic.speed > 180:
-                sonic.super_fast_frame = (sonic.super_fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
+                sonic.super_fast_frame = (
+                                                     sonic.super_fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
             elif sonic.speed > 100:
-                sonic.fast_frame = (sonic.fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
+                sonic.fast_frame = (
+                                               sonic.fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
             else:
                 sonic.frame = (sonic.frame + FRAMES_PER_ACTION_RUN * ACTION_PER_TIME * game_framework.frame_time) % 8
 
@@ -265,15 +273,17 @@ class Jump:
             sonic.jump_speed -= 1
             sonic.x += sonic.jump_dir * sonic.jump_x_speed * 0.1
 
-            # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
+            left_edge = sonic.x - 30
+            right_edge = sonic.x + 30
             ground_heights = []
             for ground in game_world.objects[1]:
-                heights = ground.get_height_at_position(sonic.x)
+                heights = ground.get_height_at_position(left_edge)
+                heights += ground.get_height_at_position(right_edge)
                 ground_heights.extend(heights)
 
             closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
-            # 가장 가까운 땅에 착지
+            # 착지 처리
             if closest_height is not None and sonic.y - 40 <= closest_height:
                 sonic.y = closest_height + 40
                 sonic.jump_speed = 0
@@ -446,10 +456,10 @@ class Sonic:
                     # 소닉이 지형의 왼쪽 또는 오른쪽 벽에 부딪힌 경우
                     if sonic_bb[2] > ground_bb[0] and sonic_bb[0] < ground_bb[0] and self.dir > 0:  # 오른쪽 이동 중
                         self.x = ground_bb[0] - 30  # 오른쪽 벽 위치로 고정
-                        self.dir = 0
+                        self.speed = 0
                     elif sonic_bb[0] < ground_bb[2] and sonic_bb[2] > ground_bb[2] and self.dir < 0:  # 왼쪽 이동 중
                         self.x = ground_bb[2] + 30  # 왼쪽 벽 위치로 고정
-                        self.dir = 0
+                        self.speed = 0
                     break
 
         if group == 'sonic:crabmeat':
