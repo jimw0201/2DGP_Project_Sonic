@@ -120,9 +120,9 @@ class Ground:
         screen_y = self.y - camera_y
         self.image.draw(screen_x, screen_y, self.width, self.height)
 
-        for bb in self.get_bb():
-            left, bottom, right, top = bb
-            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+        # for bb in self.get_bb():
+        #     left, bottom, right, top = bb
+        #     draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def update(self):
         pass
