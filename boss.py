@@ -21,6 +21,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
 FRAMES_PER_ACTION_EGGMAN = 8
 
+# 보스 에그맨 클래스
 class Eggman:
     images = None
 
@@ -32,21 +33,26 @@ class Eggman:
         self.frame = 0
         self.dir = random.choice([-1, 1])
         self.sonic = sonic
-        self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')
+        self.metal_ball = None
+
+        self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')   # 에그맨 타격음
         self.attack_sound.set_volume(0.5)
-        self.dying_sound = load_wav('sound/eggman_die.wav')
+
+        self.dying_sound = load_wav('sound/eggman_die.wav')     # 에그맨 사망 사운드
         self.dying_sound.set_volume(64)
-        self.is_invincible = False
+
+        self.is_invincible = False      # 무적 관련
         self.invincible_time = 0
         self.max_invincible_duration = 2.0
+
         self.hp = 8
-        self.metal_ball = None
+
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION_EGGMAN * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION_EGGMAN
         self.x += RUN_SPEED_PPS * self.dir * game_framework.frame_time
 
-        if abs(self.x - self.initial_x) > self.move_range:
+        if abs(self.x - self.initial_x) > self.move_range:      # 이동 범위 도달 시 방향 바꿔
             self.dir *= -1
 
         if self.is_invincible:
@@ -68,7 +74,7 @@ class Eggman:
                 play_mode.is_game_clear = True
 
     def draw(self, camera_x, camera_y):
-        if not self.is_invincible or int(self.invincible_time * 10) % 2 == 0:  # 깜빡임 효과
+        if not self.is_invincible or int(self.invincible_time * 10) % 2 == 0:
             if self.dir == 1:
                 self.image.clip_composite_draw(int(self.frame) * 77, 374, 77, 53, 0, 'h', self.x - camera_x,
                                                self.y - camera_y, 154, 108)
@@ -80,6 +86,7 @@ class Eggman:
         height = 108 // 2
         return [(self.x - width, self.y - height, self.x + width, self.y + height)]
 
+# 쇠구슬 클래스
 class MetalBall:
     images = None
 
@@ -90,8 +97,10 @@ class MetalBall:
         self.eggman = eggman
         self.ball_x = 0
         self.ball_y = 0
+
         self.swing_angle = 0
         self.swing_direction = 1
+
         self.attack_sound = pygame.mixer.Sound('sound/attack_eggman.wav')
         self.attack_sound.set_volume(0.5)
 
@@ -119,7 +128,6 @@ class MetalBall:
             self.attack_sound.play()
 
     def draw(self, camera_x, camera_y):
-        # 쇠구슬
         ball_sprite_x, ball_sprite_y, ball_sprite_width, ball_sprite_height = 0, 0, 48, 232
         self.image.clip_composite_draw(
             ball_sprite_x, ball_sprite_y, ball_sprite_width, ball_sprite_height, math.radians(self.swing_angle), '',

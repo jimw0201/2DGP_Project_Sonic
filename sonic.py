@@ -109,7 +109,6 @@ class Respawn:
             sonic.frame += sonic.frame_direction * FRAMES_PER_ACTION_IDLE * ACTION_PER_TIME * game_framework.frame_time
             sonic.frame = int(sonic.frame)
 
-        # 여러 바운딩 박스에서 소닉의 높이와 가장 가까운 높이를 선택
         ground_heights = []
         for ground in game_world.objects[1]:
             heights = ground.get_height_at_position(sonic.x)
@@ -143,7 +142,7 @@ class Run:
     @staticmethod
     def enter(sonic, e):
         if right_down(e) or left_up(e):
-            sonic.dir = 1  # 오른쪽 방향
+            sonic.dir = 1
             sonic.action = 1
         elif left_down(e) or right_up(e):
             sonic.dir = -1
@@ -180,7 +179,6 @@ class Run:
                 sonic.y = 0
                 sonic.fall_speed = 0
 
-        # x 좌표 이동
         if sonic.dir != 0:
             if closest_height is not None and sonic.y - 40 <= closest_height <= sonic.y + 40:
                 if sonic.speed < sonic.max_speed:
@@ -193,18 +191,15 @@ class Run:
 
             sonic.x += sonic.dir * sonic.speed * 0.1
 
-        # 프레임 업데이트
         sonic.frame_counter += 1
         max_frame_count = 10 - int(sonic.speed / 20)
 
         if sonic.frame_counter >= max_frame_count:
             sonic.frame_counter = 0
             if sonic.speed > 180:
-                sonic.super_fast_frame = (
-                                                     sonic.super_fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
+                sonic.super_fast_frame = (sonic.super_fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
             elif sonic.speed > 100:
-                sonic.fast_frame = (
-                                               sonic.fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
+                sonic.fast_frame = (sonic.fast_frame + FRAMES_PER_ACTION_RUN_FAST * ACTION_PER_TIME * game_framework.frame_time) % 4
             else:
                 sonic.frame = (sonic.frame + FRAMES_PER_ACTION_RUN * ACTION_PER_TIME * game_framework.frame_time) % 8
 
@@ -228,15 +223,14 @@ class Run:
             elif sonic.dir == -1:
                 sonic.image.clip_composite_draw(203 + 35 * int(sonic.frame), 909, 30, 40, 0, 'h', x, y, 60, 80)
 
-
 class Jump:
     @staticmethod
     def enter(sonic, e):
-        sonic.jump_speed = 20  # 초기 점프 속도
-        sonic.jump_dir = sonic.dir  # 현재 달리는 방향을 점프 방향으로
-        sonic.jump_x_speed = abs(sonic.speed)  # 현재 달리는 속도를 점프할 때 나아가는 속도에 반영
-        sonic.is_jumping = True  # 점프 상태
-        sonic.jump_start_y = sonic.y  # 점프 시작 위치 저장
+        sonic.jump_speed = 20
+        sonic.jump_dir = sonic.dir
+        sonic.jump_x_speed = abs(sonic.speed)
+        sonic.is_jumping = True
+        sonic.jump_start_y = sonic.y
         if sonic.dir != 0:
             sonic.face_dir = sonic.dir
 
@@ -257,7 +251,6 @@ class Jump:
             sonic.jump_dir = sonic.dir
             sonic.face_dir = sonic.dir
 
-        # 점프 중 중력 효과 적용
         if sonic.is_jumping:
             sonic.y += sonic.jump_speed
             sonic.jump_speed -= 1
@@ -273,7 +266,6 @@ class Jump:
 
             closest_height = min(ground_heights, key=lambda h: abs(h - sonic.y), default=None)
 
-            # 착지 처리
             if closest_height is not None and sonic.y - 40 <= closest_height <= sonic.y + 40:
                 sonic.y = closest_height + 40
                 sonic.jump_speed = 0
@@ -293,7 +285,7 @@ class Jump:
 
 class Sonic:
     def __init__(self, ground):
-        self.x, self.y = 500, 110
+        self.x, self.y = 200, 110
         self.ground = ground
         self.frame = 0
         self.dir = 0
@@ -305,11 +297,11 @@ class Sonic:
         self.is_jumping = False
         self.gravity = 0.5
         self.fall_speed = 0
-        self.is_invincible = False  # 무적 상태 플래그
-        self.invincible_time = 0  # 무적 상태 유지 시간
-        self.max_invincible_duration = 2.0  # 무적 시간 (초)
-        self.invincible_blink_time = 0.0  # 깜빡임 주기 관리
-        self.invincible_blink_interval = 0.1  # 0.1초마다 깜빡임
+        self.is_invincible = False
+        self.invincible_time = 0
+        self.max_invincible_duration = 2.0
+        self.invincible_blink_time = 0.0
+        self.invincible_blink_interval = 0.1
         self.is_visible = True
 
         # 소닉 좌표값 확인 위해 임시로 작성
@@ -326,7 +318,7 @@ class Sonic:
 
         self.image = load_image('sprites/sonic_sprite_nbg.png')
         self.state_machine = StateMachine(self)
-        self.state_machine.start(Respawn) # 초기 상태가 Idle
+        self.state_machine.start(Respawn)
         self.state_machine.set_transitions(
             {
                 Respawn: {right_down : Run, left_down : Run, space_down: Jump},
@@ -341,7 +333,7 @@ class Sonic:
 
     def update(self):
         self.state_machine.update()
-        # 무적 상태 업데이트
+
         if self.is_invincible:
             self.invincible_time += game_framework.frame_time
             self.invincible_blink_time += game_framework.frame_time
@@ -366,7 +358,6 @@ class Sonic:
         map_min_x = 0
         map_max_x = play_mode.background.map_width
 
-        # 소닉의 X 좌표가 맵 경계를 벗어나지 않도록 제한
         if self.x - 30 < map_min_x:
             self.x = map_min_x + 30
             self.speed = 0
@@ -394,7 +385,6 @@ class Sonic:
         self.state_machine.add_event(('INPUT', event))
 
     def update_dir(self):
-        # 눌린 방향키 상태에 따라 방향 결정
         if self.keys[SDLK_LEFT] and self.keys[SDLK_RIGHT]:
             self.dir = 0
         elif self.keys[SDLK_LEFT]:
@@ -407,6 +397,7 @@ class Sonic:
     def draw(self, camera_x, camera_y):
         if self.is_visible:
             self.state_machine.draw(self.x - camera_x, self.y - camera_y)
+
             # left, bottom, right, top = self.get_bb()
             # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
             # for bb in self.get_bb():
@@ -433,11 +424,10 @@ class Sonic:
 
     def handle_collision(self, group, other):
         global is_game_over
-        if self.is_invincible:  # 무적 상태에서는 충돌 무시
+        if self.is_invincible:
             return
 
         if group == 'sonic:ground':
-            # 소닉의 바운딩 박스와 지형의 바운딩 박스를 가져옴
             sonic_bb = self.get_bb()[0]
             ground_bb_list = other.get_bb()
 
@@ -445,16 +435,16 @@ class Sonic:
                 if game_world.check_collision(sonic_bb, ground_bb):
                     # 소닉이 지형의 상단에 서 있는 경우
                     if sonic_bb[1] <= ground_bb[3] and sonic_bb[3] > ground_bb[3]:
-                        self.y = ground_bb[3] + 40  # 지형 상단에서 위치를 고정
-                        self.fall_speed = 0  # 낙하 속도 초기화
+                        self.y = ground_bb[3] + 40
+                        self.fall_speed = 0
                         break
 
                     # 소닉이 지형의 왼쪽 또는 오른쪽 벽에 부딪힌 경우
-                    if sonic_bb[2] > ground_bb[0] and sonic_bb[0] < ground_bb[0] and self.dir > 0:  # 오른쪽 이동 중
-                        self.x = ground_bb[0] - 30  # 오른쪽 벽 위치로 고정
+                    if sonic_bb[2] > ground_bb[0] and sonic_bb[0] < ground_bb[0] and self.dir > 0:
+                        self.x = ground_bb[0] - 30
                         self.speed = 0
-                    elif sonic_bb[0] < ground_bb[2] and sonic_bb[2] > ground_bb[2] and self.dir < 0:  # 왼쪽 이동 중
-                        self.x = ground_bb[2] + 30  # 왼쪽 벽 위치로 고정
+                    elif sonic_bb[0] < ground_bb[2] and sonic_bb[2] > ground_bb[2] and self.dir < 0:
+                        self.x = ground_bb[2] + 30
                         self.speed = 0
                     break
 
@@ -609,7 +599,7 @@ class Sonic:
         for i in range(drop_count):
             angle = i * (180 / drop_count)
             offset_x = distance * math.cos(math.radians(angle))
-            offset_y = distance * math.sin(math.radians(angle)) + random.randint(-10, 10)  # 약간의 랜덤성 추가
+            offset_y = distance * math.sin(math.radians(angle)) + random.randint(-10, 10)
 
             speed = 7
             vx = speed * math.cos(math.radians(angle))

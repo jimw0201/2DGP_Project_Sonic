@@ -2,8 +2,6 @@
 
 from pico2d import load_image, draw_rectangle
 
-
-
 # 지형 클래스
 class Ground:
     # 지형 이미지
@@ -59,7 +57,7 @@ class Ground:
         'plane8': 512,
         'stair2': 512,
         'boss_platform': 150,
-        'clean_wall' : 512
+        'clean_wall': 512
     }
 
     # 지형 높이
@@ -89,19 +87,23 @@ class Ground:
         'boss_platform': 60,
         'clean_wall': 512
     }
+
     def __init__(self, terrain_type='platform'):
         if terrain_type not in Ground.TERRAIN_IMAGES:
             raise ValueError(f"Unsupported terrain type: {terrain_type}")
-        self.terrain_type = terrain_type  # 지형 타입 저장
+        self.terrain_type = terrain_type
+
         self.image = load_image(Ground.TERRAIN_IMAGES[terrain_type])
         # self.image = load_image('green_hill_ground.png')
+
         self.width = Ground.TERRAIN_WIDTHS.get(terrain_type, 512)
         self.height = Ground.TERRAIN_HEIGHTS.get(terrain_type, 512)
+
         self.x = 0
         self.y = 0
 
-    def get_height(self):
-        return self.height
+    # def get_height(self):
+    #     return self.height
 
     def get_height_at_position(self, x):
         bb = self.get_bb()
@@ -118,10 +120,9 @@ class Ground:
         screen_y = self.y - camera_y
         self.image.draw(screen_x, screen_y, self.width, self.height)
 
-        # 바운딩 박스를 화면에 그리기
-        # for bb in self.get_bb():
-        #     left, bottom, right, top = bb
-        #     draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
+        for bb in self.get_bb():
+            left, bottom, right, top = bb
+            draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
 
     def update(self):
         pass
@@ -154,7 +155,6 @@ class Ground:
             y_low = (y_low_start + y_low_end) / 2
             y_high = (y_high_start + y_high_end) / 2
 
-            # 바운딩 박스 추가
             bounding_boxes.append((
                 seg_left_x,
                 y_low,
@@ -163,6 +163,7 @@ class Ground:
             ))
 
         return bounding_boxes
+
     def get_uphill2_bb(self, num_segments=20, height_reduction=50, y_offset=0):
         bounding_boxes = []
         segment_width = self.width / num_segments
@@ -188,7 +189,6 @@ class Ground:
             y_low = (y_low_start + y_low_end) / 2
             y_high = (y_high_start + y_high_end) / 2
 
-            # 바운딩 박스 추가
             bounding_boxes.append((
                 seg_left_x,
                 y_low,
@@ -223,7 +223,6 @@ class Ground:
             y_low = (y_low_start + y_low_end) / 2
             y_high = (y_high_start + y_high_end) / 2
 
-            # 바운딩 박스 추가
             bounding_boxes.append((
                 seg_left_x,
                 y_high,
@@ -232,6 +231,7 @@ class Ground:
             ))
 
         return bounding_boxes
+
     def get_downhill2_bb(self, num_segments=20, height_reduction=50, y_offset=0):
         bounding_boxes = []
         segment_width = self.width / num_segments
@@ -257,7 +257,6 @@ class Ground:
             y_low = (y_low_start + y_low_end) / 2
             y_high = (y_high_start + y_high_end) / 2
 
-            # 바운딩 박스 추가
             bounding_boxes.append((
                 seg_left_x,
                 y_high,
@@ -292,7 +291,6 @@ class Ground:
             y_low = (y_low_start + y_low_end) / 2
             y_high = (y_high_start + y_high_end) / 2
 
-            # 바운딩 박스 추가
             bounding_boxes.append((
                 seg_left_x,
                 y_high,
@@ -304,9 +302,8 @@ class Ground:
 
     def get_curve1_bb(self, num_segments=20, y_offset=0, curve_depth=0.5, dip_amount=75):
         bounding_boxes = []
-        segment_width = (self.width // 2) / num_segments  # x축 세그먼트 간 거리
+        segment_width = (self.width // 2) / num_segments
 
-        # 좌측 하단과 우측 상단 좌표
         left_bottom = (self.x - self.width // 2, self.y - self.height // 4 + y_offset)
         right_top = (self.x, self.y + y_offset)
 
@@ -315,11 +312,9 @@ class Ground:
             seg_left_x = left_bottom[0] + i * segment_width
             seg_right_x = seg_left_x + segment_width
 
-            # t 값 계산 (0 ~ 1)
             t_start = i / num_segments
             t_end = (i + 1) / num_segments
 
-            # 중간에 움푹 파이는 형태 구현 (파라볼라 또는 제곱 함수 적용)
             dip_factor_start = 1 - ((t_start - 0.5) ** 2) * 4  # 중간에서 가장 낮아지도록 조정
             dip_factor_end = 1 - ((t_end - 0.5) ** 2) * 4
 
@@ -329,12 +324,11 @@ class Ground:
             y_low_end = left_bottom[1] + (right_top[1] - left_bottom[1]) * (
                         t_end ** curve_depth) - dip_amount * dip_factor_end
 
-            # 바운딩 박스 추가
             bounding_boxes.append((
-                seg_left_x,  # 좌측 x
-                y_low_start,  # 하단 y
-                seg_right_x,  # 우측 x
-                y_low_end  # 상단 y
+                seg_left_x,
+                y_low_start,
+                seg_right_x,
+                y_low_end
             ))
 
         return bounding_boxes
@@ -366,37 +360,50 @@ class Ground:
                      self.x + 189,
                      self.y + 68)
             ]
+
         elif self.terrain_type == 'plane1':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y - 128)]
+
         elif self.terrain_type == 'plane2':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
+
         elif self.terrain_type == 'uphill1':
-            return self.get_uphill1_bb(y_offset=y_offset - 200)
+            a1_bb = [
+                (self.x - self.width // 2,
+                 self.y - self.height // 2,
+                 self.x - 151,
+                 self.y - 144)
+            ]
+            b1_bb = self.get_uphill1_bb(y_offset=y_offset - 200)
+            return a1_bb + b1_bb
+
         elif self.terrain_type == 'downhill1':
             return self.get_downhill1_bb(y_offset=y_offset - 235)
+
         elif self.terrain_type == 'bridge':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y - 5)]
+
         elif self.terrain_type == 'curve1':
             # 기존 박스
-            existing_bb = [
+            a2_bb = [
                 (self.x,
                  self.y - self.height // 2,
                  self.x + self.width // 2,
                  self.y)
             ]
             # 점진적으로 올라가는 바운딩 박스 추가
-            new_bb = self.get_curve1_bb(y_offset=y_offset)
-            # 기존 박스와 새로운 박스를 합쳐서 반환
-            return existing_bb + new_bb
+            b2_bb = self.get_curve1_bb(y_offset=y_offset)
+            return a2_bb + b2_bb
+
         elif self.terrain_type == 'stair1':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
@@ -410,16 +417,19 @@ class Ground:
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y + 130)]
+
         elif self.terrain_type == 'start_of_bridge':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x - self.width // 4,
                      self.y + 226)]
+
         elif self.terrain_type == 'plane3':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y + 226)]
+
         elif self.terrain_type == 'twin':
             return [(self.x - self.width // 2,
                      self.y + 196,
@@ -437,10 +447,13 @@ class Ground:
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
+
         elif self.terrain_type == 'downhill2':
             return self.get_downhill2_bb(y_offset=y_offset - 130)
+
         elif self.terrain_type == 'downhill3':
             return self.get_downhill3_bb(y_offset=y_offset - 250)
+
         elif self.terrain_type == 'loop':
             return [
                 (self.x - self.width // 2,
@@ -448,37 +461,46 @@ class Ground:
                  self.x + self.width // 2,
                  self.y - self.height // 4)
             ]
+
         elif self.terrain_type == 'uphill2':
             return self.get_uphill2_bb(y_offset=y_offset - 150)
+
         elif self.terrain_type == 'plane4':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
+
         elif self.terrain_type == 'wall1':
             return []
+
         elif self.terrain_type == 'clean_wall':
             return []
+
         elif self.terrain_type == 'plane5':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
+
         elif self.terrain_type == 'plane6':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y - self.height // 4)]
+
         elif self.terrain_type == 'plane7':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y - self.height // 4)]
+
         elif self.terrain_type == 'plane8':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y - self.height // 4)]
+
         elif self.terrain_type == 'stair2':
             return [(self.x - self.width // 2,
                      self.y - self.height // 2,
@@ -492,11 +514,13 @@ class Ground:
                      self.y - self.height // 2,
                      self.x + self.width // 2,
                      self.y)]
+
         elif self.terrain_type == 'boss_platform':
             return [(self.x - self.width // 2,
                     self.y - self.height // 2,
                     self.x + self.width // 2,
                     self.y + self.height // 2)]
+
         else:
             return [
                 (self.x - self.width // 2,
@@ -505,14 +529,13 @@ class Ground:
                  self.y + self.height // 2)
             ]
 
-
 # 뒷배경 클래스
 class Background:
     def __init__(self):
         self.image = load_image('sprites/background.jpg')
         self.map_width = 19328 # 전체 맵 너비
         self.map_height = 2000
-        self.screen_width = 800  # 화면 너비
+        self.screen_width = 800
         self.screen_height = 600
 
     def draw(self, camera_x, camera_y):

@@ -59,7 +59,6 @@ def run(start_mode):
 
         time.sleep(0.01)
 
-
         # print(f'Frame Time: {frame_time}, Frame Rate: {frame_rate}')
 
     # repeatedly delete the top of the stack

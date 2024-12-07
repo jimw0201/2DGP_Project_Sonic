@@ -41,6 +41,7 @@ class Ring:
 
     def draw(self, camera_x, camera_y):
         self.image.clip_draw(int(self.frame) * 64, 0, 64, 64, self.x - camera_x, self.y - camera_y, 40, 40)
+
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom - camera_y, right - camera_x, top - camera_y)
         # for bb in self.get_bb():

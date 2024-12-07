@@ -26,6 +26,7 @@ rings_collected = 0
 
 is_game_over = False
 is_game_clear = False
+
 is_clear_bgm_played = False
 
 boss_spawned = False
@@ -51,20 +52,26 @@ def init():
     global camera_x, camera_y, bgm, jump_sound, ground, background, sonic, rings, font, font2, crabmeat, caterkiller,\
         burrobot, buzzbomber, newtron, batbrain, boss, life_display, lives, time_elapsed, rings_collected, is_game_over,\
         score, is_camera_locked, is_game_clear, boss_spawned, boss_bgm, clear_bgm
+
     is_game_over = False
     is_game_clear = False
     boss_spawned = False
     is_camera_locked = False
+
     camera_x = 0
     camera_y = 0
+
     time_elapsed = 0
     rings_collected = 0
+
     if lives == 0:
         score = 0
         lives = 3
+
     font = load_font('NiseSegaSonic.TTF', 20)
     font2 = load_font('NiseSegaSonic.TTF', 50)
 
+    # 적의 위치와 이동 범위
     crabmeat_positions = [(1000, 100, 400), (4415, 305, 20), (16290, 178, 30)]
     caterkiller_positions = [(2800, 230, 200), (9610, 590, 250), (14100, 230, 200)]
     burrobot_positions = [(5200, 465, 500), (6000, 588, 200), (15300, 102, 500)]
@@ -85,7 +92,7 @@ def init():
     # metal_ball = MetalBall(sonic, boss)
     # boss.metal_ball = metal_ball
 
-    # 지형 초기화
+    # 지형 위치와 타입
     ground_positions = [
         # (x, y, 지형 타입)
         (256, 200, 'plane1'),
@@ -154,14 +161,17 @@ def init():
         (18600, 220, 'boss_platform'),
         (19250, 220, 'boss_platform')
     ]
+
     for x, y, terrain_type in ground_positions:
         ground = Ground(terrain_type)
         ground.x = x
         ground.y = y
         game_world.add_object(ground, 1)
+
     sonic = Sonic(None)
     sonic.ground = ground
 
+    # 링의 위치
     ring_positions = [
         (640, 250),
         (695, 250),
@@ -265,12 +275,13 @@ def init():
         game_world.add_collision_pair(sonic, enemy, 'sonic:batbrain')
 
     # game_world.add_collision_pair(sonic, boss, 'sonic:eggman')
-    #
+
     # game_world.add_collision_pair(sonic, metal_ball, 'sonic:metal_ball')
+
     for obj in game_world.objects[1]:  # 지형 레이어
         game_world.add_collision_pair(sonic, obj, 'sonic:ground')
 
-    # 배경음악
+    # 사운드 관련
     bgm = load_music('sound/green_hill_zone_bgm.mp3')
     bgm.set_volume(64)
     bgm.repeat_play()
@@ -286,14 +297,18 @@ def init():
 
 def finish():
     global lives, score, is_game_over, is_game_clear, boss_spawned, is_clear_bgm_played
+
     temp_lives = lives
     temp_score = score
     game_world.clear()
     lives = temp_lives
     score = temp_score
+
     is_game_over = False
     is_game_clear = False
+
     boss_spawned = False
+
     is_clear_bgm_played = False
 
 def update():
@@ -314,6 +329,7 @@ def update():
     boss_zone_start = 18925
     boss_spawn_x = 19000
 
+    # 보스는 소닉이 보스 구역에 들어와야 생성
     if not boss_spawned and sonic.x >= boss_spawn_x:
         boss = Eggman(sonic, 18900, 400, 250)
         metal_ball = MetalBall(sonic, boss)
@@ -326,6 +342,7 @@ def update():
 
         boss_spawned = True
 
+    # 보스 구역에 들어오면 브금 바뀜
     if sonic.x >= boss_zone_start:
         if bgm is not None:
             bgm.stop()
@@ -333,6 +350,7 @@ def update():
             boss_bgm.repeat_play()
         is_camera_locked = True
 
+    # 카메라도 고정됨
     if is_camera_locked:
         camera_x = boss_zone_start - 400
         camera_y = max(0, min(camera_y, background.map_height))
@@ -364,11 +382,13 @@ def draw():
 
     update_canvas()
 
+# 게임 오버
 def draw_game_over():
     global font, font2
     font2.draw(200, 300, "GAME OVER", (255, 0, 0))
     font.draw(200, 250, "PRESS R TO RETURN TO TITLE", (255, 255, 0))
 
+# 게임 클리어
 def draw_game_clear():
     global font, font2, score, rings_collected
 
@@ -381,6 +401,7 @@ def draw_game_clear():
     font.draw(200, 200, f'Time Bonus: {time_bonus}', (255, 255, 255))
     font.draw(200, 150, f'Ring Bonus: {ring_bonus}', (255, 255, 255))
 
+# UI 그리기
 def draw_ui():
     global font, score, time_elapsed, rings_collected, life_display
 
@@ -394,6 +415,7 @@ def draw_ui():
     font.draw(20, 540, f"TIME: {time_display}", (255, 255, 0))      # 경과 시간
     font.draw(20, 510, f"RINGS: {rings_collected}", (255, 255, 0))  # 링 개수
 
+# 최종 스코어 계산
 def calculate_score():
     global rings_collected, time_elapsed
 
@@ -402,12 +424,14 @@ def calculate_score():
 
     return time_bonus, ring_bonus
 
+# 원작에도 pause와 resume 기능은 없다.
 def pause():
     pass
 
 def resume():
     pass
 
+# 목숨 표시 클래스
 class LifeDisplay:
     def __init__(self, lives):
         self.lives = lives

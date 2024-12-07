@@ -30,7 +30,7 @@ class Crabmeat:
     def __init__(self, sonic, x, y, move_range=100):
         self.x, self.y = x, y
         self.move_range = move_range
-        self.initial_x = x  # 시작 위치 저장
+        self.initial_x = x
         self.image = load_image('sprites/enemies_sprite_nbg.png')
         self.frame = 0
         self.dir = random.choice([-1, 1])
@@ -95,6 +95,7 @@ class Caterkiller:
             self.image.clip_draw(int(self.frame) * 51, 1102, 51, 33, self.x - camera_x, self.y - camera_y, 102, 66)
         else:
             self.image.clip_draw(int(self.frame) * 51, 1070, 51, 33, self.x - camera_x, self.y - camera_y, 102, 66)
+
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
@@ -134,6 +135,7 @@ class Burrobot:
             self.image.clip_draw(int(self.frame) * 28, 1329, 28, 35, self.x - camera_x, self.y - camera_y, 56, 70)
         else:
             self.image.clip_draw(int(self.frame) * 28, 1288, 28, 35, self.x - camera_x, self.y - camera_y, 56, 70)
+
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
@@ -212,6 +214,7 @@ class Newtron:
             self.image.clip_draw(int(self.frame) * 39, 683, 39, 39, self.x - camera_x, self.y - camera_y, 78, 78)
         else:
             self.image.clip_draw(int(self.frame) * 39, 638, 39, 39, self.x - camera_x, self.y - camera_y, 78, 78)
+
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
@@ -251,6 +254,7 @@ class Batbrain:
             self.image.clip_draw(int(self.frame) * 35, 30, 35, 38, self.x - camera_x, self.y - camera_y, 70, 76)
         else:
             self.image.clip_composite_draw(int(self.frame) * 35, 30, 35, 38, 0, 'h', self.x - camera_x, self.y - camera_y, 70, 76)
+
         # left, bottom, right, top = self.get_bb()
         # draw_rectangle(left - camera_x, bottom, right - camera_x, top)
 
