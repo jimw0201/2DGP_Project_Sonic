@@ -57,7 +57,9 @@ def run(start_mode):
         frame_rate = 1.0 / frame_time
         current_time += frame_time
 
-        time.sleep(0.01)
+        # 일부 환경에서 프레임 드랍이 심해 주석 처리 했으나 프레임이 너무 높을 경우
+        # 주석 해제하는 것이 좋음
+        # time.sleep(0.01)
 
         # print(f'Frame Time: {frame_time}, Frame Rate: {frame_rate}')
 
