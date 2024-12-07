@@ -291,8 +291,8 @@ class Sonic:
         self.dir = 0
         self.action = 3
         self.speed = 0
-        self.max_speed = 100
-        self.acceleration = 1.5
+        self.max_speed = 200
+        self.acceleration = 1.1
         self.frame_counter = 0
         self.is_jumping = False
         self.gravity = 0.5
